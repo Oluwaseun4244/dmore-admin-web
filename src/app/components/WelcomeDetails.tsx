@@ -16,7 +16,6 @@ const WelcomeDetails = ({ onNext }: WelcomeDetailsProps) => {
       description:
         "Every time points are bought 40% of the transaction is added to your shopping wallet for shopping",
       amount: "200,000.00",
-      percentage: "40%",
       ngnEquivalent: "N199,000.00",
     },
     {
@@ -24,7 +23,6 @@ const WelcomeDetails = ({ onNext }: WelcomeDetailsProps) => {
       description:
         "Every time points are bought 40% of the transaction is added to your shopping wallet for shopping",
       amount: "200,000.00",
-      percentage: "40%",
       ngnEquivalent: "N199,000.00",
     },
   ];
@@ -56,9 +54,8 @@ const WelcomeDetails = ({ onNext }: WelcomeDetailsProps) => {
                 </p>
               </div>
             </div>
-            <p className='font-satoshi font-medium text-[20px] text-[#090B0C] leading-[24px] text-center w-[40%]'>
-              Every time points are bought 40% of the transaction is added to
-              your shopping wallet for shopping
+            <p className='font-satoshi font-medium text-[20px] text-[#090B0C] leading-[24px] text-center w-[55%]'>
+              {info.description}
             </p>
           </div>
         ))}
