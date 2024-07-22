@@ -33,3 +33,32 @@ body {
     text-wrap: balance;
   }
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 7px;
+  direction: rtl;
+}
+
+.custom-scrollbar > .content {
+  direction: ltr;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f5f4f6;
+  border-radius: 20px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #702eb0;
+  border-radius: 20px;
+}
+
+/* .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+} */
+
+/* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
