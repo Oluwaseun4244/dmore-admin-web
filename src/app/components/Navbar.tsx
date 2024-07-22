@@ -70,9 +70,13 @@ const Navbar = () => {
             >
               Sign up
             </Link>
-            <button className='font-satoshi font-medium text-[14px] leading-[18.9px] tracking-[.15px] text-center px-5 py-3 text-light-purple bg-dark-purple border border-dark-purple rounded-[10px] hover:text-dark-purple hover:bg-light-purple transition-all duration-300 ease-in-out'>
+            <Link
+              href='/login'
+              className='font-satoshi font-medium text-[14px] leading-[18.9px] tracking-[.15px] text-center px-5 py-3 text-white bg-dark-purple border border-dark-purple hover:bg-light-purpl rounded-[10px]'
+            >
               Sign in
-            </button>
+            </Link>
+
           </div>
         </div>
       </div>
