@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 const Index: React.FC = () => {
   const [otp, setOtp] = useState<number | string>("");
   const [btnDisabled, setBtnDisabled] = useState(true);
-  const [viewCycle, setViewCycle] = useState("verified");
+  const [viewCycle, setViewCycle] = useState("otp");
 
   const router = useRouter();
 
