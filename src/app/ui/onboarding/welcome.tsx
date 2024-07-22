@@ -27,7 +27,7 @@ const Welcome = ({ onNext }: OnboardingChildrenProps) => {
         <h2 className='font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[1%]'>
           Welcome!
         </h2>
-        <div className='flex flex-col space-y-3 hover:translate-y-2 hover:translate-x-2 transition-all duration-300 ease-in-out'>
+        <div className='flex flex-col space-y-3'>
           <div
             className='flex justify-between items-center border border-[#D4C6E8] bg-[#DAB9FA17] bg-opacity-[9%] rounded-[12px] py-3 px-5 cursor-pointer hover:shadow-md hover:shadow-[#8077F626] hover:blur-[4] transition-all duration-300'
             onClick={() => setToggleDetails(!toggleDetails)}
