@@ -7,9 +7,9 @@ import logo from "../../../public/logo-full.svg";
 
 const OnboardingLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className='w-screen h-screen flex justify-center items-center bg-white'>
-      <div className='h-full w-[75%] flex justify-center items-center'>
-        <div className='grid grid-cols-10 gap-10'>
+    <div className='w-screen h-screen flex justify-center items-center overflow-x-hidden bg-white'>
+      <div className='h-full w-[95%] md:w[75%] flex justify-center items-center'>
+        <div className='grid grid-cols-10 gap-5 md:gap-10'>
           <div className='col-span-7 flex justify-center items-center'>
             {children}
           </div>
