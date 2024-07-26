@@ -29,8 +29,8 @@ const WelcomeDetails = ({ onNext }: WelcomeDetailsProps) => {
 
   const [termsAndConditions, setTermsAndConditions] = useState<boolean>(false);
   return (
-    <div className='max-h-[606px] overflow-y-scroll custom-scrollbar py-3'>
-      <div className='w-full flex justify-center items-center flex-col space-y-20 py-10 h-auto'>
+    <div className='max-h-[606px] overflow-y-scroll custom-scrollbar pt-3 pb-[100px]'>
+      <div className='w-full flex justify-center items-center flex-col space-y-20 py-10'>
         {information.map((info, index) => (
           <div
             className='flex flex-col space-y-5 justify-center items-center'

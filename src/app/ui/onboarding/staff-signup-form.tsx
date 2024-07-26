@@ -14,15 +14,15 @@ const SellerSignupForm = ({ onNext }: OnboardingChildrenProps) => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center bg-red'">
-      <div className="w-full h-full flex flex-col space-y-10 md:px-12">
+    <div className="w-full h-full flex justify-center items-center overflow-y-auto">
+      <div className="w-[90%] lg:w-full  h-full flex flex-col space-y-10 lg:px-12">
         <div className="flex items-center justify-between ">
           <h2 className="font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[% ]">
             Sign up
           </h2>
 
           <button
-            className="font-satoshi font-medium text-white text-[18px] leading-[20px] -tracking-[1%] flex justify-center items-center px-12 py-4 bg-dark-purple rounded-[8px]"
+            className="font-satoshi font-medium text-white text-[18px] leading-[20px] -tracking-[1%] flex justify-center items-center px-12 py-4 bg-app-purple rounded-[8px]"
             onClick={goBack}
           >
             Back
@@ -127,14 +127,14 @@ const SellerSignupForm = ({ onNext }: OnboardingChildrenProps) => {
               </select>
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col md:flex-row lg:flex-row justify-between items-center">
             <button
               className="font-satoshi font-medium text-white text-[18px] leading-[20px] -tracking-[1%] flex justify-center items-center px-12 py-4 bg-[#702EB0] rounded-[8px] bg-opacity-[50%]"
               onClick={onCreateAccount}
             >
               Create your account
             </button>
-            <div className="flex space-x-3 items-center">
+            <div className="flex space-x-3 items-center mt-3 lg-mt-0 lg-mt-0">
               <p className="font-satoshi font-medium text-[#5D6974] text-[16px] leading-[20px] -tracking-[1%]">
                 Or sign up with
               </p>
