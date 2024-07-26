@@ -13,6 +13,7 @@ const config: Config = {
       },
       colors: {
         "dark-purple": "#3F0973",
+        "app-purple": "#702EB0",
         "light-purple": "#F7EFFF",
         "light-gray": "#758494",
         "disabled-btn": "#B9A6D4",
