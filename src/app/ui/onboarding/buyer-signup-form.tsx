@@ -17,7 +17,7 @@ const BuyerSignupForm = ({ onNext }: OnboardingChildrenProps) => {
           Sign up
         </h2>
         <form className='flex flex-col space-y-10'>
-          <div className='grid grid-cols-2 gap-y-10 gap-x-5 '>
+          <div className='grid grid-cols-2 gap-y-10 gap-x-5'>
             {/* firstname */}
             <div className='flex flex-col bg-[#FBFBFC] px-4 py-3 border border-[#EDF0F3] rounded-[12px]'>
               <input
