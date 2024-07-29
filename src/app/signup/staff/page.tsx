@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React from "react";
+import { useSearchParams } from "next/navigation";
 
 import Image from "next/image";
 import appleSignup from "../../../../public/images/apple-signup.svg";
