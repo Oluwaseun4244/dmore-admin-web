@@ -1,16 +1,17 @@
-import { OnboardingChildrenProps } from "@/app/utils/definitions";
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import Image from "next/image";
 import appleSignup from "../../../../public/images/apple-signup.svg";
 import googleSignup from "../../../../public/images/google-signup.svg";
 
-const StaffSignupForm = ({ onNext }: OnboardingChildrenProps) => {
+const Staff = () => {
+  const searchParams = useSearchParams();
+  const email = searchParams?.get("email") ?? "";
   const onCreateAccount = () => {
-    onNext("enter-otp");
-  };
-  const goBack = () => {
-    onNext("welcome");
+    console.log("create account function");
   };
 
   return (
@@ -20,13 +21,6 @@ const StaffSignupForm = ({ onNext }: OnboardingChildrenProps) => {
           <h2 className="font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[% ]">
             Sign up
           </h2>
-
-          <button
-            className="font-satoshi font-medium text-white text-[18px] leading-[20px] -tracking-[1%] flex justify-center items-center px-12 py-4 bg-app-purple rounded-[8px]"
-            onClick={goBack}
-          >
-            Back
-          </button>
         </div>
         <form className="flex flex-col space-y-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-5 ">
@@ -55,6 +49,8 @@ const StaffSignupForm = ({ onNext }: OnboardingChildrenProps) => {
                 name="email"
                 placeholder="Email address"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
+                value={email}
+                readOnly
               />
             </div>
             {/* contact number */}
@@ -158,4 +154,4 @@ const StaffSignupForm = ({ onNext }: OnboardingChildrenProps) => {
   );
 };
 
-export default StaffSignupForm;
+export default Staff;
