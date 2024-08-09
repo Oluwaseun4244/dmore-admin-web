@@ -3,7 +3,7 @@ import React from 'react'
 
 interface ButtonProps {
   text: string;
-  classNames: string;
+  classNames?: string;
   disabled?: boolean;
   bg: string;
   my?: string;

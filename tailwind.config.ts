@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import {colors, borderWidth} from './TailwindColors'
 
 const config: Config = {
   content: [
@@ -11,18 +12,8 @@ const config: Config = {
       fontFamily: {
         satoshi: ["Satoshi", "sans-serif"],
       },
-      colors: {
-        "dark-purple": "#3F0973",
-        "app-purple": "#702EB0",
-        "light-purple": "#F7EFFF",
-        "light-gray": "#758494",
-        "light-gray2": "#868FA0",
-        "disabled-btn": "#B9A6D4",
-        "input-bg": "#EDF0F3",
-        "faint-peach": "#FBF7FE",
-        "faint-purple": "#C9B0ED33",
-        "app-green": "#008F39"
-      },
+    colors,
+    borderWidth,
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -32,6 +23,7 @@ const config: Config = {
         'custom-gray': '#C0C0C0',
         "dark-purple": "#3F0973",
       },
+
     },
   },
   plugins: [],
