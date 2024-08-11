@@ -64,18 +64,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </div>
             </div>
             <div className="flex flex-row gap-[10px] items-center">
-              <Image src={help_icon} alt="logo" className="mx-2" />
               <Image src={notification} alt="logo" className="mx-2" />
+              <Image src={help_icon} alt="logo" className="mx-2" />
 
               <AvatarInitial
                 fullName="Banjo Tola"
                 classNames="w-8 h-8 bg-faint-purple"
               />
-              {/* <div className="relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-faint-purple rounded-full dark:bg-gray-600">
-                <span className="font-medium font-satoshi text-[14px] text-gray-600 dark:text-gray-300">
-                  BT
-                </span>
-              </div> */}
             </div>
           </div>
           <section className="p-[20px] md:p-[40px] h-full overflow-auto">

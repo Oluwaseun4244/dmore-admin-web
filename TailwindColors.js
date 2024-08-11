@@ -12,6 +12,8 @@ export const colors = {
   "faint-peach3": "#DCBFF8",
   "faint-purple": "#C9B0ED33",
   "app-green": "#008F39",
+  "title-bg-color": "#FAF9FB",
+  "input-bg": "#FBFBFC",
 };
 
 export const borderWidth = {

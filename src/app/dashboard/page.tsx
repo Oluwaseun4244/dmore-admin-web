@@ -7,6 +7,10 @@ import Button from "../components/generic/Button";
 import { FaRegCalendarDays } from "react-icons/fa6";
 import RecentTransaction from "../components/dashboard/RecentTransaction";
 import MonthlyStat from "../components/dashboard/MonthlyStat";
+import Modal from "../components/generic/Modal";
+import { FaCircleInfo } from "react-icons/fa6";
+import { CiCreditCard1 } from "react-icons/ci";
+import TransferPointModal from "../components/dashboard/TransferPointModal";
 
 interface Stat {
   month: string;
@@ -17,6 +21,7 @@ interface Stat {
 function Dashboard() {
   const [monthView, setMonthView] = useState("jan-jun");
   const [statsData, setStatsData] = useState<Stat[]>([]);
+  const [transferIsopen, setTransferIsOpen] = useState(true);
   const dummyData = [
     { month: "Jan", incoming: "20", outgoing: "10" },
     { month: "Feb", incoming: "40", outgoing: "40" },
@@ -68,6 +73,7 @@ function Dashboard() {
           title="Personal Wallet"
           showInfo
           balance={17}
+          toolTip="Whatever the info is for this particular card, usually a short description for the wallet type"
         />
         <WalletCard
           color="text-app-purple"
@@ -75,6 +81,7 @@ function Dashboard() {
           title="Retails Wallet"
           showInfo
           balance={98}
+          toolTip="Whatever the info is for this particular card, usually a short description for the wallet type"
         />
         <WalletCard
           color="text-app-purple"
@@ -82,6 +89,7 @@ function Dashboard() {
           title="Reward Wallet"
           showInfo
           balance={102}
+          toolTip="Whatever the info is for this particular card, usually a short description for the wallet type"
         />
       </div>
       <div className="mt-10 flex flex-row w-full gap-[10px]">
@@ -89,6 +97,7 @@ function Dashboard() {
           text="Transfer Points"
           bg="bg-app-purple"
           classNames="p-3 text-white w-[157px] h-[51px]"
+          onClick={() => setTransferIsOpen(true)}
         />
         <Button
           text="Buy Points"
@@ -108,11 +117,12 @@ function Dashboard() {
                 <FaRegCalendarDays className="text-app-purple" />
               </div>
               <div className="h-[32px] w-[150px] rounded-md flex items-center justify-center border gap-[8px]">
-                <select className={`font-satoshi text-[15px] border-0 outline-none font-medium text-dark-purple`}>
-                    <option>All Wallets</option>
-                    <option>Reward Wallets</option>
+                <select
+                  className={`font-satoshi text-[15px] border-0 outline-none font-medium text-dark-purple`}
+                >
+                  <option>All Wallets</option>
+                  <option>Reward Wallets</option>
                 </select>
-
               </div>
             </div>
           </div>
@@ -191,6 +201,113 @@ function Dashboard() {
           <RecentTransaction name="Dayo James" />
         </div>
       </div>
+
+      <TransferPointModal
+        open={transferIsopen}
+        onClose={() => setTransferIsOpen(false)}
+      />
+
+      {/* <Modal open={transferIsopen}>
+        <div className="bg-white rounded-lg shadow-lg w-[90%] md:w-[436px] mx-auto">
+          <div className="bg-title-bg-color rounded-tl-lg rounded-tr-lg h-[68px] px-8 flex items-center">
+            <h2 className="font-medium text-[20px] text-black">
+              Transfer Points
+            </h2>
+          </div>
+          <div className="p-8 overflow-auto h-[500px] md:h-full ">
+            <div>
+              <label className="font-satoshi">Select Wallet</label>
+              <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                <select className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg">
+                  <option>Retail Wallet</option>
+                  <option>Reward Wallet</option>
+                </select>
+              </div>
+            </div>
+            <div className="rounded-lg h-[52px] p-[10px] gap-[10px] border border-[#A855F785] mt-6 flex items-center bg-faint-peach">
+              <FaCircleInfo className="text-app-purple" />
+              <p className="font-satoshi text-[12px] font-[400] text-app-purple">
+                Kindly note that you would be charged 15% on this transfer,
+                learn more
+              </p>
+            </div>
+            <div className="mt-6">
+              <div className="flex flex-row items-center justify-between">
+                <label className="font-satoshi">Enter Amount</label>
+                <div className="flex flex-row items-center justify-between gap-2">
+                  <div className="w-[18px] h-[18px] rounded-[50%] bg-faint-peach2 flex items-center justify-center">
+                    <CiCreditCard1 className="text-[12px]" />
+                  </div>
+                  <p className="font-satoshi text-[12px] font-[400]">
+                    Available DMP: 20000000
+                  </p>
+                </div>
+              </div>
+              <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                <input
+                  type="number"
+                  placeholder="10000"
+                  min={200}
+                  className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex flex-row items-center justify-end gap-2 mt-[12px]">
+                <div className="w-[18px] h-[18px] rounded-[50%] bg-faint-peach2 flex items-center justify-center">
+                  <FaCircleInfo className="text-[12px] text-app-purple" />
+                </div>
+                <p className="font-satoshi text-[12px] font-[400]">
+                  Network Fees: <span className="text-app-purple">1500</span>
+                </p>
+              </div>
+            </div>
+            <div className="mt-6">
+              <div className="flex flex-row items-center justify-between">
+                <label className="font-satoshi">Enter User details</label>
+                <div className="flex flex-row items-center justify-between gap-2">
+                  <p className="font-satoshi text-[12px] text-app-purple font-[400]">
+                    Transfer to Bank Account
+                  </p>
+                </div>
+              </div>
+              <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                <input
+                  type="text"
+                  placeholder="Tola Banjo"
+                  className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
+                />
+              </div>
+            </div>
+            <div className="mt-6">
+              <div className="flex flex-row items-center justify-between">
+                <label className="font-satoshi">Narration</label>
+              </div>
+              <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                <input
+                  type="number"
+                  placeholder="Payment for food"
+                  className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-title-bg-color mt-5 px-8 py-5 flex items-center gap-[10px] justify-end rounded-bl-lg rounded-br-lg">
+            <Button
+              text="Cancel"
+              bg="bg-white"
+              classNames="w-[120px] h-[45px] border border-app-purple text-app-purple"
+              onClick={() => setTransferIsOpen(false)}
+            />
+            <Button
+              text="Cancel"
+              bg="bg-app-purple"
+              classNames="w-[120px] h-[45px] border border-app-purple text-white"
+            />
+          </div>
+        </div>
+      </Modal> */}
     </DashboardLayout>
   );
 }
