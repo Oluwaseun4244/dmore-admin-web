@@ -29,7 +29,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <Image src={logo} alt="logo" />
           </div>
 
-          <div className="my-[60px]">
+          <div className="my-[30px]">
             <SideItem
               imgSource={activePage === "dashboard" ? active_dashboard : ""}
             />

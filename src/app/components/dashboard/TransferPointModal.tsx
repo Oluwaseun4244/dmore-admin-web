@@ -5,6 +5,7 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { CiCreditCard1 } from "react-icons/ci";
 import Lottie from "lottie-react";
 import verifyingEmail from "../../../../public/lottie/verifying-email.json";
+import OtpInput from "../OtpInput";
 
 interface TransferPointModalProps {
   open: boolean;
@@ -15,6 +16,12 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
   onClose,
 }) => {
   const [step, setStep] = useState("transfer");
+  const [transferType, setTransferType] = useState("point");
+  const [otpValue, setOtpValue] = useState("");
+
+  const onOtpChange = (value: string) => {
+    setOtpValue(value);
+  };
   return (
     <Modal open={open}>
       {step === "transfer" ? (
@@ -188,6 +195,9 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
               <p className="font-satoshi text-[16px] font-[400] text-light-gray">
                 Kindly enter your PIN to proceed
               </p>
+              <div className="my-[20px]">
+                <OtpInput numberOfBoxes={4} onOtpChange={onOtpChange} />
+              </div>
               <p className="font-satoshi text-[16px] font-[400] text-light-gray">
                 Don’t have a Pin?{" "}
                 <span className="text-app-purple">Create new Pin</span>
