@@ -3,10 +3,15 @@ import React, { ChangeEvent, useRef, useState } from "react";
 interface OtpInputProps {
   onOtpChange: (otp: string) => void;
   isValidOtp?: boolean;
+  numberOfBoxes?: number;
 }
 
-const OtpInput = ({ onOtpChange, isValidOtp }: OtpInputProps) => {
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+const OtpInput = ({
+  onOtpChange,
+  isValidOtp,
+  numberOfBoxes = 6,
+}: OtpInputProps) => {
+  const [otp, setOtp] = useState(Array(numberOfBoxes).fill(""));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const isOtpFullyEntered = otp.every((digit) => digit !== "");
@@ -66,12 +71,12 @@ const OtpInput = ({ onOtpChange, isValidOtp }: OtpInputProps) => {
   };
 
   return (
-    <div className='flex flex-col space-y-3'>
-      <div className='flex space-x-2'>
+    <div className="flex flex-col space-y-3">
+      <div className="flex space-x-2">
         {otp.map((data, index) => (
           <input
             key={index}
-            type='text'
+            type="text"
             maxLength={1}
             ref={(el: HTMLInputElement | null) => {
               inputRefs.current[index] = el;
