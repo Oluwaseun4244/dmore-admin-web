@@ -13,10 +13,11 @@ export const colors = {
   "faint-purple": "#C9B0ED33",
   "app-green": "#008F39",
   "title-bg-color": "#FAF9FB",
-  "input-bg": "#FBFBFC",
+  "input-bg2": "#FBFBFC",
+  "text-dark2": "#090B0C",
+  "disabled-btn-purple": "#D9C2EF",
 };
 
 export const borderWidth = {
   0.5: "0.5px",
 };
-

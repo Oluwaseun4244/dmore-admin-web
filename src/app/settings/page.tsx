@@ -1,0 +1,233 @@
+"use client";
+
+import React, { useState, useEffect, ReactEventHandler } from "react";
+import DashboardLayout from "../components/dashboard/DashboardLayout";
+import WalletCard from "../components/dashboard/WalletCard";
+import Button from "../components/generic/Button";
+import RecentTransaction from "../components/dashboard/RecentTransaction";
+import MonthlyStat from "../components/dashboard/MonthlyStat";
+import TransferPointModal from "../components/dashboard/TransferPointModal";
+import BuyPointsModal from "../components/dashboard/BuyPointModal";
+import AvatarInitial from "../components/generic/AvatarInitial";
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
+
+interface Stat {
+  month: string;
+  incoming: string;
+  outgoing: string;
+}
+
+interface userDetails {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+}
+
+interface Password {
+  oldPassword: string;
+  newPassword: string;
+  newPasswordConfirm: string;
+}
+
+interface PasswordView {
+  oldPasswordVisible: boolean;
+  newPasswordVisible: boolean;
+  newPasswordConfirmVisible: boolean;
+}
+
+function Dashboard() {
+  const [userDetails, setUserDetails] = useState<userDetails>();
+  const [password, setPassword] = useState<Password>();
+  const [passwordView, setPasswordView] = useState<PasswordView>({
+    oldPasswordVisible: false,
+    newPasswordVisible: false,
+    newPasswordConfirmVisible: false,
+  });
+
+  const handleUserDetails = (e: React.ChangeEvent<HTMLInputElement>) => {};
+
+  const handlePasswordView = (name: keyof PasswordView, value: boolean) => {
+    setPasswordView((prev) => ({ ...prev, [name]: value }));
+  };
+  return (
+    <DashboardLayout activePage="settings" navTitle="Settings">
+      <div className="pb-[100px]">
+        <div className="font-satoshi flex items-center font-medium text-[20px] gap-[10px]">
+          <AvatarInitial
+            fullName="Tola Banjo"
+            classNames="w-8 h-8 bg-faint-purple"
+          />
+          <h5>Tola Banjo</h5>
+        </div>
+
+        <div className="mt-[50px]">
+          <h4 className="font-satoshi text-[16px] font-normal text-text-dark2">
+            Personal details
+          </h4>
+          <div className="flex items-center gap-[20px] mt-[10px]">
+            <div className="flex flex-col my-3 bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+              <input
+                type="text"
+                name="firstName"
+                placeholder="Tola"
+                className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
+                onChange={(e) => handleUserDetails(e)}
+                value={userDetails?.firstName}
+              />
+            </div>
+            <div className="flex flex-col my-3 bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Banjo"
+                className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
+                onChange={(e) => handleUserDetails(e)}
+                value={userDetails?.lastName}
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-[20px]">
+            <div className="flex flex-col my-3 bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+              <input
+                type="email"
+                name="email"
+                placeholder="Johndoe@gmail.com"
+                className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
+                onChange={(e) => handleUserDetails(e)}
+                value={userDetails?.email}
+              />
+            </div>
+            <div className="flex flex-col my-3 bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+              <input
+                type="text"
+                name="phone"
+                placeholder="09090909090"
+                className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
+                onChange={(e) => handleUserDetails(e)}
+                value={userDetails?.phone}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-[40px]">
+          <h4 className="font-satoshi text-[16px] font-normal text-text-dark2">
+            Change password
+          </h4>
+          <div className="flex items-center gap-[20px] mt-[10px]">
+            <div className="flex flex-col my-3 relative bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+              <input
+                type={passwordView.oldPasswordVisible ? "text" : "password"}
+                name="oldPassword"
+                placeholder="Current password"
+                className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
+                onChange={(e) => handleUserDetails(e)}
+                value={password?.oldPassword}
+              />
+              {passwordView.oldPasswordVisible ? (
+                <FaRegEyeSlash
+                  className="absolute right-2 text-app-purple"
+                  onClick={() =>
+                    handlePasswordView("oldPasswordVisible", false)
+                  }
+                />
+              ) : (
+                <FaRegEye
+                  className="absolute right-2 text-app-purple"
+                  onClick={() => handlePasswordView("oldPasswordVisible", true)}
+                />
+              )}
+            </div>
+            <div className="flex flex-col my-3 relative bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+              <input
+                type={passwordView.newPasswordVisible ? "text" : "password"}
+                name="newPassword"
+                placeholder="New password"
+                className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
+                onChange={(e) => handleUserDetails(e)}
+                value={password?.newPassword}
+              />
+              {passwordView.newPasswordVisible ? (
+                <FaRegEyeSlash
+                  className="absolute right-2 text-app-purple"
+                  onClick={() =>
+                    handlePasswordView("newPasswordVisible", false)
+                  }
+                />
+              ) : (
+                <FaRegEye
+                  className="absolute right-2 text-app-purple"
+                  onClick={() => handlePasswordView("newPasswordVisible", true)}
+                />
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-[20px]">
+            <div className="flex flex-col my-3 relative bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+              <input
+                type={
+                  passwordView.newPasswordConfirmVisible ? "text" : "password"
+                }
+                name="newPasswordConfirm"
+                placeholder="Confirm new password"
+                className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
+                onChange={(e) => handleUserDetails(e)}
+                value={password?.newPasswordConfirm}
+              />
+
+              {passwordView.newPasswordConfirmVisible ? (
+                <FaRegEyeSlash
+                  className="absolute right-2 text-app-purple"
+                  onClick={() =>
+                    handlePasswordView("newPasswordConfirmVisible", false)
+                  }
+                />
+              ) : (
+                <FaRegEye
+                  className="absolute right-2 text-app-purple"
+                  onClick={() =>
+                    handlePasswordView("newPasswordConfirmVisible", true)
+                  }
+                />
+              )}
+            </div>
+            <Button
+              text="Save Changes"
+              bg="bg-disabled-btn-purple"
+              classNames="w-[144px] h-[45px] border border-disabled-btn-purple text-white"
+            />
+          </div>
+        </div>
+
+        <div className="w-full lg-w-[70%] mt-10">
+          <hr />
+        </div>
+
+        <div className="mt-[40px]">
+          <h4 className="font-satoshi text-[16px] font-normal text-app-purple">
+            Other settings
+          </h4>
+          <h5 className="font-satoshi text-[14px] font-normal text-light-gray mt-2">
+            Select your preferred language and preferred currency.
+          </h5>
+          <div className="flex items-center gap-[20px] mt-[10px]">
+            <div className="flex flex-col my-3 bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+              <select className="outline-none text-[12px]">
+                <option selected disabled>
+                  Choose language
+                </option>
+                <option value={"english"}>English</option>
+                <option value={"yoruba"}>Yoruba</option>
+                <option value={"french"}>French</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </DashboardLayout>
+  );
+}
+
+export default Dashboard;

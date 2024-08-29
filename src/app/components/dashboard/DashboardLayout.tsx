@@ -4,22 +4,26 @@ import React, { ReactNode } from "react";
 import Image from "next/image";
 import logo from "../../../../public/icons/white-logo.svg";
 import active_dashboard from "../../../../public/icons/active-dashboard.svg";
+import inactive_dashboard from "../../../../public/icons/inactive-dashboard.svg";
 import inactive_wallet from "../../../../public/icons/inactive-wallet.svg";
 import inactive_users from "../../../../public/icons/inactive-users.svg";
 import inactive_settings from "../../../../public/icons/inactive-settings.svg";
-import help_icon from "../../../../public/icons/help.svg";
-import notification from "../../../../public/icons/notification.svg";
+import active_settings from "../../../../public/icons/active-settings.svg";
+
 import SideItem from "./SideItem";
-import AvatarInitial from "../generic/AvatarInitial";
+
+import Navbar from "./Navbar";
 
 interface DashboardLayoutProps {
   children: ReactNode;
   activePage: string;
+  navTitle: string
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
   activePage,
+  navTitle
 }) => {
   return (
     <div className="h-svh bg-white overflow-hidden">
@@ -31,48 +35,36 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           <div className="my-[30px]">
             <SideItem
-              imgSource={activePage === "dashboard" ? active_dashboard : ""}
+              route="dashboard"
+              imgSource={
+                activePage === "dashboard"
+                  ? active_dashboard
+                  : inactive_dashboard
+              }
             />
             <SideItem
+              route="wallets"
               imgSource={
                 activePage === "wallet" ? inactive_wallet : inactive_wallet
               }
             />
             <SideItem
+              route="users"
               imgSource={
                 activePage === "users" ? inactive_users : inactive_users
               }
             />
             <SideItem
+              route="settings"
               imgSource={
-                activePage === "settings"
-                  ? inactive_settings
-                  : inactive_settings
+                activePage === "settings" ? active_settings : inactive_settings
               }
             />
           </div>
         </div>
 
         <main className="w-full">
-          <div className="h-[100px] w-full bg-faint-peach flex flex-row items-center justify-between px-[50px]">
-            <div className="flex flex-row gap-[10px] items-center">
-              <p className="text-app-purple text-[24px] font-bold font-satoshi">
-                Credits and Points
-              </p>
-              <div className="h-[22px] bg-faint-purple  py-1 px-2 rounded-[13px] flex justify-center items-center">
-                <p className="text-app-purple text-[12px] font-satoshi">27</p>
-              </div>
-            </div>
-            <div className="flex flex-row gap-[10px] items-center">
-              <Image src={notification} alt="logo" className="mx-2" />
-              <Image src={help_icon} alt="logo" className="mx-2" />
-
-              <AvatarInitial
-                fullName="Banjo Tola"
-                classNames="w-8 h-8 bg-faint-purple"
-              />
-            </div>
-          </div>
+          <Navbar navTitle={navTitle} />
           <section className="p-[20px] md:p-[40px] h-full overflow-auto">
             {children}
           </section>
