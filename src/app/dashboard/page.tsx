@@ -4,13 +4,10 @@ import React, { useState, useEffect } from "react";
 import DashboardLayout from "../components/dashboard/DashboardLayout";
 import WalletCard from "../components/dashboard/WalletCard";
 import Button from "../components/generic/Button";
-import { FaRegCalendarDays } from "react-icons/fa6";
 import RecentTransaction from "../components/dashboard/RecentTransaction";
 import MonthlyStat from "../components/dashboard/MonthlyStat";
-import Modal from "../components/generic/Modal";
-import { FaCircleInfo } from "react-icons/fa6";
-import { CiCreditCard1 } from "react-icons/ci";
 import TransferPointModal from "../components/dashboard/TransferPointModal";
+import BuyPointsModal from "../components/dashboard/BuyPointModal";
 
 interface Stat {
   month: string;
@@ -21,7 +18,9 @@ interface Stat {
 function Dashboard() {
   const [monthView, setMonthView] = useState("jan-jun");
   const [statsData, setStatsData] = useState<Stat[]>([]);
-  const [transferIsopen, setTransferIsOpen] = useState(true);
+  const [transferIsopen, setTransferIsOpen] = useState(false);
+  const [buyIsOpen, setBuyIsOpen] = useState(false);
+
   const dummyData = [
     { month: "Jan", incoming: "20", outgoing: "10" },
     { month: "Feb", incoming: "40", outgoing: "40" },
@@ -57,7 +56,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <DashboardLayout activePage="dashboard">
+    <DashboardLayout activePage="dashboard" navTitle="Credits and Points">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <WalletCard
           color="text-white"
@@ -103,6 +102,7 @@ function Dashboard() {
           text="Buy Points"
           bg="bg-white"
           classNames="p-3 text-app-purple border w-[157px] h-[51px]"
+          onClick={() => setBuyIsOpen(true)}
         />
       </div>
 
@@ -113,9 +113,6 @@ function Dashboard() {
               Statistics
             </p>
             <div className="flex gap-[10px]">
-              <div className="h-[32px] w-[40px] rounded-md flex items-center justify-center border ">
-                <FaRegCalendarDays className="text-app-purple" />
-              </div>
               <div className="h-[32px] w-[150px] rounded-md flex items-center justify-center border gap-[8px]">
                 <select
                   className={`font-satoshi text-[15px] border-0 outline-none font-medium text-dark-purple`}
@@ -206,6 +203,7 @@ function Dashboard() {
         open={transferIsopen}
         onClose={() => setTransferIsOpen(false)}
       />
+      <BuyPointsModal open={buyIsOpen} onClose={() => setBuyIsOpen(false)} />
 
       {/* <Modal open={transferIsopen}>
         <div className="bg-white rounded-lg shadow-lg w-[90%] md:w-[436px] mx-auto">
