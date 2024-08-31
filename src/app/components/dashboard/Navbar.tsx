@@ -9,9 +9,9 @@ interface NavProps {
 }
 const Navbar: React.FC<NavProps> = ({navTitle}) => {
   return (
-    <div className="h-[100px] w-full bg-faint-peach flex flex-row items-center justify-between px-[50px]">
+    <div className="h-[100px] w-full bg-faint-peach flex flex-row items-center justify-between px-[20px] lg:px-[50px]">
       <div className="flex flex-row gap-[10px] items-center">
-        <p className="text-app-purple text-[24px] font-bold font-satoshi">
+        <p className="text-app-purple text-[18px] lg:text-[24px] font-bold font-satoshi">
           {navTitle}
         </p>
       </div>

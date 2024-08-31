@@ -28,7 +28,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   return (
     <div className="h-svh bg-white overflow-hidden">
       <div className="h-full flex flex-row">
-        <div className="w-[100px] h-full bg-app-purple flex flex-col items-center py-4">
+        <div className="w-[90px] lg:w-[100px] overflow-hidden h-full bg-app-purple flex flex-col items-center py-4">
           <div>
             <Image src={logo} alt="logo" />
           </div>

@@ -66,8 +66,8 @@ function Dashboard() {
           <h4 className="font-satoshi text-[16px] font-normal text-text-dark2">
             Personal details
           </h4>
-          <div className="flex items-center gap-[20px] mt-[10px]">
-            <div className="flex flex-col my-3 bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-[10px] lg:gap-[20px] mt-[10px]">
+            <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <input
                 type="text"
                 name="firstName"
@@ -77,7 +77,7 @@ function Dashboard() {
                 value={userDetails?.firstName}
               />
             </div>
-            <div className="flex flex-col my-3 bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+            <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <input
                 type="text"
                 name="lastName"
@@ -88,8 +88,8 @@ function Dashboard() {
               />
             </div>
           </div>
-          <div className="flex items-center gap-[20px]">
-            <div className="flex flex-col my-3 bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+          <div className="flex flex-col lg:flex-row items-center gap-[10px] lg:gap-[20px]">
+            <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <input
                 type="email"
                 name="email"
@@ -99,7 +99,7 @@ function Dashboard() {
                 value={userDetails?.email}
               />
             </div>
-            <div className="flex flex-col my-3 bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+            <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <input
                 type="text"
                 name="phone"
@@ -116,8 +116,8 @@ function Dashboard() {
           <h4 className="font-satoshi text-[16px] font-normal text-text-dark2">
             Change password
           </h4>
-          <div className="flex items-center gap-[20px] mt-[10px]">
-            <div className="flex flex-col my-3 relative bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+          <div className="flex flex-col lg:flex-row items-center gap-[10px] lg:gap-[20px] mt-[10px]">
+            <div className="flex flex-col my-3 relative bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <input
                 type={passwordView.oldPasswordVisible ? "text" : "password"}
                 name="oldPassword"
@@ -140,7 +140,7 @@ function Dashboard() {
                 />
               )}
             </div>
-            <div className="flex flex-col my-3 relative bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+            <div className="flex flex-col my-3 relative bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <input
                 type={passwordView.newPasswordVisible ? "text" : "password"}
                 name="newPassword"
@@ -164,8 +164,8 @@ function Dashboard() {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-[20px]">
-            <div className="flex flex-col my-3 relative bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+          <div className="flex flex-col lg:flex-row items-center gap-[20px]">
+            <div className="flex flex-col my-3 relative bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <input
                 type={
                   passwordView.newPasswordConfirmVisible ? "text" : "password"
@@ -196,7 +196,7 @@ function Dashboard() {
             <Button
               text="Save Changes"
               bg="bg-disabled-btn-purple"
-              classNames="w-[144px] h-[45px] border border-disabled-btn-purple text-white"
+              classNames="w-full lg:w-[144px] h-[45px] border border-disabled-btn-purple text-white"
             />
           </div>
         </div>
@@ -213,7 +213,7 @@ function Dashboard() {
             Select your preferred language and preferred currency.
           </h5>
           <div className="flex items-center gap-[20px] mt-[10px]">
-            <div className="flex flex-col my-3 bg-[#FBFBFC] w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+            <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <select className="outline-none text-[12px]">
                 <option selected disabled>
                   Choose language
