@@ -7,7 +7,7 @@ export const useLogin = () => {
     {
       onSuccess: async (data) => {
         localStorage.setItem("userToken", data.data.token);
-        //handle response from data here, usually storaging data and navigating to dashboard
+        //handle response from data here, usually storing data and navigating to dashboard
       },
       onError: (error) => {
         //handle error here

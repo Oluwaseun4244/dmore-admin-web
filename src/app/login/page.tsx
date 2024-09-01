@@ -7,22 +7,29 @@ import "../../app/globals.css";
 import Button from "@/app/components/generic/Button";
 import ".././globals.css";
 import Link from "next/link";
-// import CustomInput from "../components/generic/CustomInput";
+import { useLogin } from "./hooks/useLogin";
 
 const Login: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { loginMutation } = useLogin();
+
+  const { isPending, mutate } = loginMutation;
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
+  };
+
+  const handleSubmit = () => {
+    mutate({ email, password });
   };
 
   return (
     <div className="w-full h-screen flex items-center overflow-auto justify-center bg-white py-3">
       <div className="w-[90%] h-[630px] flex flex-row flex-wrap ">
         <div className="w-full flex items-center justify-center flex-col lg:w-3/5">
-
           <p className="font-satoshi text-black text-[28px] md:text-[36px] font-medium">
             Login to your account
           </p>
@@ -49,15 +56,12 @@ const Login: React.FC = () => {
               />
             </div>
 
-            {/* <CustomInput w="400" h="42" my="3" ph="JohnDoe@gmail.com" classNames="outline-none" onChange={(e) => setEmail(e.target.value)} /> */}
-            {/* <CustomInput type={passwordVisible ? 'text' : 'password'} hasEndIcon={true} my="3" ph="***********" classNames="outline-none" onChange={(e) => setPassword(e.target.value)} iconClick={togglePasswordVisibility} /> */}
-
             <p className="text-end text-dark-purple text-[16px] font-medium">
               Forgot Password?
             </p>
           </div>
           <Button
-            text="Login"
+            text={isPending ? "Loading" : "Login"}
             my="5"
             classNames="text-white w-[247px] h-[48px]"
             bg={
@@ -66,6 +70,7 @@ const Login: React.FC = () => {
                 : "bg-dark-purple"
             }
             disabled={!email.length || !password.length}
+            onClick={isPending ? () => console.log("is loading") : handleSubmit}
           />
 
           <p className="font-satoshi text-[16px] text-center font-medium my-4 text-light-gray">
