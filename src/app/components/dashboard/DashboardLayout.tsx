@@ -6,6 +6,7 @@ import logo from "../../../../public/icons/white-logo.svg";
 import active_dashboard from "../../../../public/icons/active-dashboard.svg";
 import inactive_dashboard from "../../../../public/icons/inactive-dashboard.svg";
 import inactive_wallet from "../../../../public/icons/inactive-wallet.svg";
+import active_wallet from "../../../../public/icons/active-wallet.svg";
 import inactive_users from "../../../../public/icons/inactive-users.svg";
 import inactive_settings from "../../../../public/icons/inactive-settings.svg";
 import active_settings from "../../../../public/icons/active-settings.svg";
@@ -45,11 +46,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <SideItem
               route="wallets"
               imgSource={
-                activePage === "wallet" ? inactive_wallet : inactive_wallet
+                activePage === "wallets" ? active_wallet : inactive_wallet
               }
             />
             <SideItem
-              route="users"
+              route="wallets"
               imgSource={
                 activePage === "users" ? inactive_users : inactive_users
               }

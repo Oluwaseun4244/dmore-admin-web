@@ -91,19 +91,36 @@ function Dashboard() {
           toolTip="Whatever the info is for this particular card, usually a short description for the wallet type"
         />
       </div>
-      <div className="mt-10 flex flex-row  gap-[10px]">
-        <Button
-          text="Transfer Points"
-          bg="bg-app-purple"
-          classNames="p-3 text-white w-[50%] lg:w-[157px] h-[51px]"
-          onClick={() => setTransferIsOpen(true)}
-        />
-        <Button
-          text="Buy Points"
-          bg="bg-white"
-          classNames="p-3 text-app-purple border w-[50%] lg:w-[157px] h-[51px]"
-          onClick={() => setBuyIsOpen(true)}
-        />
+      <div className="mt-10 flex flex-col lg:flex-row  items-center lg:items-start justify-between gap-4">
+        <div className="flex flex-row w-[100%] lg:w-[350px] gap-[10px]">
+          <Button
+            text="Transfer Points"
+            bg="bg-app-purple"
+            classNames="p-3 text-white w-[50%] lg:w-[157px] h-[51px]"
+            onClick={() => setTransferIsOpen(true)}
+          />
+          <Button
+            text="Buy Points"
+            bg="bg-white"
+            classNames="p-3 text-app-purple border w-[50%] lg:w-[157px] h-[51px]"
+            onClick={() => setBuyIsOpen(true)}
+          />
+        </div>
+
+        <div className="py-[6px] pr-[6px] pl-[15px] justify-between flex items-center w-[100%] lg:w-[697px] rounded-md border">
+          <div className="w-[250px] lg:w-[559px]">
+            <p className="font-satoshi font-medium text-[14px] lg:text-[16px] text-dark-purple">
+              Referral Code : https://www.dmore.io/auth/register?refer_code=7J7B
+            </p>
+          </div>
+
+          <Button
+            text="Copy"
+            bg="bg-app-purple"
+            classNames="text-app-purple border w-[77px] h-[39px] text-primary-white"
+            onClick={() => alert("copy refferal link")}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-10 overflow-auto mb-[100px]">

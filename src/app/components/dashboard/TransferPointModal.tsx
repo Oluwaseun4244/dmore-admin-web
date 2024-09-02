@@ -3,9 +3,10 @@ import Modal from "../generic/Modal";
 import Button from "../generic/Button";
 import { FaCircleInfo } from "react-icons/fa6";
 import { CiCreditCard1 } from "react-icons/ci";
-import Lottie from "lottie-react";
-import verifyingEmail from "../../../../public/lottie/verifying-email.json";
+import Image from "next/image";
 import OtpInput from "../OtpInput";
+import transfering from "../../../../public/gif/transfer.gif";
+import success from "../../../../public/gif/success.gif";
 
 interface TransferPointModalProps {
   open: boolean;
@@ -222,14 +223,18 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
         </div>
       ) : step === "progress" ? (
         <div className="bg-white rounded-lg shadow-lg w-[90%] relative md:w-[436px] h-[400px] mx-auto">
-          {/* <Lottie animationData={verifyingEmail} /> */}
+          <div className="flex items-center justify-center">
+            <Image src={transfering} alt={"isLoading"} className="w-[305px]" />
+          </div>
           <p className="font-satoshi text-[28px] text-center font-[500]">
             Transfering your funds
           </p>
         </div>
       ) : step === "success" ? (
         <div className="bg-white rounded-lg shadow-lg w-[90%] relative md:w-[436px] h-[400px] mx-auto">
-          {/* <Lottie animationData={verifyingEmail} /> */}
+          <div className="flex items-center justify-center">
+            <Image src={success} alt={"isLoading"} className="w-[305px]" />
+          </div>
           <p className="font-satoshi text-[28px] text-center font-[500]">
             Transfer Successful
           </p>
@@ -244,6 +249,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
               text="View Receipt"
               bg="bg-app-purple"
               classNames="w-[143px] h-[45px] border border-app-purple text-white"
+              onClick={() => alert("view receipt")}
             />
           </div>
         </div>
