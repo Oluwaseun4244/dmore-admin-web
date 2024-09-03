@@ -32,7 +32,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
               Transfer Points
             </h2>
           </div>
-          <div className="p-8 overflow-auto h-[500px]">
+          <div className="p-8 overflow-auto">
             <div>
               <label className="font-satoshi">Select Wallet</label>
               <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
@@ -133,7 +133,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
               Proceed with your pin
             </h2>
           </div>
-          <div className="p-8 overflow-auto h-[500px] ">
+          <div className="p-8 overflow-auto ">
             <div className="rounded-lg h-[52px] p-[10px] gap-[10px] border border-[#A855F785] flex items-center bg-faint-peach">
               <FaCircleInfo className="text-app-purple" />
               <p className="font-satoshi text-[12px] font-[400] text-app-purple">
@@ -222,7 +222,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
           </div>
         </div>
       ) : step === "progress" ? (
-        <div className="bg-white rounded-lg shadow-lg w-[90%] relative md:w-[436px] h-[400px] mx-auto">
+        <div className="bg-white rounded-lg shadow-lg w-[90%] relative md:w-[436px] py-[20px] mx-auto">
           <div className="flex items-center justify-center">
             <Image src={transfering} alt={"isLoading"} className="w-[305px]" />
           </div>
@@ -231,7 +231,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
           </p>
         </div>
       ) : step === "success" ? (
-        <div className="bg-white rounded-lg shadow-lg w-[90%] relative md:w-[436px] h-[400px] mx-auto">
+        <div className="bg-white rounded-lg shadow-lg w-[90%] relative md:w-[436px] py-[20px] mx-auto">
           <div className="flex items-center justify-center">
             <Image src={success} alt={"isLoading"} className="w-[305px]" />
           </div>
