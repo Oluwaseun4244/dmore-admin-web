@@ -16,6 +16,7 @@ export const colors = {
   "input-bg2": "#FBFBFC",
   "text-dark2": "#090B0C",
   "disabled-btn-purple": "#D9C2EF",
+  "primary-white": "#FFF",
 };
 
 export const borderWidth = {

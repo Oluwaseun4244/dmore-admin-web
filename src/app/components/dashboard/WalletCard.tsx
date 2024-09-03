@@ -10,8 +10,8 @@ interface WalletCardProps {
   showEyes: boolean;
   showInfo: boolean;
   title: string;
-  balance: number | string;
-  toolTip?: string
+  balance: number;
+  toolTip?: string;
 }
 const WalletCard: React.FC<WalletCardProps> = ({
   bg,
@@ -20,8 +20,9 @@ const WalletCard: React.FC<WalletCardProps> = ({
   title,
   showInfo,
   balance,
-  toolTip
+  toolTip,
 }) => {
+  const maxAmountShown = 100000000;
   return (
     <div
       className={`${bg} flex flex-col justify-between p-4 rounded-[6px] relative h-[146px] border border-[#E2E8F0]`}
@@ -40,7 +41,9 @@ const WalletCard: React.FC<WalletCardProps> = ({
       </div>
       <div className="flex items-center flex-row justify-between">
         <p className={`font-satoshi font-bold text-[32px] ${color}`}>
-          {balance}
+          {balance <= maxAmountShown
+            ? balance.toLocaleString()
+            : maxAmountShown.toLocaleString() + "+"}
         </p>
         {showEyes && <BsEyeSlash className={`${color}`} />}
       </div>
