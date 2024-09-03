@@ -108,7 +108,7 @@ function Dashboard() {
         </div>
 
         <div className="py-[6px] pr-[6px] pl-[15px] justify-between flex items-center w-[100%] lg:w-[697px] rounded-md border">
-          <div className="w-[250px] lg:w-[559px]">
+          <div className="w-[200px] lg:w-auto" style={{wordWrap: 'break-word'}}>
             <p className="font-satoshi font-medium text-[14px] lg:text-[16px] text-dark-purple">
               Referral Code : https://www.dmore.io/auth/register?refer_code=7J7B
             </p>
