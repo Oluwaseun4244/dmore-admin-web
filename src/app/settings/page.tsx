@@ -53,7 +53,7 @@ function Dashboard() {
   };
   return (
     <DashboardLayout activePage="settings" navTitle="Settings">
-      <div className="pb-[100px]">
+      <div >
         <div className="font-satoshi flex items-center font-medium text-[20px] gap-[10px]">
           <AvatarInitial
             fullName="Tola Banjo"
