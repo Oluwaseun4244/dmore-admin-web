@@ -8,22 +8,38 @@ import Button from "@/app/components/generic/Button";
 import ".././globals.css";
 import Link from "next/link";
 import { useLogin } from "./hooks/useLogin";
+import { LoginApiData } from "../types/auth.types";
 
 const Login: React.FC = () => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loginData, setLoginData] = useState<LoginApiData>({
+    email: "",
+    password: "",
+  });
 
   const { loginMutation } = useLogin();
 
   const { isPending, mutate } = loginMutation;
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
+  // const togglePasswordVisibility = () => {
+  //   setPasswordVisible(!passwordVisible);
+  // };
 
   const handleSubmit = () => {
-    mutate({ email, password });
+    mutate(loginData);
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+
+    setLoginData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   return (
@@ -41,8 +57,8 @@ const Login: React.FC = () => {
                 name="email"
                 placeholder="Johndoe@email.com"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
+                onChange={handleChange}
+                value={loginData.email}
               />
             </div>
             <div className="flex flex-col my-3 bg-[#FBFBFC] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
@@ -51,8 +67,8 @@ const Login: React.FC = () => {
                 name="password"
                 placeholder="*************"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
+                onChange={handleChange}
+                value={loginData.password}
               />
             </div>
 
@@ -65,11 +81,11 @@ const Login: React.FC = () => {
             my="5"
             classNames="text-white w-[247px] h-[48px]"
             bg={
-              !email.length || !password.length
+              !loginData.email.length || !loginData.password.length
                 ? "bg-disabled-btn"
                 : "bg-dark-purple"
             }
-            disabled={!email.length || !password.length}
+            disabled={!loginData.email.length || !loginData.password.length}
             onClick={isPending ? () => console.log("is loading") : handleSubmit}
           />
 

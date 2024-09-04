@@ -1,12 +1,20 @@
-import { usePostQuery } from "@/app/utils/apiUtils";
-import { LoginResponseType, LoginApiData } from "@/app/types/auth.types";
+import { useGetQuery, usePostQuery } from "@/app/utils/apiUtils";
+import {
+  LoginResponseType,
+  LoginApiData,
+  ProfileResponse,
+} from "@/app/types/auth.types";
 
 export const useLogin = () => {
   const loginMutation = usePostQuery<LoginResponseType, LoginApiData>(
-    "login route here",
+    "/get-token",
     {
       onSuccess: async (data) => {
         localStorage.setItem("userToken", data.data.token);
+        const profileQuery = useGetQuery<ProfileResponse>("/profile", [
+          `profile-${data.data.token}`,
+        ]);
+
         //handle response from data here, usually storing data and navigating to dashboard
       },
       onError: (error) => {
