@@ -123,7 +123,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-10 overflow-auto mb-[100px]">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-10 overflow-auto">
         <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
           <div className="flex items-center justify-between">
             <p className={`font-satoshi text-[24px] font-bold text-app-purple`}>

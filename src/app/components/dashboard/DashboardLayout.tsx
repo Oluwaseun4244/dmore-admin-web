@@ -18,13 +18,13 @@ import Navbar from "./Navbar";
 interface DashboardLayoutProps {
   children: ReactNode;
   activePage: string;
-  navTitle: string
+  navTitle: string;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
   activePage,
-  navTitle
+  navTitle,
 }) => {
   return (
     <div className="h-svh bg-white overflow-hidden">
@@ -64,9 +64,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
         </div>
 
-        <main className="w-full">
+        <main className="flex-1 flex flex-col min-h-0 w-full">
           <Navbar navTitle={navTitle} />
-          <section className="p-[20px] md:p-[40px] h-full overflow-auto">
+          <section className="p-[20px] md:p-[40px] flex-1 overflow-y-auto">
             {children}
           </section>
         </main>
