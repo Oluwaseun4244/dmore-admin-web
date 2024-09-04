@@ -7,6 +7,7 @@ import googleSignup from "../../../../public/images/google-signup.svg";
 import { useSignUp } from "../hooks/useSignUp";
 import { useState } from "react";
 import { BuyerRegisterData } from "@/app/types/auth.types";
+import Button from "@/app/components/generic/Button";
 
 export default function BuyerSignUpForm() {
   const searchParams = useSearchParams();
@@ -22,9 +23,10 @@ export default function BuyerSignUpForm() {
   });
 
   const { buyerRegMutation } = useSignUp();
+  const { isPending, mutate } = buyerRegMutation;
 
   const onCreateAccount = () => {
-    buyerRegMutation.mutate(regData);
+    mutate(regData);
   };
 
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -137,13 +139,18 @@ export default function BuyerSignUpForm() {
             </div>
           </div>
           <div className="flex flex-col lg:flex-row justify-between items-center">
-            <button
-              className="font-satoshi font-medium text-white text-[18px] leading-[20px] -tracking-[1%] flex justify-center items-center px-12 py-4 bg-[#702EB0] rounded-[8px] bg-opacity-[50%]"
-              type="button"
-              onClick={onCreateAccount}
-            >
-              Create your account
-            </button>
+        
+
+            <Button
+              text={isPending ? "Loading" : "Create your account"}
+              my="5"
+              classNames="text-white w-[247px] h-[48px] text-[18px]"
+              bg={isPending ? "bg-disabled-btn" : "bg-dark-purple"}
+              disabled={isPending}
+              onClick={
+                isPending ? () => console.log("is loading") : onCreateAccount
+              }
+            />
             <div className="flex space-x-3 items-center mt-3 lg-mt-0 lg-mt-0">
               <p className="font-satoshi font-medium text-[#5D6974] text-[16px] leading-[20px] -tracking-[1%]">
                 Or sign up with
