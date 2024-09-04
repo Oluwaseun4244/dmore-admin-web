@@ -25,7 +25,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
   };
   return (
     <Modal open={open}>
-      <div className="px-6 w-[100%] md:w-auto rounded max-h-[80vh] overflow-y-auto">
+      <div className="px-6 w-[100%] md:w-auto rounded max-h-[90vh] overflow-y-auto">
         {step === "transfer" ? (
           <div className="bg-white rounded-lg shadow-lg w-[100%] md:w-[436px] mx-auto">
             <div className="bg-title-bg-color rounded-tl-lg rounded-tr-lg h-[68px] px-8 flex items-center">
