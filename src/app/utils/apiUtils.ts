@@ -6,19 +6,17 @@ import {
     UseQueryOptions,
     QueryKey,
 } from '@tanstack/react-query'
-
-
+import { BASE_URL } from "./constants";
 export const getData = async<T>(url: string): Promise<T> => {
     return new Promise(async (resolve, reject) => {
 
         const userToken = localStorage.getItem("userToken");
-        const baseUrl = "dont know for now";
         try {
             const config = {
                 headers: { Authorization: `Bearer ${userToken}` }
             };
 
-            const response: AxiosResponse<T> = await axios.get(`${baseUrl}/${url}`, config);
+            const response: AxiosResponse<T> = await axios.get(`${BASE_URL}/${url}`, config);
 
             if (response.status < 200 || response.status >= 300) {
                 reject(response.statusText)
@@ -37,13 +35,13 @@ export const postData = async <T>(url: string, payload: unknown): Promise<T> => 
     return new Promise(async (resolve, reject) => {
 
         const userToken = localStorage.getItem("userToken");
-        const baseUrl = "dont know for now";
+        
         try {
             const config = {
                 headers: { Authorization: `Bearer ${userToken}` }
             };
 
-            const response: AxiosResponse<T> = await axios.post(`${baseUrl}/${url}`, payload, config);
+            const response: AxiosResponse<T> = await axios.post(`${BASE_URL}/${url}`, payload, config);
 
             if (response.status === 200 || response.status === 201) {
                 resolve(response.data)
