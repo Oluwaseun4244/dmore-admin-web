@@ -81,11 +81,11 @@ const Login: React.FC = () => {
             my="5"
             classNames="text-white w-[247px] h-[48px]"
             bg={
-              !loginData.email.length || !loginData.password.length
+              !loginData.email.length || !loginData.password.length || isPending
                 ? "bg-disabled-btn"
                 : "bg-dark-purple"
             }
-            disabled={!loginData.email.length || !loginData.password.length}
+            disabled={!loginData.email.length || !loginData.password.length || isPending}
             onClick={isPending ? () => console.log("is loading") : handleSubmit}
           />
 
