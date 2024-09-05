@@ -159,7 +159,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
                     Bank
                   </p>
                   <div className="flex flex-row items-center justify-between gap-2">
-                    <p className="font-satoshi text-[12px] font-[400]">
+                    <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                       Zenith Bank
                     </p>
                   </div>
@@ -174,7 +174,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
                       <IoCopyOutline
                         style={{ fontSize: "16px", cursor: "pointer" }}
                       />
-                      <p className="font-satoshi text-[12px] font-[400]">
+                      <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                         0098934767
                       </p>
                     </div>
@@ -185,7 +185,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
                     Account name
                   </p>
                   <div className="flex flex-row items-center justify-between gap-2">
-                    <p className="font-satoshi text-[12px] font-[400]">
+                    <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                       DmoreEmmanuel
                     </p>
                   </div>
@@ -245,7 +245,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
                           Saved Cards
                         </p>
                         <div className="flex flex-row items-center justify-between gap-2 cursor-pointer">
-                          <p className="font-satoshi text-[12px] font-[400] ">
+                          <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                             + Add new card
                           </p>
                         </div>
@@ -323,7 +323,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
                           Saved Cards
                         </p>
                         <div className="flex flex-row items-center justify-between gap-2 cursor-pointer">
-                          <p className="font-satoshi text-[12px] font-[400]">
+                          <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                             + Add new card
                           </p>
                         </div>
@@ -390,7 +390,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
                   className="w-[119px]"
                 />
               </div>
-              <p className="font-satoshi text-[25px] text-center font-[500] mt-4">
+              <p className="font-satoshi text-[25px] text-center font-[500] mt-4 text-text-dark2">
                 Transfer Successful!
               </p>
             </div>
