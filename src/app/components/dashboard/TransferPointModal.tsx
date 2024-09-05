@@ -11,10 +11,12 @@ import success from "../../../../public/gif/success.gif";
 interface TransferPointModalProps {
   open: boolean;
   onClose: (value: boolean) => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const TransferPointModal: React.FC<TransferPointModalProps> = ({
   open,
   onClose,
+  setOpen,
 }) => {
   const [step, setStep] = useState("transfer");
   const [transferType, setTransferType] = useState("point");
@@ -24,10 +26,10 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
     setOtpValue(value);
   };
   return (
-    <Modal open={open}>
-      <div className="px-6 w-[100%] md:w-auto rounded max-h-[90vh] overflow-y-auto">
+    <Modal open={open} setOpen={setOpen}>
+      <div className="w-[100%] rounded overflow-y-auto">
         {step === "transfer" ? (
-          <div className="bg-white rounded-lg shadow-lg w-[100%] md:w-[436px] mx-auto">
+          <div className="bg-white rounded-lg shadow-lg w-[100%]  mx-auto">
             <div className="bg-title-bg-color rounded-tl-lg rounded-tr-lg h-[68px] px-8 flex items-center">
               <h2 className="font-medium text-[20px] text-black">
                 Transfer Points
@@ -128,7 +130,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
             </div>
           </div>
         ) : step === "pin" ? (
-          <div className="bg-white rounded-lg shadow-lg w-[90%] md:w-[436px] mx-auto">
+          <div className="bg-white rounded-lg shadow-lg w-[100%] mx-auto">
             <div className="bg-title-bg-color rounded-tl-lg rounded-tr-lg h-[68px] px-8 flex items-center">
               <h2 className="font-medium text-[20px] text-black">
                 Proceed with your pin
@@ -223,12 +225,12 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
             </div>
           </div>
         ) : step === "progress" ? (
-          <div className="bg-white rounded-lg shadow-lg w-[90%] relative md:w-[436px] py-[20px] mx-auto">
+          <div className="bg-white rounded-lg shadow-lg w-[100%] relative py-[20px] mx-auto">
             <div className="flex items-center justify-center">
               <Image
                 src={transfering}
                 alt={"isLoading"}
-                className="w-[305px]"
+                className="w-[''] md:w-[305px]"
               />
             </div>
             <p className="font-satoshi text-[28px] text-center font-[500]">
@@ -236,9 +238,13 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
             </p>
           </div>
         ) : step === "success" ? (
-          <div className="bg-white rounded-lg shadow-lg w-[90%] relative md:w-[436px] py-[20px] mx-auto">
+          <div className="bg-white rounded-lg shadow-lg w-[100%] relative py-[20px] mx-auto">
             <div className="flex items-center justify-center">
-              <Image src={success} alt={"isLoading"} className="w-[305px]" />
+              <Image
+                src={success}
+                alt={"isLoading"}
+                className="w-[100%] md:w-[305px]"
+              />
             </div>
             <p className="font-satoshi text-[28px] text-center font-[500]">
               Transfer Successful

@@ -2,10 +2,6 @@ import React, { useState } from "react";
 import Modal from "../generic/Modal";
 import Button from "../generic/Button";
 import { FaCircleInfo } from "react-icons/fa6";
-import { CiCreditCard1 } from "react-icons/ci";
-import Lottie from "lottie-react";
-import verifyingEmail from "../../../../public/lottie/verifying-email.json";
-import OtpInput from "../OtpInput";
 import Image from "next/image";
 import stepSvg from "../../../../public/icons/buy-point.svg";
 import successSvg from "../../../../public/icons/success.svg";
@@ -16,22 +12,22 @@ import { RiDeleteBinLine } from "react-icons/ri";
 interface BuyPointsModalProps {
   open: boolean;
   onClose: (value: boolean) => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface Steps {
   viewSteps: string;
-  //   viewSteps: "initial" | "share" | "bank" | "card";
 }
-const BuyPointsModal: React.FC<BuyPointsModalProps> = ({ open, onClose }) => {
-  const [step, setStep] = useState("bank");
+const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
+  open,
+  onClose,
+  setOpen,
+}) => {
+
   const [modalTitle, setModalTitle] = useState("Buy Points");
   const [cardStep, setCardStep] = useState("cards");
   const [currentView, setCurrentView] = useState<Steps["viewSteps"]>("initial");
-  const [otpValue, setOtpValue] = useState("");
 
-//   const onOtpChange = (value: string) => {
-//     setOtpValue(value);
-//   };
 
   const stepsArray = [
     {
@@ -53,8 +49,8 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({ open, onClose }) => {
   ];
 
   return (
-    <Modal open={open}>
-      <div className="bg-white rounded-lg shadow-lg w-[90%] md:w-[436px] mx-auto">
+    <Modal open={open} setOpen={setOpen}>
+      <div className="bg-white rounded-lg shadow-lg w-[100%] mx-auto">
         {currentView != "success" ? (
           <div className="bg-title-bg-color rounded-tl-lg rounded-tr-lg h-[68px] px-8 flex items-center">
             <h2 className="font-medium text-[20px] text-black">{modalTitle}</h2>
@@ -65,7 +61,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({ open, onClose }) => {
 
         {currentView === "initial" ? (
           <div>
-            <div className="p-8 overflow-auto h-[500px] md:h-full ">
+            <div className="p-8 overflow-auto">
               {stepsArray.map((step, index) => (
                 <div
                   key={index}
@@ -105,13 +101,12 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({ open, onClose }) => {
                 text="Continue"
                 bg="bg-app-purple"
                 classNames="w-[120px] h-[45px] border border-app-purple text-white"
-                // onClick={() => setStep("pin")}
               />
             </div>
           </div>
         ) : currentView === "share" ? (
           <div>
-            <div className="p-8 overflow-auto h-[500px] md:h-full ">
+            <div className="p-8 overflow-auto ">
               <div className="flex flex-col items-center justify-center">
                 <Image src={stepSvg} alt="logo" />
 
@@ -145,13 +140,12 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({ open, onClose }) => {
                 text="Share"
                 bg="bg-app-purple"
                 classNames="w-[120px] h-[45px] border border-app-purple text-white"
-                // onClick={() => setStep("handle share")}
               />
             </div>
           </div>
         ) : currentView === "bank" ? (
           <div>
-            <div className="p-8 overflow-auto h-[500px] md:h-full ">
+            <div className="p-8 overflow-auto">
               <div className="rounded-lg h-[52px] p-[10px] gap-[10px] border border-[#A855F785] flex items-center bg-faint-peach">
                 <FaCircleInfo className="text-app-purple" />
                 <p className="font-satoshi text-[12px] font-[400] text-app-purple">
@@ -221,7 +215,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({ open, onClose }) => {
           <div>
             {cardStep === "cards" ? (
               <>
-                <div className="p-8 overflow-auto h-[500px] md:h-full ">
+                <div className="p-8 overflow-auto">
                   <div className="flex flex-col items-center justify-center">
                     <Image
                       src={stepSvg}
@@ -299,7 +293,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({ open, onClose }) => {
               </>
             ) : (
               <>
-                <div className="p-8 overflow-auto h-[500px] md:h-full ">
+                <div className="p-8 overflow-auto">
                   <div className="flex flex-col items-center justify-center">
                     <Image
                       src={stepSvg}
@@ -387,13 +381,13 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({ open, onClose }) => {
             )}
           </div>
         ) : currentView === "success" ? (
-          <div>
-            <div className="p-8 overflow-auto h-[500px] md:h-full">
+          <div className="w-[100%]">
+            <div className="p-8 overflow-auto w-[100%]">
               <div className="flex items-center justify-center w-full">
                 <Image
                   src={successSvg}
                   alt="logo"
-                  className="w-[119px] h-[119px]"
+                  className="w-[119px]"
                 />
               </div>
               <p className="font-satoshi text-[25px] text-center font-[500] mt-4">
