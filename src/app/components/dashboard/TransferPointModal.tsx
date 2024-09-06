@@ -37,7 +37,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
             </div>
             <div className="p-8 overflow-auto">
               <div>
-                <label className="font-satoshi">Select Wallet</label>
+                <label className="font-satoshi text-text-dark2">Select Wallet</label>
                 <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
                   <select className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg">
                     <option>Retail Wallet</option>
@@ -54,12 +54,12 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
               </div>
               <div className="mt-6">
                 <div className="flex flex-row items-center justify-between">
-                  <label className="font-satoshi">Enter Amount</label>
+                  <label className="font-satoshi text-text-dark2">Enter Amount</label>
                   <div className="flex flex-row items-center justify-between gap-2">
                     <div className="w-[18px] h-[18px] rounded-[50%] bg-faint-peach2 flex items-center justify-center">
                       <CiCreditCard1 className="text-[12px]" />
                     </div>
-                    <p className="font-satoshi text-[12px] font-[400]">
+                    <p className="font-satoshi text-[12px] text-text-dark2 font-[400]">
                       Available DMP: 20,0000
                     </p>
                   </div>
@@ -78,7 +78,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                   <div className="w-[18px] h-[18px] rounded-[50%] bg-faint-peach2 flex items-center justify-center">
                     <FaCircleInfo className="text-[12px] text-app-purple" />
                   </div>
-                  <p className="font-satoshi text-[12px] font-[400]">
+                  <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                     Network Fees: <span className="text-app-purple">1500</span>
                   </p>
                 </div>
@@ -92,7 +92,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                     </p>
                   </div>
                 </div>
-                <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                <div className="flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
                   <input
                     type="text"
                     placeholder="Tola Banjo"
@@ -102,7 +102,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
               </div>
               <div className="mt-6">
                 <div className="flex flex-row items-center justify-between">
-                  <label className="font-satoshi">Narration</label>
+                  <label className="font-satoshi text-text-dark2">Narration</label>
                 </div>
                 <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
                   <input
@@ -150,7 +150,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                     Amount
                   </p>
                   <div className="flex flex-row items-center justify-between gap-2">
-                    <p className="font-satoshi text-[12px] font-[400]">
+                    <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                       20,0000 DMP
                     </p>
                   </div>
@@ -159,7 +159,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                   <div className="w-[18px] h-[18px] rounded-[50%] bg-faint-peach2 flex items-center justify-center">
                     <FaCircleInfo className="text-[12px] text-app-purple" />
                   </div>
-                  <p className="font-satoshi text-[12px] font-[400]">
+                  <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                     Network Fees: 1500
                   </p>
                 </div>
@@ -168,7 +168,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                     Amount to receive
                   </p>
                   <div className="flex flex-row items-center justify-between gap-2">
-                    <p className="font-satoshi text-[12px] font-[400]">
+                    <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                       N20,0000
                     </p>
                   </div>
@@ -178,7 +178,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                     User Details
                   </p>
                   <div className="flex flex-row items-center justify-between gap-2">
-                    <p className="font-satoshi text-[12px] font-[400]">
+                    <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                       Emmanuel58
                     </p>
                   </div>
@@ -188,7 +188,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                     Narration
                   </p>
                   <div className="flex flex-row items-center justify-between gap-2">
-                    <p className="font-satoshi text-[12px] font-[400]">
+                    <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
                       Payment for food
                     </p>
                   </div>
@@ -233,7 +233,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                 className="w-[''] md:w-[305px]"
               />
             </div>
-            <p className="font-satoshi text-[28px] text-center font-[500]">
+            <p className="font-satoshi text-[28px] text-center font-[500] text-text-dark2">
               Transfering your funds
             </p>
           </div>
@@ -246,7 +246,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                 className="w-[100%] md:w-[305px]"
               />
             </div>
-            <p className="font-satoshi text-[28px] text-center font-[500]">
+            <p className="font-satoshi text-[28px] text-center font-[500] text-text-dark2">
               Transfer Successful
             </p>
             <div className="bg-title-bg-color bottom-0 absolute left-0 right-0 mt-5 px-8 py-5 flex items-center gap-[10px] justify-end rounded-bl-lg rounded-br-lg">
