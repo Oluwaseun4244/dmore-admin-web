@@ -109,7 +109,7 @@ function Dashboard() {
           />
         </div>
 
-        <div className="py-[6px] pr-[6px] pl-[5px]md:pl-[15px] justify-between flex items-center w-[100%] lg:w-[697px] rounded-md border">
+        <div className="py-[6px] pr-[6px] pl-[5px] md:pl-[15px] justify-between flex items-center w-[100%] lg:w-[697px] rounded-md border">
           <div
             className="w-[170px] lg:w-auto"
             style={{ wordWrap: "break-word" }}
