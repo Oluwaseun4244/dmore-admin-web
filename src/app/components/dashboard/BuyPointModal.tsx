@@ -23,11 +23,9 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
   onClose,
   setOpen,
 }) => {
-
   const [modalTitle, setModalTitle] = useState("Buy Points");
   const [cardStep, setCardStep] = useState("cards");
   const [currentView, setCurrentView] = useState<Steps["viewSteps"]>("initial");
-
 
   const stepsArray = [
     {
@@ -257,6 +255,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
                         </p>
                         <RiDeleteBinLine
                           style={{ fontSize: "16px", cursor: "pointer" }}
+                          className="text-text-dark2"
                         />
                       </div>
                       <div className="flex flex-row items-center mt-3 justify-between">
@@ -265,6 +264,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
                         </p>
                         <RiDeleteBinLine
                           style={{ fontSize: "16px", cursor: "pointer" }}
+                          className="text-text-dark2"
                         />
                       </div>
                     </div>
@@ -384,11 +384,7 @@ const BuyPointsModal: React.FC<BuyPointsModalProps> = ({
           <div className="w-[100%]">
             <div className="p-8 overflow-auto w-[100%]">
               <div className="flex items-center justify-center w-full">
-                <Image
-                  src={successSvg}
-                  alt="logo"
-                  className="w-[119px]"
-                />
+                <Image src={successSvg} alt="logo" className="w-[119px]" />
               </div>
               <p className="font-satoshi text-[25px] text-center font-[500] mt-4 text-text-dark2">
                 Transfer Successful!

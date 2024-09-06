@@ -85,7 +85,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
               </div>
               <div className="mt-6">
                 <div className="flex flex-row items-center justify-between">
-                  <label className="font-satoshi">Enter User details</label>
+                  <label className="font-satoshi text-text-dark2">Enter User details</label>
                   <div className="flex flex-row items-center justify-between gap-2">
                     <p className="font-satoshi text-[12px] text-app-purple font-[400]">
                       Transfer to Bank Account
