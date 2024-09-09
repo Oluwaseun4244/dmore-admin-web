@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import appleSignup from "../../../../public/images/apple-signup.svg";
@@ -53,9 +54,18 @@ export default function BuyerSignUpForm() {
     <div className="w-full h-full flex justify-center items-center overflow-y-auto">
       <div className="w-[90%] lg:w-full  h-full flex flex-col space-y-10 lg:px-12">
         <div className="flex items-center justify-between ">
-          <h2 className="font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[2%]">
+          <h2 className="font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[% ]">
             Sign up
           </h2>
+
+          <Link
+            href="/signup"
+            className="font-satoshi font-medium text-[#702EB0] text-[16px] leading-[16px] text-center -tracking-[1%]"
+          >
+            <button className="font-satoshi font-medium text-white text-[18px] leading-[20px] -tracking-[1%] flex justify-center items-center px-12 py-4 bg-app-purple rounded-[8px]">
+              Back
+            </button>
+          </Link>
         </div>
         <form className="flex flex-col space-y-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-10 gap-x-5 ">
@@ -139,8 +149,6 @@ export default function BuyerSignUpForm() {
             </div>
           </div>
           <div className="flex flex-col lg:flex-row justify-between items-center">
-        
-
             <Button
               text={isPending ? "Loading" : "Create your account"}
               my="5"
