@@ -2,7 +2,7 @@ import { OnboardingChildrenProps } from "@/app/utils/definitions";
 
 import OtpInput from "@/app/components/OtpInput";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import infoIcon from "../../../../public/icons/info-icon.svg";
 
 const EnterOTP = ({ onNext }: OnboardingChildrenProps) => {
