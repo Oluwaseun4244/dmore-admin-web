@@ -1,13 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, ReactEventHandler } from "react";
+import React, { useState } from "react";
 import DashboardLayout from "../components/dashboard/DashboardLayout";
-import WalletCard from "../components/dashboard/WalletCard";
 import Button from "../components/generic/Button";
-import RecentTransaction from "../components/dashboard/RecentTransaction";
-import MonthlyStat from "../components/dashboard/MonthlyStat";
-import TransferPointModal from "../components/dashboard/TransferPointModal";
-import BuyPointsModal from "../components/dashboard/BuyPointModal";
 import AvatarInitial from "../components/generic/AvatarInitial";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
