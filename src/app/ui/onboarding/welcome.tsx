@@ -21,8 +21,8 @@ const Welcome = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center lg:items-end">
-      <div className="h-full flex flex-col space-y-10 w-[100%] max-w-[568px]">
+    <div className="w-full h-[90vh] flex flex-col items-center lg:items-end">
+      <div className="space-y-10 w-[100%] max-w-[568px]">
         <h2 className="font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[1%]">
           Welcome!
         </h2>
