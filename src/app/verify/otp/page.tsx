@@ -1,6 +1,5 @@
 "use client";
 
-import { OnboardingChildrenProps } from "@/app/utils/definitions";
 
 import OtpInput from "@/app/components/OtpInput";
 import Image from "next/image";
@@ -8,7 +7,7 @@ import { useState } from "react";
 import infoIcon from "../../../../public/icons/info-icon.svg";
 import right_img from "../../../../public/images/dmore_auth_right.png";
 
-const EnterOTP = ({ onNext }: OnboardingChildrenProps) => {
+const EnterOTP = () => {
   const [otp, setOtp] = useState<string>("");
   const [isValidOtp, setIsValidOtp] = useState<boolean>(false);
 
@@ -19,7 +18,6 @@ const EnterOTP = ({ onNext }: OnboardingChildrenProps) => {
   const handleVerifyOtp = () => {
     if (otp.length === 6) {
       console.log("Verifying Otp: ", otp);
-      onNext("verifying-loading-screen");
     } else {
       console.log("Invalid Otp");
       setIsValidOtp(false);
