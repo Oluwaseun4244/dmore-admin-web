@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
@@ -55,6 +56,15 @@ const StaffSignupForm = () => {
           <h2 className="font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[% ]">
             Sign up
           </h2>
+
+          <Link
+            href="/signup"
+            className="font-satoshi font-medium text-[#702EB0] text-[16px] leading-[16px] text-center -tracking-[1%]"
+          >
+            <button className="font-satoshi font-medium text-white text-[18px] leading-[20px] -tracking-[1%] flex justify-center items-center px-12 py-4 bg-app-purple rounded-[8px]">
+              Back
+            </button>
+          </Link>
         </div>
         <form className="flex flex-col space-y-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-5 ">

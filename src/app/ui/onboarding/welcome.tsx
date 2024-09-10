@@ -8,18 +8,9 @@ import create from "../../../../public/images/create.svg";
 import staff from "../../../../public/images/staff.svg";
 
 import WelcomeDetails from "@/app/components/WelcomeDetails";
-import { OnboardingChildrenProps } from "@/app/utils/definitions";
 
-const Welcome = ({ onNext }: OnboardingChildrenProps) => {
+const Welcome = () => {
   const [opened, setOpened] = useState("");
-
-  const onBuyerSignup = () => {
-    onNext("buyer-signup");
-  };
-
-  const onStaffSignup = () => {
-    onNext("staff-signup");
-  };
 
   const handleOpened = (value: string) => {
     if (value === opened) {
@@ -54,7 +45,9 @@ const Welcome = ({ onNext }: OnboardingChildrenProps) => {
                   <Image src={arrowRightPurple} alt="arrow right purple" />
                 )}
               </div>
-              {opened === "buyer" && <WelcomeDetails onNext={onBuyerSignup} />}
+              {opened === "buyer" && (
+                <WelcomeDetails routeLink="/signup/buyer" />
+              )}
             </>
           )}
 
@@ -76,7 +69,9 @@ const Welcome = ({ onNext }: OnboardingChildrenProps) => {
                   <Image src={arrowRightPurple} alt="arrow right purple" />
                 )}
               </div>
-              {opened === "staff" && <WelcomeDetails onNext={onStaffSignup} />}
+              {opened === "staff" && (
+                <WelcomeDetails routeLink="/signup/staff" />
+              )}
             </>
           )}
           {opened === "" && (

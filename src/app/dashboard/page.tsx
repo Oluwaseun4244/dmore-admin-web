@@ -8,7 +8,7 @@ import RecentTransaction from "../components/dashboard/RecentTransaction";
 import MonthlyStat from "../components/dashboard/MonthlyStat";
 import TransferPointModal from "../components/dashboard/TransferPointModal";
 import BuyPointsModal from "../components/dashboard/BuyPointModal";
-
+// import { useQueryClient } from "@tanstack/react-query";
 
 interface Stat {
   month: string;
@@ -22,7 +22,11 @@ function Dashboard() {
   const [transferIsopen, setTransferIsOpen] = useState(false);
   const [buyIsOpen, setBuyIsOpen] = useState(false);
 
+  // const queryClient = useQueryClient();
 
+  // const user2 = queryClient.getQueryState(["user"]);
+
+  // console.log("user", user2);
   const dummyData = [
     { month: "Jan", incoming: "20", outgoing: "10" },
     { month: "Feb", incoming: "40", outgoing: "40" },
@@ -37,6 +41,8 @@ function Dashboard() {
     { month: "Nov", incoming: "40", outgoing: "40" },
     { month: "Dec", incoming: "40", outgoing: "40" },
   ];
+
+  // const { data: user } = useUser();
 
   const changView = (value: string) => {
     setMonthView(value);
@@ -226,8 +232,11 @@ function Dashboard() {
         onClose={() => setTransferIsOpen(false)}
         setOpen={setTransferIsOpen}
       />
-      <BuyPointsModal open={buyIsOpen} setOpen={setBuyIsOpen} onClose={() => setBuyIsOpen(false)} />
-
+      <BuyPointsModal
+        open={buyIsOpen}
+        setOpen={setBuyIsOpen}
+        onClose={() => setBuyIsOpen(false)}
+      />
     </DashboardLayout>
   );
 }
