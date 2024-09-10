@@ -27,7 +27,7 @@ const WelcomeDetails = ({ routeLink }: WelcomeDetailsProps) => {
 
   const [termsAndConditions, setTermsAndConditions] = useState<boolean>(false);
   return (
-    <div className="max-h-[606px] overflow-y-scroll custom-scrollbar pt-3 pb-[100px]">
+    <div className="max-h-[450px] overflow-y-scroll custom-scrollbar pt-3 pb-[40px]">
       <div className="w-full flex justify-center items-center flex-col space-y-20 py-10">
         {information.map((info, index) => (
           <div
