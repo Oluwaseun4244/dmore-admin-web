@@ -4,7 +4,7 @@ import Welcome from "@/app/ui/onboarding/welcome";
 
 const Signup = () => {
   return (
-    <div className="w-full h-full">
+    <div className="flex-1 flex flex-col min-h-0 w-full">
       <Welcome />
     </div>
   );
