@@ -20,9 +20,20 @@ export type LoginApiData = {
     password: string
 }
 export type ProfileResponse = {
-    fullName: string;
-    email: string
-    credit: string
+    id: string,
+    firstName: string,
+    lastName: string,
+    country: string,
+    state: string,
+    city: string,
+    address: string,
+    email: string,
+    isActive: boolean,
+    emailConfirmed: boolean,
+    role: string,
+    userCategory: string,
+    occupation: string,
+    isStaff: boolean
 }
 
 export type BuyerRegisterResponse = {
