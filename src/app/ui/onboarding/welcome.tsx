@@ -8,18 +8,9 @@ import create from "../../../../public/images/create.svg";
 import staff from "../../../../public/images/staff.svg";
 
 import WelcomeDetails from "@/app/components/WelcomeDetails";
-import { OnboardingChildrenProps } from "@/app/utils/definitions";
 
-const Welcome = ({ onNext }: OnboardingChildrenProps) => {
+const Welcome = () => {
   const [opened, setOpened] = useState("");
-
-  const onBuyerSignup = () => {
-    onNext("buyer-signup");
-  };
-
-  const onStaffSignup = () => {
-    onNext("staff-signup");
-  };
 
   const handleOpened = (value: string) => {
     if (value === opened) {
@@ -30,8 +21,8 @@ const Welcome = ({ onNext }: OnboardingChildrenProps) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center lg:items-end">
-      <div className="h-full flex flex-col space-y-10 w-[100%] max-w-[568px]">
+    <div className="w-full h-[90vh] flex flex-col items-center lg:items-end">
+      <div className="space-y-10 w-[100%] max-w-[568px]">
         <h2 className="font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[1%]">
           Welcome!
         </h2>
@@ -54,7 +45,9 @@ const Welcome = ({ onNext }: OnboardingChildrenProps) => {
                   <Image src={arrowRightPurple} alt="arrow right purple" />
                 )}
               </div>
-              {opened === "buyer" && <WelcomeDetails onNext={onBuyerSignup} />}
+              {opened === "buyer" && (
+                <WelcomeDetails routeLink="/signup/buyer" />
+              )}
             </>
           )}
 
@@ -76,7 +69,9 @@ const Welcome = ({ onNext }: OnboardingChildrenProps) => {
                   <Image src={arrowRightPurple} alt="arrow right purple" />
                 )}
               </div>
-              {opened === "staff" && <WelcomeDetails onNext={onStaffSignup} />}
+              {opened === "staff" && (
+                <WelcomeDetails routeLink="/signup/staff" />
+              )}
             </>
           )}
           {opened === "" && (
