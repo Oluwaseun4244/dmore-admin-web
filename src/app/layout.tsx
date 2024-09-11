@@ -1,7 +1,9 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import ReactQueryProvider from "./utils/providers/ReactQueryProvider";
 import "./globals.css";
+import { useQueryClient } from '@tanstack/react-query';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +17,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const queryClient = useQueryClient();
+
+  // const profileQuery = useGetQuery<ProfileResponse>("/profile", [
+  //   `profile-${'token'}`, token
+  // ]);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem('authToken');
+
+
+  }, [queryClient])
+
   return (
     <html lang="en">
       <body className={`${inter.className} overflow-x-hidden`}>
