@@ -9,11 +9,11 @@ import ".././globals.css";
 import Link from "next/link";
 import { useLogin } from "./hooks/useLogin";
 import { LoginApiData } from "../types/auth.types";
-import { useQueryClient } from "@tanstack/react-query";
+
 
 const Login: React.FC = () => {
   // const [passwordVisible, setPasswordVisible] = useState(false);
-  const queryClient = useQueryClient()
+
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
     password: "",
@@ -28,7 +28,6 @@ const Login: React.FC = () => {
   // };
 
   const handleSubmit = () => {
-    // queryClient.setQueryData(['user'], {name: 'Tola Banjo', email: 'banjotola12@gmail.com'})
     mutate(loginData);
   };
 
