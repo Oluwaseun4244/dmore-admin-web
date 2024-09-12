@@ -9,10 +9,11 @@ import ".././globals.css";
 import Link from "next/link";
 import { useLogin } from "./hooks/useLogin";
 import { LoginApiData } from "../types/auth.types";
-
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const Login: React.FC = () => {
-  // const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
@@ -23,9 +24,9 @@ const Login: React.FC = () => {
 
   const { isPending, mutate } = loginMutation;
 
-  // const togglePasswordVisibility = () => {
-  //   setPasswordVisible(!passwordVisible);
-  // };
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   const handleSubmit = () => {
     mutate(loginData);
@@ -63,15 +64,27 @@ const Login: React.FC = () => {
                 value={loginData.email}
               />
             </div>
-            <div className="flex flex-col my-3 bg-[#FBFBFC] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
+            <div className="flex flex-col my-3 bg-[#FBFBFC] px-4 py-3 border  border-[#EDF0F3] rounded-[12px] relative">
               <input
-                type="password"
+                type={passwordVisible ? "text" : "password"}
                 name="password"
                 placeholder="*************"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={handleChange}
                 value={loginData.password}
               />
+
+              {passwordVisible ? (
+                <FaRegEyeSlash
+                  className="absolute right-2 text-app-purple"
+                  onClick={togglePasswordVisibility}
+                />
+              ) : (
+                <FaRegEye
+                  className="absolute right-2 text-app-purple"
+                  onClick={togglePasswordVisibility}
+                />
+              )}
             </div>
 
             <p className="text-end text-dark-purple text-[16px] font-medium">
@@ -87,7 +100,9 @@ const Login: React.FC = () => {
                 ? "bg-disabled-btn"
                 : "bg-dark-purple"
             }
-            disabled={!loginData.email.length || !loginData.password.length || isPending}
+            disabled={
+              !loginData.email.length || !loginData.password.length || isPending
+            }
             onClick={isPending ? () => console.log("is loading") : handleSubmit}
           />
 

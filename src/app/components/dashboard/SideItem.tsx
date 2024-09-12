@@ -9,7 +9,7 @@ interface SideItemProps {
 
 const SideItem: React.FC<SideItemProps> = ({ imgSource, route }) => {
   return (
-    <Link href={route}>
+    <Link href={`/${route}`}>
       <div className="my-5 flex items-center justify-center">
         <Image src={imgSource} alt={route} className="h-[40px] w-[40px]" />
       </div>
