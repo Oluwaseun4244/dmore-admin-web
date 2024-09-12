@@ -21,13 +21,18 @@ export default function BuyerSignUpForm() {
   const searchParams = useSearchParams();
   const email = searchParams?.get("email") ?? "";
 
+
   const [regData, setRegData] = useState<BuyerRegisterData>({
     firstName: "",
     lastName: "",
     email: email,
-    phone: "",
-    referralCode: "",
+    phoneNumber: "",
     password: "",
+    occupation: "",
+    confirmPassword: "",
+    company: "",
+    isStaff: true,
+    referralCode: "",
   });
 
   const { buyerRegMutation } = useSignUp();
@@ -122,10 +127,10 @@ export default function BuyerSignUpForm() {
             <div className="flex flex-col bg-[#FBFBFC] px-4 py-3 border border-[#EDF0F3] rounded-[12px]">
               <input
                 type="text"
-                name="phone"
+                name="phoneNumber"
                 placeholder="Contact number"
                 onChange={handleChange}
-                value={regData.phone}
+                value={regData.phoneNumber}
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
               />
             </div>

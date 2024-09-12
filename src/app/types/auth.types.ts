@@ -44,21 +44,49 @@ export type StaffRegisterResponse = {
 }
 
 export type BuyerRegisterData = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    password: string;
-    referralCode: string;
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string,
+    country?: string,
+    state?: string,
+    city?: string,
+    address?: string,
+    password: string,
+    confirmPassword: string,
+    role?: string,
+    userCategory?: string,
+    occupation: string,
+    company: string,
+    referralCode: string,
+    isStaff: boolean
 }
 
 export type StaffRegisterData = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    password: string;
-    referralCode: string;
-    company: string;
-    occupation: string
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string,
+    country?: string,
+    state?: string,
+    city?: string,
+    address?: string,
+    password: string,
+    confirmPassword: string,
+    role?: string,
+    userCategory?: string,
+    occupation: string,
+    company: string,
+    referralCode: string,
+    isStaff: boolean
 }
+// export type StaffRegisterData = {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     phone: string;
+//     password: string;
+//     referralCode: string;
+//     company: string;
+//     occupation: string
+// }
