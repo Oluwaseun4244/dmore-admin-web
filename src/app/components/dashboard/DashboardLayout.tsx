@@ -56,7 +56,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               }
             />
             <SideItem
-              route="settings"
+              route="settings/profile"
               imgSource={
                 activePage === "settings" ? active_settings : inactive_settings
               }

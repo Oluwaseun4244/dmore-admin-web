@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import DashboardLayout from "../components/dashboard/DashboardLayout";
-import Button from "../components/generic/Button";
-import AvatarInitial from "../components/generic/AvatarInitial";
+import DashboardLayout from "../../components/dashboard/DashboardLayout";
+import Button from "../../components/generic/Button";
+import AvatarInitial from "../../components/generic/AvatarInitial";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 

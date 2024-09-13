@@ -8,10 +8,12 @@ import right_img from "../../../public/images/dmore_auth_right.png";
 import "../../app/globals.css";
 import ".././globals.css";
 import { LoginApiData } from "../types/auth.types";
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 import { useLogin } from "./hooks/useLogin";
 
 const Login: React.FC = () => {
-  // const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
@@ -22,9 +24,9 @@ const Login: React.FC = () => {
 
   const { isPending, mutate } = loginMutation;
 
-  // const togglePasswordVisibility = () => {
-  //   setPasswordVisible(!passwordVisible);
-  // };
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   const handleSubmit = () => {
     mutate(loginData);
@@ -62,15 +64,27 @@ const Login: React.FC = () => {
                 value={loginData.email}
               />
             </div>
-            <div className='flex flex-col my-3 bg-[#FBFBFC] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]'>
+            <div className="flex flex-col my-3 bg-[#FBFBFC] px-4 py-3 border  border-[#EDF0F3] rounded-[12px] relative">
               <input
-                type='password'
-                name='password'
-                placeholder='*************'
-                className='font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]'
+                type={passwordVisible ? "text" : "password"}
+                name="password"
+                placeholder="*************"
+                className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={handleChange}
                 value={loginData.password}
               />
+
+              {passwordVisible ? (
+                <FaRegEyeSlash
+                  className="absolute right-2 text-app-purple"
+                  onClick={togglePasswordVisibility}
+                />
+              ) : (
+                <FaRegEye
+                  className="absolute right-2 text-app-purple"
+                  onClick={togglePasswordVisibility}
+                />
+              )}
             </div>
 
             <p className='text-end text-dark-purple text-[16px] font-medium'>
