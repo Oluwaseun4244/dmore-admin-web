@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import ReactQueryProvider from "./utils/providers/ReactQueryProvider";
+import SessionWrapper from "../../components/SessionWrapper";
 import "./globals.css";
+import ReactQueryProvider from "./utils/providers/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,10 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} overflow-x-hidden`}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
-      </body>
-    </html>
+    <SessionWrapper>
+      <html lang='en'>
+        <body className={`${inter.className} overflow-x-hidden`}>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </body>
+      </html>
+    </SessionWrapper>
   );
 }
