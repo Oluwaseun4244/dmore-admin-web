@@ -10,9 +10,10 @@ import ".././globals.css";
 import { LoginApiData } from "../types/auth.types";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { useLogin } from "./hooks/useLogin";
+import { useForgotPassword } from "./hooks/useForgotPassword";
 
-const Login: React.FC = () => {
+
+const ForgotPassword: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [loginData, setLoginData] = useState<LoginApiData>({
@@ -20,9 +21,9 @@ const Login: React.FC = () => {
     password: "",
   });
 
-  const { loginMutation } = useLogin();
+  const { forgotPasswordMutation } = useForgotPassword();
 
-  const { isPending, mutate } = loginMutation;
+  const { isPending, mutate } = forgotPasswordMutation;
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -50,7 +51,7 @@ const Login: React.FC = () => {
       <div className='w-[90%] h-[630px] flex flex-row flex-wrap '>
         <div className='w-full flex items-center justify-center flex-col lg:w-3/5'>
           <p className='font-satoshi text-black text-[28px] md:text-[36px] font-medium'>
-            Login to your account
+            Forgot Password
           </p>
 
           <div className='my-5 w-[90%] lg:w-[400px]'>
@@ -64,37 +65,10 @@ const Login: React.FC = () => {
                 value={loginData.email}
               />
             </div>
-            <div className="flex flex-col my-3 bg-[#FBFBFC] px-4 py-3 border  border-[#EDF0F3] rounded-[12px] relative">
-              <input
-                type={passwordVisible ? "text" : "password"}
-                name="password"
-                placeholder="*************"
-                className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
-                onChange={handleChange}
-                value={loginData.password}
-              />
 
-              {passwordVisible ? (
-                <FaRegEyeSlash
-                  className="absolute right-2 text-app-purple"
-                  onClick={togglePasswordVisibility}
-                />
-              ) : (
-                <FaRegEye
-                  className="absolute right-2 text-app-purple"
-                  onClick={togglePasswordVisibility}
-                />
-              )}
-            </div>
-
-            <Link href="/forgotpassword">
-              <p className='text-end text-dark-purple text-[16px] font-medium'>
-                Forgot Password?
-              </p>
-            </Link>
           </div>
           <Button
-            text={isPending ? "Loading" : "Login"}
+            text={isPending ? "Loading" : "Get Reset Code"}
             my='5'
             classNames='text-white w-[247px] h-[48px]'
             bg={
@@ -107,18 +81,12 @@ const Login: React.FC = () => {
             }
             onClick={isPending ? () => console.log("is loading") : handleSubmit}
           />
-          <Button
-            text='Sign in via GitHub'
-            my='5'
-            classNames='text-white w-[247px] h-[48px]'
-            bg='bg-dark-purple'
-            onClick={() => { }}
-          />
+
 
           <p className='font-satoshi text-[16px] text-center font-medium my-4 text-light-gray'>
-            I don&apos;t have an account?{" "}
-            <Link href='/signup'>
-              <span className='text-dark-purple font-bold'>Sign up</span>
+            Return to{" "}
+            <Link href='/login'>
+              <span className='text-dark-purple font-bold'>Login?</span>
             </Link>
           </p>
         </div>
@@ -131,4 +99,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

@@ -40,7 +40,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                 <label className="font-satoshi text-text-dark2">Select Wallet</label>
                 <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
                   <select className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg">
-                    <option>Retail Wallet</option>
+                    <option>All Wallet</option>
                     <option>Reward Wallet</option>
                   </select>
                 </div>
@@ -53,65 +53,118 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                 </p>
               </div>
               <div className="mt-6">
-                <div className="flex flex-row items-center justify-between">
-                  <label className="font-satoshi text-text-dark2">Enter Amount</label>
-                  <div className="flex flex-row items-center justify-between gap-2">
-                    <div className="w-[18px] h-[18px] rounded-[50%] bg-faint-peach2 flex items-center justify-center">
-                      <CiCreditCard1 className="text-[12px]" />
+                <div >
+                  <div className="flex flex-row items-center justify-between">
+                    <label className="font-satoshi text-text-dark2">Personal Wallet</label>
+                    <div className="flex flex-row items-center justify-between gap-2">
+                      <div className="w-[18px] h-[18px] rounded-[50%] bg-faint-peach2 flex items-center justify-center">
+                        <CiCreditCard1 className="text-[12px]" />
+                      </div>
+                      <p className="font-satoshi text-[12px] text-text-dark2 font-[400]">
+                        Available DMP: 20,0000
+                      </p>
                     </div>
-                    <p className="font-satoshi text-[12px] text-text-dark2 font-[400]">
-                      Available DMP: 20,0000
+                  </div>
+                  <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                    <input
+                      type="number"
+                      placeholder="10000"
+                      min={200}
+                      className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex flex-row items-center justify-end gap-2 mt-[12px]">
+                    <div className="w-[18px] h-[18px] rounded-[50%] bg-faint-peach2 flex items-center justify-center">
+                      <FaCircleInfo className="text-[12px] text-app-purple" />
+                    </div>
+                    <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
+                      Network Fees: <span className="text-app-purple">1500</span>
                     </p>
                   </div>
                 </div>
-                <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
-                  <input
-                    type="number"
-                    placeholder="10000"
-                    min={200}
-                    className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
-                  />
-                </div>
               </div>
-              <div>
-                <div className="flex flex-row items-center justify-end gap-2 mt-[12px]">
-                  <div className="w-[18px] h-[18px] rounded-[50%] bg-faint-peach2 flex items-center justify-center">
-                    <FaCircleInfo className="text-[12px] text-app-purple" />
+              {/* HERE */}
+              {
+                transferType == 'point' ?
+
+                  <div>
+                    <div className="mt-6">
+                      <div className="flex flex-row items-center justify-between">
+                        <label className="font-satoshi text-text-dark2">Enter User details</label>
+                        <div className="flex flex-row items-center justify-between gap-2 cursor-pointer" onClick={() => setTransferType("bank")}>
+                          <p className="font-satoshi text-[12px] text-app-purple font-[400]">
+                            Transfer to Bank Account
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                        <input
+                          type="text"
+                          placeholder="Tola Banjo"
+                          className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-6">
+                      <div className="flex flex-row items-center justify-between">
+                        <label className="font-satoshi text-text-dark2">Narration</label>
+                      </div>
+                      <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                        <input
+                          type="text"
+                          placeholder="Payment for food"
+                          className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
+                        />
+                      </div>
+                    </div>
+                  </div> :
+
+                  <div>
+                    <div className="mt-6">
+                      <div className="flex flex-row items-center justify-between">
+                        <label className="font-satoshi text-text-dark2">Account Number</label>
+                        <div className="flex flex-row items-center justify-between gap-2 cursor-pointer" onClick={() => setTransferType("point")}>
+                          <p className="font-satoshi text-[12px] text-app-purple font-[400]">
+                            Transfer to Dmore User
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                        <input
+                          type="text"
+                          placeholder="Tola Banjo"
+                          className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-6">
+                      <div>
+                        <label className="font-satoshi text-text-dark2">Bank Name</label>
+                        <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                          <select className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg">
+                            <option>Access Bank</option>
+                            <option>Gurantee Trust Bank</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-6">
+                      <div className="flex flex-row items-center justify-between">
+                        <label className="font-satoshi text-text-dark2">Narration</label>
+                      </div>
+                      <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
+                        <input
+                          type="text"
+                          placeholder="Payment for food"
+                          className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
-                    Network Fees: <span className="text-app-purple">1500</span>
-                  </p>
-                </div>
-              </div>
-              <div className="mt-6">
-                <div className="flex flex-row items-center justify-between">
-                  <label className="font-satoshi text-text-dark2">Enter User details</label>
-                  <div className="flex flex-row items-center justify-between gap-2">
-                    <p className="font-satoshi text-[12px] text-app-purple font-[400]">
-                      Transfer to Bank Account
-                    </p>
-                  </div>
-                </div>
-                <div className="flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
-                  <input
-                    type="text"
-                    placeholder="Tola Banjo"
-                    className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
-                  />
-                </div>
-              </div>
-              <div className="mt-6">
-                <div className="flex flex-row items-center justify-between">
-                  <label className="font-satoshi text-text-dark2">Narration</label>
-                </div>
-                <div className=" flex flex-col border rounded-lg px-2 mt-2 bg-input-bg">
-                  <input
-                    type="text"
-                    placeholder="Payment for food"
-                    className="h-[54px] border-none px-2 outline-none font-satoshi bg-input-bg"
-                  />
-                </div>
-              </div>
+              }
+
             </div>
 
             <div className="bg-title-bg-color mt-5 px-8 py-5 flex items-center gap-[10px] justify-end rounded-bl-lg rounded-br-lg">
