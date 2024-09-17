@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import right_img from "../../../public/images/dmore_auth_right.png";
 import "../../app/globals.css";
 import ".././globals.css";
-import { LoginApiData } from "../types/auth.types";
+import { ForgotPasswordData } from "../types/auth.types";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useForgotPassword } from "./hooks/useForgotPassword";
@@ -16,9 +16,8 @@ import { useForgotPassword } from "./hooks/useForgotPassword";
 const ForgotPassword: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const [loginData, setLoginData] = useState<LoginApiData>({
+  const [forgotPasswordData, setForgotPasswordData] = useState<ForgotPasswordData>({
     email: "",
-    password: "",
   });
 
   const { forgotPasswordMutation } = useForgotPassword();
@@ -30,7 +29,7 @@ const ForgotPassword: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    mutate(loginData);
+    mutate(forgotPasswordData);
   };
 
   const handleChange = (
@@ -40,7 +39,7 @@ const ForgotPassword: React.FC = () => {
   ) => {
     const { name, value } = e.target;
 
-    setLoginData((prevData) => ({
+    setForgotPasswordData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -62,7 +61,7 @@ const ForgotPassword: React.FC = () => {
                 placeholder='Johndoe@email.com'
                 className='font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]'
                 onChange={handleChange}
-                value={loginData.email}
+                value={forgotPasswordData.email}
               />
             </div>
 
@@ -72,12 +71,12 @@ const ForgotPassword: React.FC = () => {
             my='5'
             classNames='text-white w-[247px] h-[48px]'
             bg={
-              !loginData.email.length || !loginData.password.length || isPending
+              !forgotPasswordData.email.length || isPending
                 ? "bg-disabled-btn"
                 : "bg-dark-purple"
             }
             disabled={
-              !loginData.email.length || !loginData.password.length || isPending
+              !forgotPasswordData.email.length || isPending
             }
             onClick={isPending ? () => console.log("is loading") : handleSubmit}
           />

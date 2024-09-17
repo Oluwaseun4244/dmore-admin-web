@@ -80,6 +80,16 @@ export type StaffRegisterData = {
     referralCode: string,
     isStaff: boolean
 }
+
+export type ForgotPasswordData = {
+    email: string;
+}
+
+export type ResetPasswordData = {
+    email: string;
+    password: string;
+    token: string;
+}
 // export type StaffRegisterData = {
 //     firstName: string;
 //     lastName: string;

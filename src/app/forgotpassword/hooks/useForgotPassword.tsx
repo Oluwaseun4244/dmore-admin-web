@@ -2,7 +2,7 @@ import React from "react";
 import { useGetQuery, usePostQuery } from "@/app/utils/apiUtils";
 import {
   LoginResponseType,
-  LoginApiData,
+  ForgotPasswordData,
   ProfileResponse,
 } from "@/app/types/auth.types";
 import { useQueryClient } from "@tanstack/react-query";
@@ -11,27 +11,27 @@ export const useForgotPassword = () => {
   const queryClient = useQueryClient()
   const [token, setToken] = React.useState("")
 
-  const profileQuery = useGetQuery<ProfileResponse>("/profile", [
-    `profile-${token}`, token
-  ], {
-    enabled: !!token, queryKey: [
-      `profile-${token}`, token
-    ]
-  });
+  // const profileQuery = useGetQuery<ProfileResponse>("/profile", [
+  //   `profile-${token}`, token
+  // ], {
+  //   enabled: !!token, queryKey: [
+  //     `profile-${token}`, token
+  //   ]
+  // });
 
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
 
-    if (profileQuery.data && !profileQuery.isPending) {
-      //KINDLY MODIFY THIS profileQuery.data as well, depending on the schema
-      queryClient.setQueryData(['user'], profileQuery.data)
-    }
-  }, [queryClient, profileQuery.isPending, profileQuery.data])
+  //   if (profileQuery.data && !profileQuery.isPending) {
+
+  //     queryClient.setQueryData(['user'], profileQuery.data)
+  //   }
+  // }, [queryClient, profileQuery.isPending, profileQuery.data])
 
 
 
-  const forgotPasswordMutation = usePostQuery<LoginResponseType, LoginApiData>(
-    "/get-token",
+  const forgotPasswordMutation = usePostQuery<LoginResponseType, ForgotPasswordData>(
+    "/forgot-password",
     {
       onSuccess: async (data) => {
         console.log("data from login", data)
