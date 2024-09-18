@@ -71,7 +71,7 @@ export default function BuyerSignUpForm() {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center overflow-y-auto">
+    <div className="w-full  h-[90vh] flex justify-center items-center lg:items-end overflow-y-auto">
       <div className="w-[90%] lg:w-full  h-full flex flex-col space-y-10 lg:px-12">
         <div className="flex items-center justify-between ">
           <h2 className="font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[% ]">
