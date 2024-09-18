@@ -76,7 +76,7 @@ const Navbar = () => {
             >
               Sign in
             </Link>
-
+            
           </div>
         </div>
       </div>
