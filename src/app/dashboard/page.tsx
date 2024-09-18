@@ -65,9 +65,8 @@ function Dashboard() {
     setStatsData(dummyData.slice(0, 6));
   }, []);
 
-  const { data: session } = useSession();
-
-  return session ? (
+  // const { data: session } = useSession();
+  return (
     <DashboardLayout activePage='dashboard' navTitle='Credits and Points'>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
         <WalletCard
@@ -241,15 +240,6 @@ function Dashboard() {
         onClose={() => setBuyIsOpen(false)}
       />
     </DashboardLayout>
-  ) : (
-    <div className='bg-white w-screen h-screen flex justify-center items-center'>
-      <button
-        onClick={() => signIn("github")}
-        className='bg-dark-purple font-satoshi text-white text-[16px] leading-[19.2px] flex justify-center items-center px-12 py-4'
-      >
-        Sign in with GitHub
-      </button>
-    </div>
   );
 }
 
