@@ -47,18 +47,30 @@ export type BuyerRegisterData = {
     firstName: string;
     lastName: string;
     email: string;
-    phone: string;
+    phoneNumber: string;
+    country: string;
+    state: string;
+    city: string;
+    address: string;
     password: string;
-    referralCode: string;
+    confirmPassword: string;
+    userCategory: string;
+    occupation: string;
+    isStaff: boolean;
 }
 
 export type StaffRegisterData = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    password: string;
-    referralCode: string;
-    company: string;
-    occupation: string
-}
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  country: string;
+  state: string;
+  city: string;
+  address: string;
+  password: string;
+  confirmPassword: string;
+  userCategory: string;
+  occupation: string;
+  isStaff: boolean;
+};

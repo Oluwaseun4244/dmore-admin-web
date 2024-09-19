@@ -2,6 +2,7 @@
 
 import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
+import { Toaster } from 'react-hot-toast';
 import SessionWrapper from "../../components/SessionWrapper";
 import PrivateRoute from "./components/PrivateRoute";
 import "./globals.css";
@@ -13,7 +14,7 @@ import Alert from "./components/Alert";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const publicRoutes = ["/login", "/signup"];
+const publicRoutes = ["/login", "/signup", "/signup/buyer", "/signup/staff"];
 
 export default function RootLayout({
   children,
@@ -29,6 +30,7 @@ export default function RootLayout({
         <html lang='en'>
           <body className={`${inter.className} overflow-x-hidden`}>
             <ReactQueryProvider>
+              <Toaster />
               {isPublicRoute ? (
                 children
               ) : (
