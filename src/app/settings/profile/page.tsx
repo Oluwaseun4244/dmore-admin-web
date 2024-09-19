@@ -7,9 +7,8 @@ import AvatarInitial from "../../components/generic/AvatarInitial";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useQueryClient } from "@tanstack/react-query";
-import { getSession, useSession } from "next-auth/react";
 import { ProfileResponse } from "@/app/types/auth.types";
-import { useGetQuery } from "@/app/utils/apiUtils";
+
 
 interface UserDetailsType {
   firstName: string;
