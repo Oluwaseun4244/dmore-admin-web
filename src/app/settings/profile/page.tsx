@@ -6,18 +6,15 @@ import Button from "../../components/generic/Button";
 import AvatarInitial from "../../components/generic/AvatarInitial";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { useQueryClient } from "@tanstack/react-query";
+import { getSession, useSession } from "next-auth/react";
+import { ProfileResponse } from "@/app/types/auth.types";
+import { useGetQuery } from "@/app/utils/apiUtils";
 
 interface Stat {
   month: string;
   incoming: string;
   outgoing: string;
-}
-
-interface userDetails {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  email: string;
 }
 
 interface Password {
@@ -32,9 +29,33 @@ interface PasswordView {
   newPasswordConfirmVisible: boolean;
 }
 
-function Dashboard() {
-  const [userDetails, setUserDetails] = useState<userDetails>();
+function Profile() {
+
+  const [token, setToken] = useState("");
+  const queryClient = useQueryClient()
+
+  const profileData = queryClient.getQueryData<ProfileResponse>([`profile`])
+
+  console.log("query", profileData)
+
+
+  React.useEffect(() => {
+    const checkSession = async () => {
+      const session = await getSession();
+
+      if (session && session?.accessToken !== token) {
+        setToken(session.accessToken);
+      }
+    };
+
+    checkSession();
+  }, [token]);
+ 
+
+
+  const [userDetails, setUserDetails] = useState<ProfileResponse>();
   const [password, setPassword] = useState<Password>();
+
   const [passwordView, setPasswordView] = useState<PasswordView>({
     oldPasswordVisible: false,
     newPasswordVisible: false,
@@ -48,7 +69,7 @@ function Dashboard() {
   };
   return (
     <DashboardLayout activePage="settings" navTitle="Settings">
-      <div >
+      <div>
         <div className="font-satoshi flex items-center font-medium text-[20px] gap-[10px]">
           <AvatarInitial
             fullName="Tola Banjo"
@@ -69,7 +90,7 @@ function Dashboard() {
                 placeholder="Tola"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.firstName}
+                value={userDetails?.firstName || profileData?.firstName}
               />
             </div>
             <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
@@ -79,7 +100,7 @@ function Dashboard() {
                 placeholder="Banjo"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.lastName}
+                value={userDetails?.lastName || profileData?.lastName}
               />
             </div>
           </div>
@@ -91,17 +112,17 @@ function Dashboard() {
                 placeholder="Johndoe@gmail.com"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.email}
+                value={userDetails?.email || profileData?.email}
               />
             </div>
             <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <input
                 type="text"
-                name="phone"
+                name="phoneNumber"
                 placeholder="09090909090"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.phone}
+                value={userDetails?.phoneNumber || profileData?.phoneNumber}
               />
             </div>
           </div>
@@ -225,4 +246,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Profile;

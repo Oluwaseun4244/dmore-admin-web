@@ -33,6 +33,7 @@ export type ProfileResponse = {
     role: string,
     userCategory: string,
     occupation: string,
+    phoneNumber: string,
     isStaff: boolean
 }
 
