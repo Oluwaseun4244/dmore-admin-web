@@ -11,11 +11,6 @@ import { getSession, useSession } from "next-auth/react";
 import { ProfileResponse } from "@/app/types/auth.types";
 import { useGetQuery } from "@/app/utils/apiUtils";
 
-interface Stat {
-  month: string;
-  incoming: string;
-  outgoing: string;
-}
 interface UserDetailsType {
   firstName: string;
   lastName: string;
