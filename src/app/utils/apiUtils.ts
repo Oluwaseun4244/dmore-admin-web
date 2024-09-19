@@ -7,13 +7,25 @@ import {
     QueryKey,
 } from '@tanstack/react-query'
 import { BASE_URL } from "./constants";
+import { getSession } from "next-auth/react";
+
+
+interface getConfig {
+    url: string;
+    queryKeys: (string | boolean | any)[]
+}
+
 export const getData = async<T>(url: string): Promise<T> => {
     return new Promise(async (resolve, reject) => {
 
-        const userToken = localStorage.getItem("userToken");
+        const session = await getSession()
         try {
+
             const config = {
-                headers: { Authorization: `Bearer ${userToken}` }
+                headers: {
+                    Authorization: `Bearer ${session?.accessToken}`,
+                    'Content-Type': 'application/json'
+                }
             };
 
             const response: AxiosResponse<T> = await axios.get(`${BASE_URL}/${url}`, config);
@@ -34,11 +46,11 @@ export const postData = async <T>(url: string, payload: unknown): Promise<T> => 
 
     return new Promise(async (resolve, reject) => {
 
-        const userToken = localStorage.getItem("userToken");
-        
+        const session = await getSession()
+
         try {
             const config = {
-                headers: { Authorization: `Bearer ${userToken}` }
+                headers: { Authorization: `Bearer ${session?.accessToken}` }
             };
 
             const response: AxiosResponse<T> = await axios.post(`${BASE_URL}/${url}`, payload, config);
@@ -48,17 +60,17 @@ export const postData = async <T>(url: string, payload: unknown): Promise<T> => 
             }
             reject(response.statusText)
         } catch (error: any) {
-            // if(error?.response?.status === 401 )
+
             reject(error)
         }
     })
 };
 
-export const useGetQuery = <T>(url: string, queryKeys: string[], options?: Omit<UseQueryOptions<T, ApiErrorResponse, T, QueryKey>, 'queryFn'>) => {
+export const useGetQuery = <T>(config: getConfig, options?: Omit<UseQueryOptions<T, ApiErrorResponse, T, QueryKey>, 'queryFn'>) => {
 
     return useQuery<T, ApiErrorResponse>({
-        queryKey: queryKeys,
-        queryFn: () => getData<T>(url),
+        queryKey: config.queryKeys,
+        queryFn: () => getData<T>(config.url),
         ...options
     })
 }

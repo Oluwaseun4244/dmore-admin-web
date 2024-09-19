@@ -10,16 +10,18 @@ import React, { useState } from "react";
 import right_img from "../../../public/images/dmore_auth_right.png";
 import "../../app/globals.css";
 import ".././globals.css";
-import { LoginApiData } from "../types/auth.types";
+import { LoginApiData, ProfileResponse } from "../types/auth.types";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { useLogin } from "./hooks/useLogin";
+import { useGetQuery } from "../utils/apiUtils";
 import { useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [token, setToken] = useState("");
   const router = useRouter();
+
 
   const { status } = useSession();
 
@@ -35,8 +37,7 @@ const Login = () => {
     password: "",
   });
 
-  // const { loginMutation } = useLogin();
-  // const { isPending, mutate } = loginMutation;
+
 
   const [isPending, setIsPending] = useState(false);
 
@@ -45,6 +46,25 @@ const Login = () => {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+
+
+  const profileQuery = useGetQuery<ProfileResponse>({
+    url: "profile", queryKeys: [
+      `profile-${token}`, token
+    ]
+  }, {
+    enabled: !!token, queryKey: [
+      `profile-${token}`, token
+    ]
+  })
+
+  useEffect(() => {
+    if (!profileQuery.isPending) {
+      router.prefetch("/dashboard");
+      router.push("/dashboard");
+    }
+  }, [profileQuery.isPending, router])
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,9 +87,15 @@ const Login = () => {
         console.error(result.error);
         alert(result.error, "error");
       } else if (result?.ok) {
+        const session = await getSession()
+
         alert("Login successful, Redirecting...", "success");
-        router.prefetch("/dashboard");
-        router.push("/dashboard");
+        if (session) {
+          setToken(session.accessToken)
+        }
+        console.log("session", session)
+
+
       } else {
         alert("Login failed. Please try again.", "error");
       }

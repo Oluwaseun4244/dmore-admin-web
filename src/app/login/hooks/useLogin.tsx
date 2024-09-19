@@ -11,22 +11,16 @@ export const useLogin = () => {
   const queryClient = useQueryClient()
   const [token, setToken] = React.useState("")
 
-  const profileQuery = useGetQuery<ProfileResponse>("/profile", [
-    `profile-${token}`, token
-  ], {
-    enabled: !!token, queryKey: [
-      `profile-${token}`, token
-    ]
-  });
 
 
-  React.useEffect(() => {
 
-    if (profileQuery.data && !profileQuery.isPending) {
-      //KINDLY MODIFY THIS profileQuery.data as well, depending on the schema
-      queryClient.setQueryData(['user'], profileQuery.data)
-    }
-  }, [queryClient, profileQuery.isPending, profileQuery.data])
+  // React.useEffect(() => {
+
+  //   if (profileQuery.data && !profileQuery.isPending) {
+  //     //KINDLY MODIFY THIS profileQuery.data as well, depending on the schema
+  //     queryClient.setQueryData(['user'], profileQuery.data)
+  //   }
+  // }, [queryClient, profileQuery.isPending, profileQuery.data])
 
 
 
