@@ -16,6 +16,12 @@ interface Stat {
   incoming: string;
   outgoing: string;
 }
+interface UserDetailsType {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+}
 
 interface Password {
   oldPassword: string;
@@ -30,31 +36,21 @@ interface PasswordView {
 }
 
 function Profile() {
+  const queryClient = useQueryClient();
 
-  const [token, setToken] = useState("");
-  const queryClient = useQueryClient()
+  const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
 
-  const profileData = queryClient.getQueryData<ProfileResponse>([`profile`])
-
-  console.log("query", profileData)
-
-
-  React.useEffect(() => {
-    const checkSession = async () => {
-      const session = await getSession();
-
-      if (session && session?.accessToken !== token) {
-        setToken(session.accessToken);
-      }
-    };
-
-    checkSession();
-  }, [token]);
- 
-
-
-  const [userDetails, setUserDetails] = useState<ProfileResponse>();
-  const [password, setPassword] = useState<Password>();
+  const [userDetails, setUserDetails] = useState<UserDetailsType>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+  });
+  const [password, setPassword] = useState<Password>({
+    oldPassword: "",
+    newPassword: "",
+    newPasswordConfirm: ""
+  });
 
   const [passwordView, setPasswordView] = useState<PasswordView>({
     oldPasswordVisible: false,
@@ -62,11 +58,28 @@ function Profile() {
     newPasswordConfirmVisible: false,
   });
 
-  const handleUserDetails = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  const handleUserDetails = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setUserDetails((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handlePasswordDetails = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setPassword((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handlePasswordView = (name: keyof PasswordView, value: boolean) => {
     setPasswordView((prev) => ({ ...prev, [name]: value }));
   };
+
   return (
     <DashboardLayout activePage="settings" navTitle="Settings">
       <div>
@@ -139,7 +152,7 @@ function Profile() {
                 name="oldPassword"
                 placeholder="Current password"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
-                onChange={(e) => handleUserDetails(e)}
+                onChange={(e) => handlePasswordDetails(e)}
                 value={password?.oldPassword}
               />
               {passwordView.oldPasswordVisible ? (
@@ -162,7 +175,7 @@ function Profile() {
                 name="newPassword"
                 placeholder="New password"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
-                onChange={(e) => handleUserDetails(e)}
+                onChange={(e) => handlePasswordDetails(e)}
                 value={password?.newPassword}
               />
               {passwordView.newPasswordVisible ? (
@@ -189,7 +202,7 @@ function Profile() {
                 name="newPasswordConfirm"
                 placeholder="Confirm new password"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
-                onChange={(e) => handleUserDetails(e)}
+                onChange={(e) => handlePasswordDetails(e)}
                 value={password?.newPasswordConfirm}
               />
 

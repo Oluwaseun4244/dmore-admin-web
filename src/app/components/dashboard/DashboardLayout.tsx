@@ -10,7 +10,7 @@ import active_wallet from "../../../../public/icons/active-wallet.svg";
 import inactive_users from "../../../../public/icons/inactive-users.svg";
 import inactive_settings from "../../../../public/icons/inactive-settings.svg";
 import active_settings from "../../../../public/icons/active-settings.svg";
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 import { useGetQuery } from "../../utils/apiUtils";
 import { useRouter } from "next/navigation";
 import { useAlert } from "@/lib/features/alert/useAlert";
@@ -36,6 +36,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const queryClient = useQueryClient();
   const [token, setToken] = useState("");
   const router = useRouter();
+
+  const handleSignout = async () => {
+    await signOut();
+  };
   const profileQuery = useGetQuery<ProfileResponse>(
     {
       url: "profile",
@@ -67,12 +71,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </div>
     );
   }
-  // if (!profileQuery.data) {
-  //   alert("Profile not found, invalid token suspected", "error");
-  //   router.push("/login");
-  // }
 
-  // queryClient.setQueryData(["profile"], profileQuery.data);
+  if (!profileQuery.data) {
+    alert("Profile not found, invalid token suspected", "error");
+    handleSignout();
+    router.push("/login");
+  }
+
+  queryClient.setQueryData(["profile"], profileQuery.data);
 
   return (
     <div className="h-svh bg-white overflow-hidden">
