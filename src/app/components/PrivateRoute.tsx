@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
@@ -7,12 +7,19 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    console.log("session", session);
+    console.log("status", status);
+  }, [session, status]);
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/login");
+      const returnUrl = encodeURIComponent(pathname as string);
+      router.push(`/login?returnUrl=${returnUrl}`);
     }
-  }, [status, router]);
+  }, [status, router, pathname]);
 
   if (status === "loading") {
     return (
@@ -22,7 +29,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
     );
   }
 
-  return session ? <>{children}</> : null;
+  return status === "authenticated" ? <>{children}</> : null;
 };
 
 export default PrivateRoute;

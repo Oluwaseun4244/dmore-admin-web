@@ -2,43 +2,43 @@
 
 import Button from "@/app/components/generic/Button";
 import { useAlert } from "@/lib/features/alert/useAlert";
-import { signIn } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import right_img from "../../../public/images/dmore_auth_right.png";
 import "../../app/globals.css";
 import ".././globals.css";
 import { LoginApiData } from "../types/auth.types";
 import { useLogin } from "./hooks/useLogin";
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
 
 const Login = () => {
   // const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
-
-  const { status } = useSession();
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.prefetch('/dashboard');
-      router.push("/dashboard");
-    }
-  }, [status, router]);
+  const searchParams = useSearchParams();
 
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
     password: "",
   });
+  const { status, data: session } = useSession();
+  const [isPending, setIsPending] = useState(false);
+  const { alert } = useAlert();
+  const returnUrl = searchParams?.get("returnUrl") || "/dashboard";
+
+  useEffect(() => {
+    if (status === "authenticated" && session) {
+      router.push(returnUrl);
+    }
+  }, [status, router, session, returnUrl]);
+
+  // useEffect(() => {
+  //   console.log("status", status);
+  // }, []);
 
   // const { loginMutation } = useLogin();
   // const { isPending, mutate } = loginMutation;
-
-  const [isPending, setIsPending] = useState(false);
-
-  const { alert } = useAlert();
 
   // const togglePasswordVisibility = () => {
   //   setPasswordVisible(!passwordVisible);
@@ -53,7 +53,7 @@ const Login = () => {
     }
 
     try {
-      setIsPending(true); // Assuming you add this state
+      setIsPending(true);
 
       const result = await signIn("credentials", {
         redirect: false,
@@ -66,8 +66,14 @@ const Login = () => {
         alert(result.error, "error");
       } else if (result?.ok) {
         alert("Login successful, Redirecting...", "success");
-        router.prefetch("/dashboard");
-        router.push("/dashboard");
+
+        await getSession();
+
+        console.log("session after login", session);
+        console.log("status after login", status);
+
+        router.push(returnUrl);
+        window.location.reload();
       } else {
         alert("Login failed. Please try again.", "error");
       }
