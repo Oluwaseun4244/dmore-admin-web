@@ -157,7 +157,7 @@ const Login = () => {
             disabled={
               !loginData.email.length || !loginData.password.length || isPending
             }
-            // onClick={isPending ? () => console.log("is loading") : handleSubmit}
+          // onClick={isPending ? () => console.log("is loading") : handleSubmit}
           />
           {/* <Button
             text='Sign in via GitHub'

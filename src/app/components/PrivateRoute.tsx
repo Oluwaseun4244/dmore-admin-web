@@ -1,28 +1,40 @@
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const { data: session, status } = useSession();
+const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { status } = useSession();
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [hasSession, setHasSession] = useState(false);
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login");
+
+    const checkSession = async () => {
+      const session = await getSession();
+      if (!session) {
+        router.push("/login");
+      } else {
+        setHasSession(true);
+      }
+      setLoading(false);
+    };
+
+
+    if (status !== "loading") {
+      checkSession();
     }
   }, [status, router]);
 
-  if (status === "loading") {
+  if (loading) {
     return (
-      <div className='w-screen h-screen flex justify-center items-center'>
-        <p className='font-sans text-white text-5xl'>Loading...</p>
+      <div className="w-screen h-screen flex justify-center items-center">
+        <p className="font-sans text-white text-5xl">Loading...</p>
       </div>
     );
   }
 
-  return session ? <>{children}</> : null;
+  return hasSession ? <>{children}</> : null;
 };
 
 export default PrivateRoute;
