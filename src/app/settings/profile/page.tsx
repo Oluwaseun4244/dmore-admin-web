@@ -9,7 +9,6 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { useQueryClient } from "@tanstack/react-query";
 import { ProfileResponse } from "@/app/types/auth.types";
 
-
 interface UserDetailsType {
   firstName: string;
   lastName: string;
@@ -43,7 +42,7 @@ function Profile() {
   const [password, setPassword] = useState<Password>({
     oldPassword: "",
     newPassword: "",
-    newPasswordConfirm: ""
+    newPasswordConfirm: "",
   });
 
   const [passwordView, setPasswordView] = useState<PasswordView>({
@@ -73,6 +72,8 @@ function Profile() {
   const handlePasswordView = (name: keyof PasswordView, value: boolean) => {
     setPasswordView((prev) => ({ ...prev, [name]: value }));
   };
+
+
 
   return (
     <DashboardLayout activePage="settings" navTitle="Settings">
