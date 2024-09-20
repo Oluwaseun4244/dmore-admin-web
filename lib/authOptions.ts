@@ -1,5 +1,7 @@
+import { decodeJwt } from "@/app/utils/apiUtils";
 import { jwtDecode } from "jwt-decode";
 import { NextAuthOptions } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 interface DecodedToken {
@@ -10,6 +12,96 @@ interface DecodedToken {
   "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname": string;
   "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/mobilephone": string;
   exp: number;
+  exp2: number;
+}
+
+// async function refreshAccessToken(token: JWT) {
+//   try {
+//     const url = "https://dmore-backend-dotnet.onrender.com/refresh"
+
+//     const response = await fetch(url, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${token?.accessToken}`,
+//       },
+//       body: JSON.stringify({
+//         token: token.accessToken,
+//         refreshToken: token.refreshToken,
+//       }),
+//     })
+
+//     const refreshedTokens = await response.json()
+//     if (!response.ok) {
+//       throw refreshedTokens
+//     }
+//     console.log("call refresh token", refreshedTokens)
+
+//     return {
+//       ...token,
+//       accessToken: refreshedTokens.token,
+//       refreshToken: refreshedTokens.refreshToken,
+//       expiredAt: token.expiredAt = decodeJwt(refreshedTokens.token).exp.toString()
+//     }
+
+//   } catch (error) {
+//     console.log(error)
+
+//     return {
+//       ...token,
+//       error: "RefreshAccessTokenError",
+//     }
+//   }
+// }
+
+async function refreshAccessToken(token: JWT) {
+  if (token.refreshing) {
+    // If a refresh is already in progress, just return the token
+    return token;
+  }
+
+  // Set the refreshing flag
+  token.refreshing = true;
+
+  try {
+    const url = "https://dmore-backend-dotnet.onrender.com/refresh";
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token?.accessToken}`,
+      },
+      body: JSON.stringify({
+        token: token.accessToken,
+        refreshToken: token.refreshToken,
+      }),
+    });
+
+    const refreshedTokens = await response.json();
+    if (!response.ok) {
+      throw refreshedTokens;
+    }
+
+    console.log("call refresh token", refreshedTokens);
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.token,
+      refreshToken: refreshedTokens.refreshToken,
+      expiredAt: decodeJwt(refreshedTokens.token).exp.toString(),
+      refreshing: false, // Reset the flag after successful refresh
+    };
+
+  } catch (error) {
+    console.log(error);
+
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+      refreshing: false, // Reset the flag on error
+    };
+  }
 }
 
 export const authOptions: NextAuthOptions = {
@@ -58,7 +150,7 @@ export const authOptions: NextAuthOptions = {
               ],
               email:
                 decodedToken[
-                  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
                 ],
               name: decodedToken.fullName,
               token: data.token,
@@ -82,8 +174,21 @@ export const authOptions: NextAuthOptions = {
         token.name = user.name;
         token.accessToken = user.token;
         token.refreshToken = user.refreshToken;
+        token.expiredAt = decodeJwt(user.token).exp.toString()
       }
-      return token;
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (token.expiredAt) {
+        const expirationTime = Number(token.expiredAt);
+        // Check if the token is expiring in grater than 5 minutes (300 seconds)
+        if (expirationTime - currentTime > 3560) {
+          console.log("not expiring soon3", expirationTime - currentTime, token.refreshToken)
+          return token
+        }
+        console.log("Token is expiring soon:", expirationTime - currentTime, token.expiredAt);
+      }
+      return refreshAccessToken(token)
+
     },
     async session({ session, token }) {
       if (token) {
@@ -92,6 +197,7 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name;
         session.accessToken = token.accessToken;
         session.refreshToken = token.refreshToken;
+        session.expiredAt = token.expiredAt;
       }
       return session;
     },

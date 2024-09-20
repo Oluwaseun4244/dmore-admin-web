@@ -73,7 +73,9 @@ function Profile() {
     setPasswordView((prev) => ({ ...prev, [name]: value }));
   };
 
-
+  // if (!profileData) {
+  //   console.log(profileData);
+  // }
 
   return (
     <DashboardLayout activePage="settings" navTitle="Settings">
@@ -238,10 +240,8 @@ function Profile() {
           </h5>
           <div className="flex items-center gap-[20px] mt-[10px]">
             <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
-              <select className="outline-none text-[12px]">
-                <option selected disabled>
-                  Choose language
-                </option>
+              <select defaultValue={""} className="outline-none text-[12px]">
+                <option disabled>Choose language</option>
                 <option value={"english"}>English</option>
                 <option value={"yoruba"}>Yoruba</option>
                 <option value={"french"}>French</option>

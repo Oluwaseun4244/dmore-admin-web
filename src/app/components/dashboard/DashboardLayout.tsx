@@ -55,14 +55,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   useEffect(() => {
     const checkSession = async () => {
       const session = await getSession();
-
-      if (session && session?.accessToken !== token) {
-        setToken(session.accessToken);
+      if (session?.accessToken && session?.accessToken !== token) {
+        // console.log("session1", session?.accessToken, "session2", token);
+        setToken(session?.accessToken);
       }
     };
 
     checkSession();
   }, [token]);
+
 
   if (profileQuery.isPending) {
     return (
@@ -72,10 +73,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     );
   }
 
-  if (!profileQuery.data) {
+  if (!profileQuery.data || profileQuery?.error?.response?.status === 401) {
     alert("Profile not found, invalid token suspected", "error");
     handleSignout();
     router.push("/login");
+    return null;
   }
 
   queryClient.setQueryData(["profile"], profileQuery.data);

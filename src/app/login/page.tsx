@@ -2,20 +2,18 @@
 
 import Button from "@/app/components/generic/Button";
 import { useAlert } from "@/lib/features/alert/useAlert";
-import { signIn } from "next-auth/react";
+import { signIn, useSession, getSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import right_img from "../../../public/images/dmore_auth_right.png";
 import "../../app/globals.css";
 import ".././globals.css";
 import { LoginApiData } from "../types/auth.types";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
-
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { decodeJwt } from "../utils/apiUtils";
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -53,7 +51,7 @@ const Login = () => {
     }
 
     try {
-      setIsPending(true); 
+      setIsPending(true);
 
       const result = await signIn("credentials", {
         redirect: false,
@@ -65,6 +63,15 @@ const Login = () => {
         console.error(result.error);
         alert(result.error, "error");
       } else if (result?.ok) {
+        const session = await getSession();
+
+        if (session?.accessToken) {
+          if (session && session.accessToken) {
+            const decodedToken = decodeJwt(session?.accessToken);
+            localStorage.setItem("expiration", decodedToken?.exp.toString());
+          }
+        }
+
         alert("Login successful, Redirecting...", "success");
         router.prefetch("/dashboard");
         router.push("/dashboard");

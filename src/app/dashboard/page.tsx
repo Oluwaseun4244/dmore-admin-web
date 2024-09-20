@@ -9,9 +9,6 @@ import TransferPointModal from "../components/dashboard/TransferPointModal";
 import WalletCard from "../components/dashboard/WalletCard";
 import Button from "../components/generic/Button";
 
-import { signIn, useSession } from "next-auth/react";
-// import { useQueryClient } from "@tanstack/react-query";
-
 interface Stat {
   month: string;
   incoming: string;
@@ -24,11 +21,7 @@ function Dashboard() {
   const [transferIsopen, setTransferIsOpen] = useState(false);
   const [buyIsOpen, setBuyIsOpen] = useState(false);
 
-  // const queryClient = useQueryClient();
 
-  // const user2 = queryClient.getQueryState(["user"]);
-
-  // console.log("user", user2);
   const dummyData = [
     { month: "Jan", incoming: "20", outgoing: "10" },
     { month: "Feb", incoming: "40", outgoing: "40" },
