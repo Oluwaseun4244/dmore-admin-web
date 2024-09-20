@@ -15,94 +15,63 @@ interface DecodedToken {
   exp2: number;
 }
 
-// async function refreshAccessToken(token: JWT) {
-//   try {
-//     const url = "https://dmore-backend-dotnet.onrender.com/refresh"
 
-//     const response = await fetch(url, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token?.accessToken}`,
-//       },
-//       body: JSON.stringify({
-//         token: token.accessToken,
-//         refreshToken: token.refreshToken,
-//       }),
-//     })
+let isRefreshing = false;
+let refreshTokenPromise: Promise<JWT> | null = null;
 
-//     const refreshedTokens = await response.json()
-//     if (!response.ok) {
-//       throw refreshedTokens
-//     }
-//     console.log("call refresh token", refreshedTokens)
-
-//     return {
-//       ...token,
-//       accessToken: refreshedTokens.token,
-//       refreshToken: refreshedTokens.refreshToken,
-//       expiredAt: token.expiredAt = decodeJwt(refreshedTokens.token).exp.toString()
-//     }
-
-//   } catch (error) {
-//     console.log(error)
-
-//     return {
-//       ...token,
-//       error: "RefreshAccessTokenError",
-//     }
-//   }
-// }
-
-async function refreshAccessToken(token: JWT) {
-  if (token.refreshing) {
-    // If a refresh is already in progress, just return the token
-    return token;
+async function refreshAccessToken(token: JWT): Promise<JWT> {
+  if (isRefreshing) {
+    // If another refresh is in progress, wait for the current refresh to resolve
+    return refreshTokenPromise as Promise<JWT>;
   }
 
-  // Set the refreshing flag
-  token.refreshing = true;
+  isRefreshing = true;
 
-  try {
-    const url = "https://dmore-backend-dotnet.onrender.com/refresh";
+  refreshTokenPromise = (async (): Promise<JWT> => {
+    try {
+      const url = "https://dmore-backend-dotnet.onrender.com/refresh";
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token?.accessToken}`,
-      },
-      body: JSON.stringify({
-        token: token.accessToken,
-        refreshToken: token.refreshToken,
-      }),
-    });
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token?.accessToken}`,
+        },
+        body: JSON.stringify({
+          token: token.accessToken,
+          refreshToken: token.refreshToken,
+        }),
+      });
 
-    const refreshedTokens = await response.json();
-    if (!response.ok) {
-      throw refreshedTokens;
+      const refreshedTokens = await response.json();
+      if (!response.ok) {
+        throw refreshedTokens;
+      }
+
+      return {
+        ...token,
+        accessToken: refreshedTokens.token,
+        refreshToken: refreshedTokens.refreshToken,
+        expiredAt: decodeJwt(refreshedTokens.token).exp.toString(),
+      };
+
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      return {
+        ...token,
+        error: "RefreshAccessTokenError",
+      };
+    } finally {
+      // Reset the flag and promise after the refresh completes
+      isRefreshing = false;
+      refreshTokenPromise = null;
     }
+  })();
 
-    console.log("call refresh token", refreshedTokens);
-
-    return {
-      ...token,
-      accessToken: refreshedTokens.token,
-      refreshToken: refreshedTokens.refreshToken,
-      expiredAt: decodeJwt(refreshedTokens.token).exp.toString(),
-      refreshing: false, // Reset the flag after successful refresh
-    };
-
-  } catch (error) {
-    console.log(error);
-
-    return {
-      ...token,
-      error: "RefreshAccessTokenError",
-      refreshing: false, // Reset the flag on error
-    };
-  }
+  // Await the refresh token promise
+  return refreshTokenPromise;
 }
+
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -181,11 +150,9 @@ export const authOptions: NextAuthOptions = {
       if (token.expiredAt) {
         const expirationTime = Number(token.expiredAt);
         // Check if the token is expiring in grater than 5 minutes (300 seconds)
-        if (expirationTime - currentTime > 3560) {
-          console.log("not expiring soon3", expirationTime - currentTime, token.refreshToken)
+        if (expirationTime - currentTime > 300) {
           return token
         }
-        console.log("Token is expiring soon:", expirationTime - currentTime, token.expiredAt);
       }
       return refreshAccessToken(token)
 
