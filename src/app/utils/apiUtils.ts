@@ -58,10 +58,6 @@ export const getData = async<T>(url: string): Promise<T> => {
         console.log("session", session)
         try {
 
-            // if (willExpireInFiveMinutes()) {
-            //     //need to refetch token
-            // }
-
             const config = {
                 headers: {
                     Authorization: `Bearer ${session?.accessToken}`,
@@ -76,7 +72,6 @@ export const getData = async<T>(url: string): Promise<T> => {
             }
             resolve(response.data)
         } catch (error: any) {
-            // if(error?.response?.status === 401 )
             reject(error)
         }
     })

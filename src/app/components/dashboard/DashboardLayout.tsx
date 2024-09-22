@@ -40,6 +40,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const handleSignout = async () => {
     await signOut();
   };
+
+
   const profileQuery = useGetQuery<ProfileResponse>(
     {
       url: "profile",
@@ -56,7 +58,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     const checkSession = async () => {
       const session = await getSession();
       if (session?.accessToken && session?.accessToken !== token) {
-        // console.log("session1", session?.accessToken, "session2", token);
         setToken(session?.accessToken);
       }
     };

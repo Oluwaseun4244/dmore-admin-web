@@ -8,6 +8,11 @@ import RecentTransaction from "../components/dashboard/RecentTransaction";
 import TransferPointModal from "../components/dashboard/TransferPointModal";
 import WalletCard from "../components/dashboard/WalletCard";
 import Button from "../components/generic/Button";
+import { useAlert } from "@/lib/features/alert/useAlert";
+import { copyText } from "../utils/generic";
+// import { useGetQuery } from "../utils/apiUtils";
+// import { ProfileResponse } from "../types/auth.types";
+// import { useQueryClient } from "@tanstack/react-query";
 
 interface Stat {
   month: string;
@@ -16,11 +21,37 @@ interface Stat {
 }
 
 function Dashboard() {
+  // const queryClient = useQueryClient();
+  // const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
+  const { alert } = useAlert();
   const [monthView, setMonthView] = useState("jan-jun");
   const [statsData, setStatsData] = useState<Stat[]>([]);
   const [transferIsopen, setTransferIsOpen] = useState(false);
   const [buyIsOpen, setBuyIsOpen] = useState(false);
+  const userReferral = "https://www.dmore.io/auth/register?refer_code=7J7B"
 
+  // const userWallets = useGetQuery<ProfileResponse>(
+  //   {
+  //     url: "wallets",
+  //     queryKeys: [`user-wallet-${profileData?.id}`],
+  //   },
+  //   {
+  //     queryKey: [`user-wallet-${profileData?.id}`],
+  //   }
+  // );
+
+
+
+  const copyReferral = async () => {
+    const copy = await copyText(userReferral)
+
+    if (copy.copied && !copy.error) {
+      alert("User referral copied to clipboard!", "success");
+    } else {
+      alert("Failed to copy user referral!", "error");
+    }
+
+  };
 
   const dummyData = [
     { month: "Jan", incoming: "20", outgoing: "10" },
@@ -37,7 +68,6 @@ function Dashboard() {
     { month: "Dec", incoming: "40", outgoing: "40" },
   ];
 
-  // const { data: user } = useUser();
 
   const changView = (value: string) => {
     setMonthView(value);
@@ -58,7 +88,6 @@ function Dashboard() {
     setStatsData(dummyData.slice(0, 6));
   }, []);
 
-  // const { data: session } = useSession();
   return (
     <DashboardLayout activePage='dashboard' navTitle='Credits and Points'>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
@@ -117,7 +146,7 @@ function Dashboard() {
             style={{ wordWrap: "break-word" }}
           >
             <p className='font-satoshi font-medium text-[14px] lg:text-[16px] text-dark-purple'>
-              Referral Code : https://www.dmore.io/auth/register?refer_code=7J7B
+              Referral Code : {userReferral}
             </p>
           </div>
 
@@ -125,7 +154,7 @@ function Dashboard() {
             text='Copy'
             bg='bg-app-purple'
             classNames='text-app-purple border w-[77px] h-[39px] text-primary-white'
-            onClick={() => alert("copy refferal link")}
+            onClick={copyReferral}
           />
         </div>
       </div>
@@ -189,15 +218,13 @@ function Dashboard() {
             <div className='w-[40px] h-[7px] flex flex-row rounded-md bg-faint-peach2 overflow-hidden'>
               <div
                 onClick={() => changView("jan-jun")}
-                className={`w-[20px] h-[7px] rounded-md ${
-                  monthView === "jan-jun" ? "bg-app-purple" : ""
-                }`}
+                className={`w-[20px] h-[7px] rounded-md ${monthView === "jan-jun" ? "bg-app-purple" : ""
+                  }`}
               ></div>
               <div
                 onClick={() => changView("jul-dec")}
-                className={`w-[20px] h-[7px] rounded-md ${
-                  monthView === "jul-dec" ? "bg-app-purple" : ""
-                }`}
+                className={`w-[20px] h-[7px] rounded-md ${monthView === "jul-dec" ? "bg-app-purple" : ""
+                  }`}
               ></div>
             </div>
           </div>

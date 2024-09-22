@@ -6,8 +6,9 @@ import Button from "../../components/generic/Button";
 import AvatarInitial from "../../components/generic/AvatarInitial";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { useQueryClient } from "@tanstack/react-query";
 import { ProfileResponse } from "@/app/types/auth.types";
+import { useGetQuery } from "@/app/utils/apiUtils";
+import { getSession } from "next-auth/react";
 
 interface UserDetailsType {
   firstName: string;
@@ -29,10 +30,8 @@ interface PasswordView {
 }
 
 function Profile() {
-  const queryClient = useQueryClient();
 
-  const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
-
+  const [token, setToken] = useState("");
   const [userDetails, setUserDetails] = useState<UserDetailsType>({
     firstName: "",
     lastName: "",
@@ -50,6 +49,31 @@ function Profile() {
     newPasswordVisible: false,
     newPasswordConfirmVisible: false,
   });
+
+  const profileQuery = useGetQuery<ProfileResponse>(
+    {
+      url: "profile",
+      queryKeys: [`profile-${token}`, token],
+    },
+    {
+      enabled: !!token,
+      queryKey: [`profile-${token}`, token],
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  React.useEffect(() => {
+    const checkSession = async () => {
+      const session = await getSession();
+      if (session?.accessToken && session?.accessToken !== token) {
+        setToken(session?.accessToken);
+      }
+    };
+
+    checkSession();
+  }, [token]);
+
+
 
   const handleUserDetails = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -73,9 +97,6 @@ function Profile() {
     setPasswordView((prev) => ({ ...prev, [name]: value }));
   };
 
-  // if (!profileData) {
-  //   console.log(profileData);
-  // }
 
   return (
     <DashboardLayout activePage="settings" navTitle="Settings">
@@ -85,7 +106,7 @@ function Profile() {
             fullName="Tola Banjo"
             classNames="w-8 h-8 bg-faint-purple"
           />
-          <h5>Tola Banjo</h5>
+          <h5>{`${profileQuery?.data?.firstName} ${profileQuery?.data?.lastName}`}</h5>
         </div>
 
         <div className="mt-[50px]">
@@ -100,7 +121,7 @@ function Profile() {
                 placeholder="Tola"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.firstName || profileData?.firstName}
+                value={userDetails?.firstName || profileQuery?.data?.firstName}
               />
             </div>
             <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
@@ -110,7 +131,7 @@ function Profile() {
                 placeholder="Banjo"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.lastName || profileData?.lastName}
+                value={userDetails?.lastName || profileQuery?.data?.lastName}
               />
             </div>
           </div>
@@ -122,7 +143,7 @@ function Profile() {
                 placeholder="Johndoe@gmail.com"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.email || profileData?.email}
+                value={userDetails?.email || profileQuery?.data?.email}
               />
             </div>
             <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
@@ -132,7 +153,7 @@ function Profile() {
                 placeholder="09090909090"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.phoneNumber || profileData?.phoneNumber}
+                value={userDetails?.phoneNumber || profileQuery?.data?.phoneNumber}
               />
             </div>
           </div>
@@ -151,6 +172,7 @@ function Profile() {
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handlePasswordDetails(e)}
                 value={password?.oldPassword}
+                autoComplete="new-password"
               />
               {passwordView.oldPasswordVisible ? (
                 <FaRegEyeSlash
@@ -240,7 +262,7 @@ function Profile() {
           </h5>
           <div className="flex items-center gap-[20px] mt-[10px]">
             <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
-              <select defaultValue={""} className="outline-none text-[12px]">
+              <select defaultValue={"english"} className="outline-none text-[12px]">
                 <option disabled>Choose language</option>
                 <option value={"english"}>English</option>
                 <option value={"yoruba"}>Yoruba</option>
