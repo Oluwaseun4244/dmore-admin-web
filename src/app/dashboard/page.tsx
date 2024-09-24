@@ -10,9 +10,11 @@ import WalletCard from "../components/dashboard/WalletCard";
 import Button from "../components/generic/Button";
 import { useAlert } from "@/lib/features/alert/useAlert";
 import { copyText } from "../utils/generic";
-// import { useGetQuery } from "../utils/apiUtils";
-// import { ProfileResponse } from "../types/auth.types";
-// import { useQueryClient } from "@tanstack/react-query";
+import { UserWallets } from "../types/wallet.types";
+import { useGetQuery } from "../utils/apiUtils";
+import { ProfileResponse } from "../types/auth.types";
+import { useQueryClient } from "@tanstack/react-query";
+import Spinner from "../components/generic/Spinner";
 
 interface Stat {
   month: string;
@@ -21,8 +23,8 @@ interface Stat {
 }
 
 function Dashboard() {
-  // const queryClient = useQueryClient();
-  // const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
+  const queryClient = useQueryClient();
+  const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
   const { alert } = useAlert();
   const [monthView, setMonthView] = useState("jan-jun");
   const [statsData, setStatsData] = useState<Stat[]>([]);
@@ -30,15 +32,15 @@ function Dashboard() {
   const [buyIsOpen, setBuyIsOpen] = useState(false);
   const userReferral = "https://www.dmore.io/auth/register?refer_code=7J7B"
 
-  // const userWallets = useGetQuery<ProfileResponse>(
-  //   {
-  //     url: "wallets",
-  //     queryKeys: [`user-wallet-${profileData?.id}`],
-  //   },
-  //   {
-  //     queryKey: [`user-wallet-${profileData?.id}`],
-  //   }
-  // );
+  const userWallets = useGetQuery<UserWallets>(
+    {
+      url: `userwallets`,
+      queryKeys: [`user-wallet-${profileData?.id}`],
+    },
+    {
+      queryKey: [`user-wallet-${profileData?.id}`],
+    }
+  );
 
 
 
@@ -90,40 +92,30 @@ function Dashboard() {
 
   return (
     <DashboardLayout activePage='dashboard' navTitle='Credits and Points'>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
-        <WalletCard
-          color='text-white'
-          bg='bg-app-purple'
-          title='Total Available Points'
-          showEyes
-          showInfo={false}
-          balance={217}
-        />
-        <WalletCard
-          color='text-app-purple'
-          showEyes={false}
-          title='Personal Wallet'
-          showInfo
-          balance={17}
-          toolTip='Whatever the info is for this particular card, usually a short description for the wallet type'
-        />
-        <WalletCard
-          color='text-app-purple'
-          showEyes={false}
-          title='Retails Wallet'
-          showInfo
-          balance={98}
-          toolTip='Whatever the info is for this particular card, usually a short description for the wallet type'
-        />
-        <WalletCard
-          color='text-app-purple'
-          showEyes={false}
-          title='Reward Wallet'
-          showInfo
-          balance={102}
-          toolTip='Whatever the info is for this particular card, usually a short description for the wallet type'
-        />
+      <div>
+        {
+          userWallets.isPending ?
+            <div className="w-full flex items-center justify-center h-[200px]">
+              <Spinner />
+            </div> :
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+
+              {userWallets?.data?.slice(0, 3).map((wallet, index) => (
+                <WalletCard
+                  key={wallet.code}
+                  bg={index === 0 ? "bg-app-purple" : ""}
+                  color={index === 0 ? "text-white" : "text-app-purple"}
+                  title={`${wallet?.walletType} Wallet`}
+                  showEyes={false}
+                  showInfo
+                  balance={wallet?.availablePoints || 0}
+                  toolTip={wallet?.description || 'Wallet description'}
+                />
+              ))}
+            </div>
+        }
       </div>
+
       <div className='mt-10 flex flex-col lg:flex-row  items-center lg:items-start justify-between gap-4'>
         <div className='flex flex-row w-[100%] lg:w-[350px] gap-[10px]'>
           <Button
