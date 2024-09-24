@@ -20,6 +20,7 @@ import SideItem from "./SideItem";
 
 import Navbar from "./Navbar";
 import { ProfileResponse } from "@/app/types/auth.types";
+import { Session } from "next-auth";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -35,6 +36,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const { alert } = useAlert();
   const queryClient = useQueryClient();
   const [token, setToken] = useState("");
+  const [session, setSession] = useState<Session>();
   const router = useRouter();
 
   const handleSignout = async () => {
@@ -42,6 +44,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   };
 
 
+  
   const profileQuery = useGetQuery<ProfileResponse>(
     {
       url: "profile",
@@ -59,12 +62,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       const session = await getSession();
       if (session?.accessToken && session?.accessToken !== token) {
         setToken(session?.accessToken);
+        setSession(session)
       }
     };
 
     checkSession();
   }, [token]);
-
 
   if (profileQuery.isPending) {
     return (
@@ -74,11 +77,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     );
   }
 
+  if (session?.error || session?.error == 'RefreshAccessTokenError'){
+    alert("Could not refresh token, logging you out", "error");
+    handleSignout();
+    router.push("/login");
+  }
+
   if (!profileQuery.data || profileQuery?.error?.response?.status === 401) {
     alert("Profile not found, invalid token suspected", "error");
     handleSignout();
     router.push("/login");
-    return null;
   }
 
   queryClient.setQueryData(["profile"], profileQuery.data);

@@ -52,7 +52,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
         accessToken: refreshedTokens.token,
         refreshToken: refreshedTokens.refreshToken,
         expiredAt: decodeJwt(refreshedTokens.token).exp.toStrin
-        (),
+          (),
       };
 
     } catch (error) {
@@ -143,7 +143,8 @@ export const authOptions: NextAuthOptions = {
         token.name = user.name;
         token.accessToken = user.token;
         token.refreshToken = user.refreshToken;
-        token.expiredAt = decodeJwt(user.token).exp.toString()
+        token.expiredAt = decodeJwt(user.token).exp.toString();
+        token.error = "";
       }
 
       const currentTime = Math.floor(Date.now() / 1000);
@@ -165,6 +166,7 @@ export const authOptions: NextAuthOptions = {
         session.accessToken = token.accessToken;
         session.refreshToken = token.refreshToken;
         session.expiredAt = token.expiredAt;
+        session.error = token.error;
       }
       return session;
     },

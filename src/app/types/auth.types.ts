@@ -91,13 +91,17 @@ export type ResetPasswordData = {
     password: string;
     token: string;
 }
-// export type StaffRegisterData = {
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     phone: string;
-//     password: string;
-//     referralCode: string;
-//     company: string;
-//     occupation: string
+
+export type SessionUserType = {
+    email: string;
+    id: string;
+    name: string
+
+}
+// export type SessionType = {
+//     accessToken: string;
+//     expiredAt: string;
+//     expires: string;
+//     refreshToken: string;   
+//     user: SessionUserType
 // }
