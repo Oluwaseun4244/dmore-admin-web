@@ -59,6 +59,12 @@ export type BuyerRegisterData = {
     isStaff: boolean;
 }
 
+export type ConfirmEmailData = {
+    userId: string;
+    code: string
+}
+
+
 export type StaffRegisterData = {
   firstName: string;
   lastName: string;

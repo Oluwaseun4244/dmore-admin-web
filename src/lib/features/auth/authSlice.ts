@@ -1,4 +1,4 @@
-import { BuyerRegisterData } from "@/app/types/auth.types";
+import { BuyerRegisterData, ConfirmEmailData } from "@/app/types/auth.types";
 import { useAppDispatch } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -39,12 +39,46 @@ export const registerUserAsync = createAsyncThunk(
       }
 
       const responseData = await response.json();
-      toast.success(responseData.message);
+      console.log(responseData);
+      //   toast.success(responseData.message);
 
       return await response.json();
     } catch (error: any) {
       //   console.log(error.messages);
       return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const confirmEmailAsync = createAsyncThunk(
+  "auth/confirmEmail",
+  async (payload: ConfirmEmailData, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/confirm-email?userId=${payload.userId}&code=${payload.code}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast.error(errorData.messages[0]);
+
+        throw new Error(errorData);
+      }
+
+      const responseData = await response.json();
+      console.log(responseData);
+      //   toast.success(responseData.message);
+
+      return await response.json();
+    } catch (err: any) {
+      return rejectWithValue(err.message);
     }
   }
 );
