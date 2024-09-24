@@ -14,20 +14,26 @@ import { LoginApiData } from "../types/auth.types";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 
-
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const router = useRouter();
 
-  const { status } = useSession();
+  const { status, data: session } = useSession();
 
   useEffect(() => {
-    if (status === "authenticated") {
-      router.prefetch("/dashboard");
-      router.push("/dashboard");
+    if (status === "authenticated" && session?.expiredAt) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      const expirationTime = Number(session.expiredAt);
+
+      if (expirationTime > currentTime) {
+        router.prefetch("/dashboard");
+        router.push("/dashboard");
+      } else {
+        console.log("Session expired, not navigating to dashboard.");
+      }
     }
-  }, [status, router]);
+  }, [status, session?.expiredAt, router]);
 
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
@@ -63,7 +69,6 @@ const Login = () => {
         console.error(result.error);
         alert(result.error, "error");
       } else if (result?.ok) {
-
         alert("Login successful, Redirecting...", "success");
         router.prefetch("/dashboard");
         router.push("/dashboard");
