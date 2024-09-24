@@ -33,6 +33,15 @@ function Wallets() {
       queryKey: [`user-wallet-${profileData?.id}`],
     }
   );
+  // const wallets = useGetQuery<UserWallets>(
+  //   {
+  //     url: "wallets",
+  //     queryKeys: [`user-wallet-${profileData?.id}`],
+  //   },
+  //   {
+  //     queryKey: [`user-wallet-${profileData?.id}`],
+  //   }
+  // );
 
 
   return (

@@ -51,7 +51,8 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
         ...token,
         accessToken: refreshedTokens.token,
         refreshToken: refreshedTokens.refreshToken,
-        expiredAt: decodeJwt(refreshedTokens.token).exp.toString(),
+        expiredAt: decodeJwt(refreshedTokens.token).exp.toStrin
+        (),
       };
 
     } catch (error) {
