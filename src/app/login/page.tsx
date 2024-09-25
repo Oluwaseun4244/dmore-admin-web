@@ -22,14 +22,13 @@ const Login = () => {
   const searchParams = useSearchParams();
 
   const { status, data: session } = useSession();
-    const [isPending, setIsPending] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const { alert } = useAlert();
   const returnUrl = searchParams?.get("returnUrl") || "/dashboard";
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
     password: "",
   });
-
 
   useEffect(() => {
     if (status === "authenticated" && session?.expiredAt) {
@@ -45,17 +44,11 @@ const Login = () => {
     }
   }, [status, session?.expiredAt, router]);
 
-
-  useEffect(() => {
-    if (status === "authenticated" && session) {
-      router.push(returnUrl);
-    }
-  }, [status, router, session, returnUrl]);
-
   // useEffect(() => {
-  //   console.log("status", status);
-  // }, []);
-
+  //   if (status === "authenticated" && session) {
+  //     router.push(returnUrl);
+  //   }
+  // }, [status, router, session, returnUrl]);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
