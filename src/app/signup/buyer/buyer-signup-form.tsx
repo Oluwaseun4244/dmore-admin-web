@@ -1,7 +1,6 @@
 "use client";
 
 import Button from "@/app/components/generic/Button";
-import { BuyerRegisterData } from "@/app/types/auth.types";
 import { registerUserAsync, selectAuth } from "@/lib/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
@@ -14,7 +13,14 @@ import appleSignup from "../../../../public/images/apple-signup.svg";
 import googleSignup from "../../../../public/images/google-signup.svg";
 import { useSignUp } from "../hooks/useSignUp";
 
+import { BuyerRegisterData } from "@/app/types/auth.types";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+
+interface PasswordView {
+  passwordView: boolean;
+  confirmPasswordView: boolean;
+}
 
 export default function BuyerSignUpForm() {
   const dispatch = useAppDispatch();
@@ -27,7 +33,7 @@ export default function BuyerSignUpForm() {
   const defaultValues = {
     firstName: "Michael",
     lastName: "Ajayi",
-    email: 'mykehaymors@gmail.com',
+    email: "mykehaymors@gmail.com",
     phoneNumber: "07032535900",
     country: "Nigeria",
     state: "Lagos",
@@ -71,6 +77,21 @@ export default function BuyerSignUpForm() {
     // console.log(values);
 
     dispatch(registerUserAsync(values as BuyerRegisterData));
+  };
+
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordView, setPasswordView] = useState<PasswordView>({
+    passwordView: false,
+    confirmPasswordView: false,
+  });
+
+  const confirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setConfirmPassword(value);
+  };
+
+  const handlePasswordView = (name: keyof PasswordView, value: boolean) => {
+    setPasswordView((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -209,15 +230,31 @@ export default function BuyerSignUpForm() {
                 </div>
               )}
             </div>
-            {/* password */}
-            <div className='flex flex-col'>
+
+            {/* Password with eye */}
+            <div className='flex flex-col relative'>
               <input
                 {...register("password")}
-                type='password'
+                type={passwordView.passwordView ? "text" : "password"}
                 name='password'
                 placeholder='Password'
                 className='font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C] px-4 py-4 border border-[#EDF0F3] rounded-[12px]'
               />
+              {passwordView.passwordView ? (
+                <div className='w-full h-full flex justify-end items-center absolute top-0 right-0 px-2'>
+                  <FaRegEyeSlash
+                    className='text-app-purple cursor-pointer'
+                    onClick={() => handlePasswordView("passwordView", false)}
+                  />
+                </div>
+              ) : (
+                <div className='w-full h-full flex justify-end items-center absolute top-0 right-0 px-2'>
+                  <FaRegEye
+                    className=' text-app-purple cursor-pointer'
+                    onClick={() => handlePasswordView("passwordView", true)}
+                  />
+                </div>
+              )}
               {errors.password && (
                 <div className='error text-red-600 text-[13px] py-2'>
                   {errors.password.message}
@@ -225,14 +262,33 @@ export default function BuyerSignUpForm() {
               )}
             </div>
             {/* confirm password */}
-            <div className='flex flex-col'>
+            <div className='flex flex-col relative'>
               <input
                 {...register("confirmPassword")}
-                type='password'
+                type={passwordView.confirmPasswordView ? "text" : "password"}
                 name='confirmPassword'
                 placeholder='Confirm Password'
                 className='font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C] px-4 py-4 border border-[#EDF0F3] rounded-[12px]'
               />
+              {passwordView.confirmPasswordView ? (
+                <div className='w-full h-full flex justify-end items-center absolute top-0 right-0 px-2'>
+                  <FaRegEyeSlash
+                    className='text-app-purple cursor-pointer'
+                    onClick={() =>
+                      handlePasswordView("confirmPasswordView", false)
+                    }
+                  />
+                </div>
+              ) : (
+                <div className='w-full h-full flex justify-end items-center absolute top-0 right-0 px-2'>
+                  <FaRegEye
+                    className=' text-app-purple cursor-pointer'
+                    onClick={() =>
+                      handlePasswordView("confirmPasswordView", true)
+                    }
+                  />
+                </div>
+              )}
               {errors.confirmPassword && (
                 <div className='error text-red-600 text-[13px] py-2'>
                   {errors.confirmPassword.message}
@@ -247,6 +303,7 @@ export default function BuyerSignUpForm() {
                 placeholder='User Category'
                 className='font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C] px-4 py-4 border border-[#EDF0F3] rounded-[12px]'
               />
+
               {errors.userCategory && (
                 <div className='error text-red-600 text-[13px] py-2'>
                   {errors.userCategory.message}
@@ -270,7 +327,7 @@ export default function BuyerSignUpForm() {
             {/* isStaff */}
             <div className='flex items-center'>
               <input
-                {...register("isStaff")}
+                // {...register("isStaff")}
                 type='checkbox'
                 id='isStaff'
                 className='mr-2'

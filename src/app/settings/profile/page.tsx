@@ -1,23 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import DashboardLayout from "../components/dashboard/DashboardLayout";
-import Button from "../components/generic/Button";
-import AvatarInitial from "../components/generic/AvatarInitial";
+import DashboardLayout from "../../components/dashboard/DashboardLayout";
+import Button from "../../components/generic/Button";
+import AvatarInitial from "../../components/generic/AvatarInitial";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { ProfileResponse } from "@/app/types/auth.types";
+import { useGetQuery } from "@/app/utils/apiUtils";
+import { getSession } from "next-auth/react";
 
-interface Stat {
-  month: string;
-  incoming: string;
-  outgoing: string;
-}
-
-interface userDetails {
+interface UserDetailsType {
   firstName: string;
   lastName: string;
-  phone: string;
   email: string;
+  phoneNumber: string;
 }
 
 interface Password {
@@ -32,29 +29,84 @@ interface PasswordView {
   newPasswordConfirmVisible: boolean;
 }
 
-function Dashboard() {
-  const [userDetails, setUserDetails] = useState<userDetails>();
-  const [password, setPassword] = useState<Password>();
+function Profile() {
+
+  const [token, setToken] = useState("");
+  const [userDetails, setUserDetails] = useState<UserDetailsType>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+  });
+  const [password, setPassword] = useState<Password>({
+    oldPassword: "",
+    newPassword: "",
+    newPasswordConfirm: "",
+  });
+
   const [passwordView, setPasswordView] = useState<PasswordView>({
     oldPasswordVisible: false,
     newPasswordVisible: false,
     newPasswordConfirmVisible: false,
   });
 
-  const handleUserDetails = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  const profileQuery = useGetQuery<ProfileResponse>(
+    {
+      url: "profile",
+      queryKeys: [`profile-${token}`, token],
+    },
+    {
+      enabled: !!token,
+      queryKey: [`profile-${token}`, token],
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  React.useEffect(() => {
+    const checkSession = async () => {
+      const session = await getSession();
+      if (session?.accessToken && session?.accessToken !== token) {
+        setToken(session?.accessToken);
+      }
+    };
+
+    checkSession();
+  }, [token]);
+
+
+
+  const handleUserDetails = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setUserDetails((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handlePasswordDetails = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setPassword((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handlePasswordView = (name: keyof PasswordView, value: boolean) => {
     setPasswordView((prev) => ({ ...prev, [name]: value }));
   };
+
+
   return (
     <DashboardLayout activePage="settings" navTitle="Settings">
-      <div >
+      <div>
         <div className="font-satoshi flex items-center font-medium text-[20px] gap-[10px]">
           <AvatarInitial
             fullName="Tola Banjo"
             classNames="w-8 h-8 bg-faint-purple"
           />
-          <h5>Tola Banjo</h5>
+          <h5>{`${profileQuery?.data?.firstName} ${profileQuery?.data?.lastName}`}</h5>
         </div>
 
         <div className="mt-[50px]">
@@ -69,7 +121,7 @@ function Dashboard() {
                 placeholder="Tola"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.firstName}
+                value={userDetails?.firstName || profileQuery?.data?.firstName}
               />
             </div>
             <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
@@ -79,7 +131,7 @@ function Dashboard() {
                 placeholder="Banjo"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.lastName}
+                value={userDetails?.lastName || profileQuery?.data?.lastName}
               />
             </div>
           </div>
@@ -91,17 +143,17 @@ function Dashboard() {
                 placeholder="Johndoe@gmail.com"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.email}
+                value={userDetails?.email || profileQuery?.data?.email}
               />
             </div>
             <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <input
                 type="text"
-                name="phone"
+                name="phoneNumber"
                 placeholder="09090909090"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
                 onChange={(e) => handleUserDetails(e)}
-                value={userDetails?.phone}
+                value={userDetails?.phoneNumber || profileQuery?.data?.phoneNumber}
               />
             </div>
           </div>
@@ -118,8 +170,9 @@ function Dashboard() {
                 name="oldPassword"
                 placeholder="Current password"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
-                onChange={(e) => handleUserDetails(e)}
+                onChange={(e) => handlePasswordDetails(e)}
                 value={password?.oldPassword}
+                autoComplete="new-password"
               />
               {passwordView.oldPasswordVisible ? (
                 <FaRegEyeSlash
@@ -141,7 +194,7 @@ function Dashboard() {
                 name="newPassword"
                 placeholder="New password"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
-                onChange={(e) => handleUserDetails(e)}
+                onChange={(e) => handlePasswordDetails(e)}
                 value={password?.newPassword}
               />
               {passwordView.newPasswordVisible ? (
@@ -168,7 +221,7 @@ function Dashboard() {
                 name="newPasswordConfirm"
                 placeholder="Confirm new password"
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
-                onChange={(e) => handleUserDetails(e)}
+                onChange={(e) => handlePasswordDetails(e)}
                 value={password?.newPasswordConfirm}
               />
 
@@ -209,10 +262,8 @@ function Dashboard() {
           </h5>
           <div className="flex items-center gap-[20px] mt-[10px]">
             <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
-              <select className="outline-none text-[12px]">
-                <option selected disabled>
-                  Choose language
-                </option>
+              <select defaultValue={"english"} className="outline-none text-[12px]">
+                <option disabled>Choose language</option>
                 <option value={"english"}>English</option>
                 <option value={"yoruba"}>Yoruba</option>
                 <option value={"french"}>French</option>
@@ -225,4 +276,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Profile;

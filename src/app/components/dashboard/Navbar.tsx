@@ -4,14 +4,17 @@ import React from "react";
 import help_icon from "../../../../public/icons/help.svg";
 import notification from "../../../../public/icons/notification.svg";
 import AvatarInitial from "../generic/AvatarInitial";
+import { ProfileResponse } from "@/app/types/auth.types";
 
 interface NavProps {
-  navTitle: string;
+    navTitle: string;
+    user: undefined | ProfileResponse
 }
-const Navbar: React.FC<NavProps> = ({ navTitle }) => {
+const Navbar: React.FC<NavProps> = ({ navTitle, user }) => {
+  
   const handleSignout = () => {
     signOut();
-  };
+  }
 
   return (
     <div className='h-[100px] w-full bg-faint-peach flex flex-row items-center justify-between px-[20px] lg:px-[50px]'>
@@ -25,8 +28,8 @@ const Navbar: React.FC<NavProps> = ({ navTitle }) => {
         <Image src={help_icon} alt='logo' className='mx-2' />
 
         <AvatarInitial
-          fullName='Banjo Tola'
-          classNames='w-8 h-8 bg-faint-purple'
+          fullName={user ? `${user?.lastName} ${user?.firstName}` : 'John Doe'}
+          classNames="w-8 h-8 bg-faint-purple"
         />
         {/* temporary sign out button */}
         <button

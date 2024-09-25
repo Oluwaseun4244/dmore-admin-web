@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import right_img from "../../../public/images/dmore_auth_right.png";
 import "../../app/globals.css";
 import ".././globals.css";
@@ -15,18 +16,35 @@ import { LoginApiData } from "../types/auth.types";
 import { useLogin } from "./hooks/useLogin";
 
 const Login = () => {
-  // const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const { status, data: session } = useSession();
+    const [isPending, setIsPending] = useState(false);
+  const { alert } = useAlert();
+  const returnUrl = searchParams?.get("returnUrl") || "/dashboard";
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
     password: "",
   });
-  const { status, data: session } = useSession();
-  const [isPending, setIsPending] = useState(false);
-  const { alert } = useAlert();
-  const returnUrl = searchParams?.get("returnUrl") || "/dashboard";
+
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.expiredAt) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      const expirationTime = Number(session.expiredAt);
+
+      if (expirationTime > currentTime) {
+        router.prefetch("/dashboard");
+        router.push("/dashboard");
+      } else {
+        console.log("Session expired, not navigating to dashboard.");
+      }
+    }
+  }, [status, session?.expiredAt, router]);
+
 
   useEffect(() => {
     if (status === "authenticated" && session) {
@@ -38,12 +56,10 @@ const Login = () => {
   //   console.log("status", status);
   // }, []);
 
-  // const { loginMutation } = useLogin();
-  // const { isPending, mutate } = loginMutation;
 
-  // const togglePasswordVisibility = () => {
-  //   setPasswordVisible(!passwordVisible);
-  // };
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,20 +137,34 @@ const Login = () => {
                 value={loginData.email}
               />
             </div>
-            <div className='flex flex-col my-3 bg-[#FBFBFC] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]'>
+            <div className='flex flex-col my-3 bg-[#FBFBFC] px-4 py-3 border  border-[#EDF0F3] rounded-[12px] relative'>
               <input
-                type='password'
+                type={passwordVisible ? "text" : "password"}
                 name='password'
                 placeholder='*************'
                 className='font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]'
                 onChange={handleChange}
                 value={loginData.password}
               />
+
+              {passwordVisible ? (
+                <FaRegEyeSlash
+                  className='absolute right-2 text-app-purple cursor-pointer'
+                  onClick={togglePasswordVisibility}
+                />
+              ) : (
+                <FaRegEye
+                  className='absolute right-2 text-app-purple cursor-pointer'
+                  onClick={togglePasswordVisibility}
+                />
+              )}
             </div>
 
-            <p className='text-end text-dark-purple text-[16px] font-medium'>
-              Forgot Password?
-            </p>
+            <Link href='/forgotpassword'>
+              <p className='text-end text-dark-purple text-[16px] font-medium'>
+                Forgot Password?
+              </p>
+            </Link>
           </div>
           <Button
             text={isPending ? "Loading..." : "Login"}

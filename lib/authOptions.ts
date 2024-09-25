@@ -1,5 +1,7 @@
+import { decodeJwt } from "@/app/utils/apiUtils";
 import { jwtDecode } from "jwt-decode";
 import { NextAuthOptions } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 interface DecodedToken {
@@ -11,6 +13,65 @@ interface DecodedToken {
   "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/mobilephone": string;
   exp: number;
 }
+
+
+let isRefreshing = false;
+let refreshTokenPromise: Promise<JWT> | null = null;
+
+async function refreshAccessToken(token: JWT): Promise<JWT> {
+  if (isRefreshing) {
+    // If another refresh is in progress, wait for the current refresh to resolve
+    return refreshTokenPromise as Promise<JWT>;
+  }
+
+  isRefreshing = true;
+
+  refreshTokenPromise = (async (): Promise<JWT> => {
+    try {
+      const url = "https://dmore-backend-dotnet.onrender.com/refresh";
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token?.accessToken}`,
+        },
+        body: JSON.stringify({
+          token: token.accessToken,
+          refreshToken: token.refreshToken,
+        }),
+      });
+
+      const refreshedTokens = await response.json();
+      if (!response.ok) {
+        throw refreshedTokens;
+      }
+
+      return {
+        ...token,
+        accessToken: refreshedTokens.token,
+        refreshToken: refreshedTokens.refreshToken,
+        expiredAt: decodeJwt(refreshedTokens.token).exp.toStrin
+          (),
+      };
+
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      return {
+        ...token,
+        error: "RefreshAccessTokenError",
+      };
+    } finally {
+      // Reset the flag and promise after the refresh completes
+      isRefreshing = false;
+      refreshTokenPromise = null;
+    }
+  })();
+
+  // Await the refresh token promise
+  return refreshTokenPromise;
+}
+
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -58,7 +119,7 @@ export const authOptions: NextAuthOptions = {
               ],
               email:
                 decodedToken[
-                  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
                 ],
               name: decodedToken.fullName,
               token: data.token,
@@ -82,8 +143,20 @@ export const authOptions: NextAuthOptions = {
         token.name = user.name;
         token.accessToken = user.token;
         token.refreshToken = user.refreshToken;
+        token.expiredAt = decodeJwt(user.token).exp.toString();
+        token.error = "";
       }
-      return token;
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (token.expiredAt) {
+        const expirationTime = Number(token.expiredAt);
+        // Check if the token is expiring in grater than 5 minutes (300 seconds)
+        if (expirationTime - currentTime > 300) {
+          return token
+        }
+      }
+      return refreshAccessToken(token)
+
     },
     async session({ session, token }) {
       if (token) {
@@ -92,6 +165,8 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name;
         session.accessToken = token.accessToken;
         session.refreshToken = token.refreshToken;
+        session.expiredAt = token.expiredAt;
+        session.error = token.error;
       }
       return session;
     },

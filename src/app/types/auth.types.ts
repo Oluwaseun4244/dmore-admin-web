@@ -33,6 +33,7 @@ export type ProfileResponse = {
     role: string,
     userCategory: string,
     occupation: string,
+    phoneNumber: string,
     isStaff: boolean
 }
 
@@ -44,19 +45,22 @@ export type StaffRegisterResponse = {
 }
 
 export type BuyerRegisterData = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-    country: string;
-    state: string;
-    city: string;
-    address: string;
-    password: string;
-    confirmPassword: string;
-    userCategory: string;
-    occupation: string;
-    isStaff: boolean;
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string,
+    country?: string,
+    state?: string,
+    city?: string,
+    address?: string,
+    password: string,
+    confirmPassword: string,
+    role?: string,
+    userCategory?: string,
+    occupation: string,
+    company: string,
+    referralCode: string,
+    isStaff: boolean
 }
 
 export type ConfirmEmailData = {
@@ -66,17 +70,44 @@ export type ConfirmEmailData = {
 
 
 export type StaffRegisterData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  country: string;
-  state: string;
-  city: string;
-  address: string;
-  password: string;
-  confirmPassword: string;
-  userCategory: string;
-  occupation: string;
-  isStaff: boolean;
-};
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string,
+    country?: string,
+    state?: string,
+    city?: string,
+    address?: string,
+    password: string,
+    confirmPassword: string,
+    role?: string,
+    userCategory?: string,
+    occupation: string,
+    company: string,
+    referralCode: string,
+    isStaff: boolean
+}
+
+export type ForgotPasswordData = {
+    email: string;
+}
+
+export type ResetPasswordData = {
+    email: string;
+    password: string;
+    token: string;
+}
+
+export type SessionUserType = {
+    email: string;
+    id: string;
+    name: string
+
+}
+// export type SessionType = {
+//     accessToken: string;
+//     expiredAt: string;
+//     expires: string;
+//     refreshToken: string;   
+//     user: SessionUserType
+// }

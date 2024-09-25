@@ -10,6 +10,8 @@ declare module "next-auth" {
     } & DefaultSession["user"];
     accessToken: string;
     refreshToken: string;
+    expiredAt: string | number | unknown;
+    error: string | number | unknown;
   }
 
   interface User {

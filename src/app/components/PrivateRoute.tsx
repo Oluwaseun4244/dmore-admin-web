@@ -1,11 +1,9 @@
-import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useSession, getSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
-const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const { data: session, status } = useSession();
+const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { status, data: session } = useSession();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -21,10 +19,10 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [status, router, pathname]);
 
-  if (status === "loading") {
+  if (status === 'loading') {
     return (
-      <div className='w-screen h-screen flex justify-center items-center'>
-        <p className='font-sans text-white text-5xl'>Loading...</p>
+      <div className="w-screen h-screen flex justify-center items-center">
+        <p className="font-sans text-white text-5xl">Loading...</p>
       </div>
     );
   }
