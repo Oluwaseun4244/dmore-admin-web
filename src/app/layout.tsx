@@ -14,7 +14,7 @@ import Alert from "./components/Alert";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const publicRoutes = ["/login", "/signup", "/signup/buyer", "/signup/staff"];
+const publicRoutes = ["/", "/login", "/signup", "/signup/buyer", "/signup/staff"];
 
 export default function RootLayout({
   children,
