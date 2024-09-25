@@ -22,14 +22,13 @@ const Login = () => {
   const searchParams = useSearchParams();
 
   const { status, data: session } = useSession();
-    const [isPending, setIsPending] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const { alert } = useAlert();
   const returnUrl = searchParams?.get("returnUrl") || "/dashboard";
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
     password: "",
   });
-
 
   useEffect(() => {
     if (status === "authenticated" && session?.expiredAt) {
@@ -45,17 +44,11 @@ const Login = () => {
     }
   }, [status, session?.expiredAt, router]);
 
-
-  useEffect(() => {
-    if (status === "authenticated" && session) {
-      router.push(returnUrl);
-    }
-  }, [status, router, session, returnUrl]);
-
   // useEffect(() => {
-  //   console.log("status", status);
-  // }, []);
-
+  //   if (status === "authenticated" && session) {
+  //     router.push(returnUrl);
+  //   }
+  // }, [status, router, session, returnUrl]);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -82,15 +75,20 @@ const Login = () => {
         console.error(result.error);
         alert(result.error, "error");
       } else if (result?.ok) {
+        // alert("Login successful, Redirecting...", "success");
+
+        // await getSession();
+
+        // console.log("session after login", session);
+        // console.log("status after login", status);
+
+        // // router.push(returnUrl);
+        // // window.location.reload();
+
         alert("Login successful, Redirecting...", "success");
-
-        await getSession();
-
-        console.log("session after login", session);
-        console.log("status after login", status);
-
+        // router.prefetch("/dashboard");
+        // router.push("/dashboard");
         router.push(returnUrl);
-        window.location.reload();
       } else {
         alert("Login failed. Please try again.", "error");
       }

@@ -92,7 +92,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   queryClient.setQueryData(["profile"], profileQuery.data);
 
   return (
-    <div className="h-svh bg-white overflow-hidden">
+    <div className="h-[100vh] bg-white overflow-hidden">
       <div className="h-full flex flex-row">
         <div className="w-[75px] lg:w-[100px] overflow-hidden h-full bg-app-purple flex flex-col items-center py-4">
           <div>
