@@ -1,32 +1,25 @@
+import { usePathname, useRouter } from "next/navigation";
 import { useSession, getSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [hasSession, setHasSession] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
+    console.log("session", session);
+    console.log("status", status);
+  }, [session, status]);
 
-    const checkSession = async () => {
-      const session = await getSession();
-      if (!session) {
-        router.push("/login");
-      } else {
-        setHasSession(true);
-      }
-      setLoading(false);
-    };
-
-
-    if (status !== "loading") {
-      checkSession();
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      const returnUrl = encodeURIComponent(pathname as string);
+      router.push(`/login?returnUrl=${returnUrl}`);
     }
-  }, [status, router]);
+  }, [status, router, pathname]);
 
-  if (loading) {
+  if (status === 'loading') {
     return (
       <div className="w-screen h-screen flex justify-center items-center">
         <p className="font-sans text-white text-5xl">Loading...</p>
@@ -34,7 +27,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     );
   }
 
-  return hasSession ? <>{children}</> : null;
+  return status === "authenticated" ? <>{children}</> : null;
 };
 
 export default PrivateRoute;

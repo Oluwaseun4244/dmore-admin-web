@@ -4,7 +4,7 @@ import { AlertType, hideAlert, showAlert } from "./alertSlice";
 export const useAlert = () => {
   const dispatch = useAppDispatch();
 
-  const alert = (
+  const alert= (
     message: string,
     type: AlertType = "info",
     duration: number = 5000
