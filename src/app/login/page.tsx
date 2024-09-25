@@ -75,15 +75,20 @@ const Login = () => {
         console.error(result.error);
         alert(result.error, "error");
       } else if (result?.ok) {
+        // alert("Login successful, Redirecting...", "success");
+
+        // await getSession();
+
+        // console.log("session after login", session);
+        // console.log("status after login", status);
+
+        // // router.push(returnUrl);
+        // // window.location.reload();
+
         alert("Login successful, Redirecting...", "success");
-
-        await getSession();
-
-        console.log("session after login", session);
-        console.log("status after login", status);
-
+        // router.prefetch("/dashboard");
+        // router.push("/dashboard");
         router.push(returnUrl);
-        window.location.reload();
       } else {
         alert("Login failed. Please try again.", "error");
       }
