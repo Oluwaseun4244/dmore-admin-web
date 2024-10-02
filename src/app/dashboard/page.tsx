@@ -1,14 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import BuyPointsModal from "../components/dashboard/BuyPointModal";
 import DashboardLayout from "../components/dashboard/DashboardLayout";
+import MonthlyStat from "../components/dashboard/MonthlyStat";
+import RecentTransaction from "../components/dashboard/RecentTransaction";
+import TransferPointModal from "../components/dashboard/TransferPointModal";
 import WalletCard from "../components/dashboard/WalletCard";
 import Button from "../components/generic/Button";
-import RecentTransaction from "../components/dashboard/RecentTransaction";
-import MonthlyStat from "../components/dashboard/MonthlyStat";
-import TransferPointModal from "../components/dashboard/TransferPointModal";
-import BuyPointsModal from "../components/dashboard/BuyPointModal";
-// import { useQueryClient } from "@tanstack/react-query";
+import { useAlert } from "@/lib/features/alert/useAlert";
+import { UserWallets } from "../types/wallet.types";
+import { useGetQuery } from "../utils/apiUtils";
+import { ProfileResponse } from "../types/auth.types";
+import { useQueryClient } from "@tanstack/react-query";
+import Spinner from "../components/generic/Spinner";
 
 interface Stat {
   month: string;
@@ -17,16 +22,25 @@ interface Stat {
 }
 
 function Dashboard() {
+  const queryClient = useQueryClient();
+  const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
+  const { alert } = useAlert();
   const [monthView, setMonthView] = useState("jan-jun");
   const [statsData, setStatsData] = useState<Stat[]>([]);
   const [transferIsopen, setTransferIsOpen] = useState(false);
   const [buyIsOpen, setBuyIsOpen] = useState(false);
+  const userReferral = "https://www.dmore.io/auth/register?refer_code=7J7B";
 
-  // const queryClient = useQueryClient();
+  const userWallets = useGetQuery<UserWallets>(
+    {
+      url: `userwallets`,
+      queryKeys: [`user-wallet-${profileData?.id}`],
+    },
+    {
+      queryKey: [`user-wallet-${profileData?.id}`],
+    }
+  );
 
-  // const user2 = queryClient.getQueryState(["user"]);
-
-  // console.log("user", user2);
   const dummyData = [
     { month: "Jan", incoming: "20", outgoing: "10" },
     { month: "Feb", incoming: "40", outgoing: "40" },
@@ -41,8 +55,6 @@ function Dashboard() {
     { month: "Nov", incoming: "40", outgoing: "40" },
     { month: "Dec", incoming: "40", outgoing: "40" },
   ];
-
-  // const { data: user } = useUser();
 
   const changView = (value: string) => {
     setMonthView(value);
@@ -65,82 +77,63 @@ function Dashboard() {
 
   return (
     <DashboardLayout activePage="dashboard" navTitle="Credits and Points">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <WalletCard
-          color="text-white"
-          bg="bg-app-purple"
-          title="Total Available Points"
-          showEyes
-          showInfo={false}
-          balance={217}
-        />
-        <WalletCard
-          color="text-app-purple"
-          showEyes={false}
-          title="Personal Wallet"
-          showInfo
-          balance={17}
-          toolTip="Whatever the info is for this particular card, usually a short description for the wallet type"
-        />
-        <WalletCard
-          color="text-app-purple"
-          showEyes={false}
-          title="Retails Wallet"
-          showInfo
-          balance={98}
-          toolTip="Whatever the info is for this particular card, usually a short description for the wallet type"
-        />
-        <WalletCard
-          color="text-app-purple"
-          showEyes={false}
-          title="Reward Wallet"
-          showInfo
-          balance={102}
-          toolTip="Whatever the info is for this particular card, usually a short description for the wallet type"
-        />
+      <div>
+        {userWallets.isPending ? (
+          <div className="w-full flex items-center justify-center h-[200px]">
+            <Spinner />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+            <WalletCard
+              bg={"bg-app-purple"}
+              color={"text-white"}
+              title={`Central Wallet`}
+              showEyes={false}
+              showInfo
+              balance={0}
+              toolTip={"Central Wallet"}
+            />
+          </div>
+          // <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+          //   {userWallets?.data?.slice(0, 3).map((wallet, index) => (
+          //     <WalletCard
+          //       key={wallet.code}
+          //       bg={index === 0 ? "bg-app-purple" : ""}
+          //       color={index === 0 ? "text-white" : "text-app-purple"}
+          //       title={`${wallet?.walletType} Wallet`}
+          //       showEyes={false}
+          //       showInfo
+          //       balance={wallet?.availablePoints || 0}
+          //       toolTip={wallet?.description || "Wallet description"}
+          //     />
+          //   ))}
+          // </div>
+        )}
       </div>
+
       <div className="mt-10 flex flex-col lg:flex-row  items-center lg:items-start justify-between gap-4">
         <div className="flex flex-row w-[100%] lg:w-[350px] gap-[10px]">
           <Button
-            text="Transfer Points"
+            text="Load Wallet"
             bg="bg-app-purple"
             classNames="p-3 text-white w-[50%] lg:w-[157px] h-[51px]"
-            onClick={() => setTransferIsOpen(true)}
+            // onClick={() => setTransferIsOpen(true)}
           />
           <Button
-            text="Buy Points"
+            text="Send Points"
             bg="bg-white"
             classNames="p-3 text-app-purple border w-[50%] lg:w-[157px] h-[51px]"
-            onClick={() => setBuyIsOpen(true)}
-          />
-        </div>
-
-        <div className="py-[6px] pr-[6px] pl-[5px] md:pl-[15px] justify-between flex items-center w-[100%] lg:w-[697px] rounded-md border">
-          <div
-            className="w-[170px] lg:w-auto"
-            style={{ wordWrap: "break-word" }}
-          >
-            <p className="font-satoshi font-medium text-[14px] lg:text-[16px] text-dark-purple">
-              Referral Code : https://www.dmore.io/auth/register?refer_code=7J7B
-            </p>
-          </div>
-
-          <Button
-            text="Copy"
-            bg="bg-app-purple"
-            classNames="text-app-purple border w-[77px] h-[39px] text-primary-white"
-            onClick={() => alert("copy refferal link")}
+            // onClick={() => setBuyIsOpen(true)}
           />
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-10 overflow-auto">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 mt-10 overflow-auto">
         <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
           <div className="flex items-center justify-between">
             <p className={`font-satoshi text-[24px] font-bold text-app-purple`}>
               Statistics
             </p>
-            <div className="flex gap-[10px]">
+            {/* <div className="flex gap-[10px]">
               <div className="h-[32px] w-[150px] rounded-md flex items-center justify-center border gap-[8px]">
                 <select
                   className={`font-satoshi text-[15px] border-0 outline-none font-medium text-dark-purple`}
@@ -149,7 +142,7 @@ function Dashboard() {
                   <option>Reward Wallets</option>
                 </select>
               </div>
-            </div>
+            </div> */}
           </div>
           <hr className="my-4" />
 
@@ -207,7 +200,7 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
+        {/* <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
           <div className="flex items-center justify-between">
             <p className={`font-satoshi text-[24px] font-bold text-app-purple`}>
               Recent transactions
@@ -224,7 +217,7 @@ function Dashboard() {
           <RecentTransaction name="Micheal Ajayi" />
           <RecentTransaction name="Mary Ogedengbe" />
           <RecentTransaction name="Dayo James" />
-        </div>
+        </div> */}
       </div>
 
       <TransferPointModal

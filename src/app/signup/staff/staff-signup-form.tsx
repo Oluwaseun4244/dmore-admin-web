@@ -10,21 +10,33 @@ import googleSignup from "../../../../public/images/google-signup.svg";
 import { useSignUp } from "../hooks/useSignUp";
 import { StaffRegisterData } from "@/app/types/auth.types";
 import Button from "@/app/components/generic/Button";
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 
+interface PasswordView {
+  passwordView: boolean;
+  confirmPasswordView: boolean;
+}
 const StaffSignupForm = () => {
   const searchParams = useSearchParams();
   const email = searchParams?.get("email") ?? "";
 
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordView, setPasswordView] = useState<PasswordView>({
+    passwordView: false,
+    confirmPasswordView: false,
+  });
   const [regData, setRegData] = useState<StaffRegisterData>({
     firstName: "",
     lastName: "",
     email: email,
-    phone: "",
-    referralCode: "",
+    phoneNumber: "",
     password: "",
-    company: "",
     occupation: "",
+    confirmPassword: "",
+    company: "",
+    isStaff: true,
+    referralCode: "",
   });
   const { staffRegMutation } = useSignUp();
   const { isPending, mutate } = staffRegMutation;
@@ -36,6 +48,10 @@ const StaffSignupForm = () => {
   const confirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setConfirmPassword(value);
+  };
+
+  const handlePasswordView = (name: keyof PasswordView, value: boolean) => {
+    setPasswordView((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleChange = (
@@ -52,10 +68,10 @@ const StaffSignupForm = () => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center overflow-y-auto">
+    <div className="w-full h-[90vh] flex justify-center items-center lg:items-end overflow-y-auto">
       <div className="w-[90%] lg:w-full  h-full flex flex-col space-y-10 lg:px-12">
         <div className="flex items-center justify-between ">
-          <h2 className="font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[% ]">
+          <h2 className="font-satoshi font-medium text-black text-[36px] leading-[32px] -tracking-[%]">
             Sign up
           </h2>
 
@@ -108,34 +124,60 @@ const StaffSignupForm = () => {
             <div className="flex flex-col bg-[#FBFBFC] px-4 py-3 border border-[#EDF0F3] rounded-[12px]">
               <input
                 type="text"
-                name="phone"
+                name="phoneNumber"
                 placeholder="Contact number"
                 onChange={handleChange}
-                value={regData.phone}
+                value={regData.phoneNumber}
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
               />
             </div>
             {/* password */}
-            <div className="flex flex-col bg-[#FBFBFC] px-4 py-3 border border-[#EDF0F3] rounded-[12px]">
+            <div className="flex flex-col bg-[#FBFBFC] px-4 py-3 border border-[#EDF0F3] rounded-[12px] relative">
               <input
-                type="password"
+                type={passwordView.passwordView ? "text" : "password"}
                 name="password"
                 placeholder="Password"
                 onChange={handleChange}
                 value={regData.password}
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
               />
+              {passwordView.passwordView ? (
+                <FaRegEyeSlash
+                  className="absolute right-2 text-app-purple"
+                  onClick={() => handlePasswordView("passwordView", false)}
+                />
+              ) : (
+                <FaRegEye
+                  className="absolute right-2 text-app-purple"
+                  onClick={() => handlePasswordView("passwordView", true)}
+                />
+              )}
             </div>
             {/* confirm password */}
-            <div className="flex flex-col bg-[#FBFBFC] px-4 py-3 border border-[#EDF0F3] rounded-[12px]">
+            <div className="flex flex-col bg-[#FBFBFC] px-4 py-3 border border-[#EDF0F3] rounded-[12px] relative">
               <input
-                type="password"
+                type={passwordView.confirmPasswordView ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Confirm Password"
                 onChange={confirmPasswordChange}
                 value={confirmPassword}
                 className="font-satoshi font-medium text-[14px] placeholder:text-[14px] placeholder:text-[#878F9A] leading-[20px] outline-none focus:outline-none bg-[#FBFBFC] text-[#090B0C]"
               />
+              {passwordView.confirmPasswordView ? (
+                <FaRegEyeSlash
+                  className="absolute right-2 text-app-purple"
+                  onClick={() =>
+                    handlePasswordView("confirmPasswordView", false)
+                  }
+                />
+              ) : (
+                <FaRegEye
+                  className="absolute right-2 text-app-purple"
+                  onClick={() =>
+                    handlePasswordView("confirmPasswordView", true)
+                  }
+                />
+              )}
             </div>
             {/* referral code */}
             <div className="flex flex-col bg-[#FBFBFC] px-4 py-3 border border-[#EDF0F3] rounded-[12px]">
