@@ -7,11 +7,19 @@ declare module "next-auth" {
       id: string;
       email: string;
       name: string;
+      role: string | null | unknown;
+      country: string | unknown;
+      state: string | unknown;
+      city: string | unknown;
+      firstName: string | unknown;
+      lastName: string | unknown;
     } & DefaultSession["user"];
     accessToken: string;
     refreshToken: string;
     expiredAt: string | number | unknown;
     error: string | number | unknown;
+    role: string | number | unknown;
+
   }
 
   interface User {
@@ -20,6 +28,12 @@ declare module "next-auth" {
     name: string;
     token: string; // Add this line
     refreshToken: string; // Add this line
+    role: string;
+    country: string;
+    state: string;
+    city: string;
+    firstName: string;
+    lastName: string;
   }
 }
 

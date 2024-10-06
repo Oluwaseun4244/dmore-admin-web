@@ -117,7 +117,7 @@ function Dashboard() {
             text="Load Wallet"
             bg="bg-app-purple"
             classNames="p-3 text-white w-[50%] lg:w-[157px] h-[51px]"
-            // onClick={() => setTransferIsOpen(true)}
+            onClick={() => setTransferIsOpen(true)}
           />
           <Button
             text="Send Points"
@@ -128,12 +128,12 @@ function Dashboard() {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 mt-10 overflow-auto">
-        <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
+        {/* <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
           <div className="flex items-center justify-between">
             <p className={`font-satoshi text-[24px] font-bold text-app-purple`}>
               Statistics
             </p>
-            {/* <div className="flex gap-[10px]">
+            <div className="flex gap-[10px]">
               <div className="h-[32px] w-[150px] rounded-md flex items-center justify-center border gap-[8px]">
                 <select
                   className={`font-satoshi text-[15px] border-0 outline-none font-medium text-dark-purple`}
@@ -142,7 +142,7 @@ function Dashboard() {
                   <option>Reward Wallets</option>
                 </select>
               </div>
-            </div> */}
+            </div>
           </div>
           <hr className="my-4" />
 
@@ -199,8 +199,8 @@ function Dashboard() {
               ></div>
             </div>
           </div>
-        </div>
-        {/* <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
+        </div> */}
+        <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
           <div className="flex items-center justify-between">
             <p className={`font-satoshi text-[24px] font-bold text-app-purple`}>
               Recent transactions
@@ -217,7 +217,7 @@ function Dashboard() {
           <RecentTransaction name="Micheal Ajayi" />
           <RecentTransaction name="Mary Ogedengbe" />
           <RecentTransaction name="Dayo James" />
-        </div> */}
+        </div>
       </div>
 
       <TransferPointModal
