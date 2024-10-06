@@ -73,6 +73,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 }
 
 
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -87,6 +88,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
+          // Fetch the token
           const response = await fetch(
             "https://dmore-backend-dotnet.onrender.com/get-token",
             {
@@ -112,18 +114,44 @@ export const authOptions: NextAuthOptions = {
           }
 
           if (data.token) {
-            const decodedToken = jwtDecode<DecodedToken>(data.token);
+            const decodedToken = jwtDecode(data.token);
+
+            const profileResponse = await fetch(
+              "https://dmore-backend-dotnet.onrender.com/profile",
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${data.token}`,
+                },
+              }
+            );
+
+            const profileData = await profileResponse.json();
+
+
+            if (!profileResponse.ok) {
+              throw new Error(profileData.message || "Failed to fetch profile");
+            }
+
+            // if (profileData.role != 'admin') {
+            //   throw new Error("You tried to access a page you do not have authorization to");
+            // }
+
+
+            // Now we have both the token and profile information, including the role
             return {
-              id: decodedToken[
-                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-              ],
-              email:
-                decodedToken[
-                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
-                ],
-              name: decodedToken.fullName,
+              id: profileData.id,
+              email: profileData.email,
+              name: `${profileData.firstName} ${profileData.lastName}`,
+              firstName: profileData.firstName,
+              lastName: profileData.lastName,
+              role: profileData.role, // Ensure role is returned from profile
               token: data.token,
               refreshToken: data.refreshToken,
+              country: profileData.country,
+              state: profileData.state,
+              city: profileData.city,
+              isActive: profileData.isActive,
             };
           } else {
             throw new Error("Token not received");
@@ -143,29 +171,41 @@ export const authOptions: NextAuthOptions = {
         token.name = user.name;
         token.accessToken = user.token;
         token.refreshToken = user.refreshToken;
+        token.country = user.country;
+        token.state = user.state;
+        token.city = user.city;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
         token.expiredAt = decodeJwt(user.token).exp.toString();
+        token.role = user.role;
         token.error = "";
       }
 
       const currentTime = Math.floor(Date.now() / 1000);
       if (token.expiredAt) {
         const expirationTime = Number(token.expiredAt);
-        // Check if the token is expiring in grater than 5 minutes (300 seconds)
         if (expirationTime - currentTime > 300) {
-          return token
+          return token;
         }
       }
-      return refreshAccessToken(token)
-
+      return refreshAccessToken(token);
     },
     async session({ session, token }) {
+
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;
         session.user.name = token.name;
+        session.user.role = token.role;
+        session.user.country = token.country;
+        session.user.state = token.state;
+        session.user.city = token.city;
+        session.user.firstName = token.firstName;
+        session.user.lastName = token.lastName;
         session.accessToken = token.accessToken;
         session.refreshToken = token.refreshToken;
         session.expiredAt = token.expiredAt;
+        session.role = token.role;  // Add role to the session
         session.error = token.error;
       }
       return session;
@@ -178,3 +218,4 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
 };
+
