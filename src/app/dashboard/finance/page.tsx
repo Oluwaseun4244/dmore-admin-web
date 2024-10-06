@@ -1,19 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import BuyPointsModal from "../components/dashboard/BuyPointModal";
-import DashboardLayout from "../components/dashboard/DashboardLayout";
-import MonthlyStat from "../components/dashboard/MonthlyStat";
-import RecentTransaction from "../components/dashboard/RecentTransaction";
-import TransferPointModal from "../components/dashboard/TransferPointModal";
-import WalletCard from "../components/dashboard/WalletCard";
-import Button from "../components/generic/Button";
+import BuyPointsModal from "../../components/dashboard/BuyPointModal";
+import DashboardLayout from "../../components/dashboard/DashboardLayout";
+import MonthlyStat from "../../components/dashboard/MonthlyStat";
+import RecentTransaction from "../../components/dashboard/RecentTransaction";
+import TransferPointModal from "../../components/dashboard/TransferPointModal";
+import WalletCard from "../../components/dashboard/WalletCard";
+import Button from "../../components/generic/Button";
 import { useAlert } from "@/lib/features/alert/useAlert";
-import { UserWallets } from "../types/wallet.types";
-import { useGetQuery } from "../utils/apiUtils";
-import { ProfileResponse } from "../types/auth.types";
+import { UserWallets } from "../../types/wallet.types";
+import { useGetQuery } from "../../utils/apiUtils";
+import { ProfileResponse } from "../../types/auth.types";
 import { useQueryClient } from "@tanstack/react-query";
-import Spinner from "../components/generic/Spinner";
+import Spinner from "../../components/generic/Spinner";
 
 interface Stat {
   month: string;

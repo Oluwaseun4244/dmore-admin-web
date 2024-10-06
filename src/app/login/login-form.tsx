@@ -23,7 +23,7 @@ const LoginForm = () => {
   const { status, data: session } = useSession();
   const [isPending, setIsPending] = useState(false);
   const { alert } = useAlert();
-  const returnUrl = searchParams?.get("returnUrl") || "/dashboard";
+  // const returnUrl = searchParams?.get("returnUrl") || "/dashboard";
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
     password: "",
@@ -68,9 +68,10 @@ const LoginForm = () => {
         console.error(result.error);
         alert(result.error, "error");
       } else if (result?.ok) {
+        console.log("result", result)
         alert("Login successful, Redirecting...", "success");
-
-        router.push(returnUrl);
+        //GET SESSION HERE TO GET ROLE NAME SO YOU KNOW WHERE TO DIRECT ADMIN TO
+        router.push('/dashboard/finance');
       } else {
         alert("Login failed. Please try again.", "error");
       }
@@ -158,7 +159,7 @@ const LoginForm = () => {
             disabled={
               !loginData.email.length || !loginData.password.length || isPending
             }
-            // onClick={isPending ? () => console.log("is loading") : handleSubmit}
+          // onClick={isPending ? () => console.log("is loading") : handleSubmit}
           />
           {/* <Button
             text='Sign in via GitHub'

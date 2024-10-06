@@ -4,16 +4,6 @@ import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-interface DecodedToken {
-  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string;
-  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": string;
-  fullName: string;
-  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": string;
-  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname": string;
-  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/mobilephone": string;
-  exp: number;
-}
-
 
 let isRefreshing = false;
 let refreshTokenPromise: Promise<JWT> | null = null;

@@ -44,7 +44,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   };
 
 
-  
+
   const profileQuery = useGetQuery<ProfileResponse>(
     {
       url: "profile",
@@ -77,10 +77,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     );
   }
 
-  if (session?.error || session?.error == 'RefreshAccessTokenError'){
+  if (session?.error || session?.error == 'RefreshAccessTokenError') {
     alert("Could not refresh token, logging you out", "error");
     handleSignout();
     router.push("/login");
+    return;
   }
 
   if (!profileQuery.data || profileQuery?.error?.response?.status === 401) {
@@ -101,11 +102,17 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           <div className="my-[30px]">
             <SideItem
-              route="dashboard"
+              route="dashboard/finance"
               imgSource={
                 activePage === "dashboard"
                   ? active_dashboard
                   : inactive_dashboard
+              }
+            />
+            <SideItem
+              route="transactions/finance"
+              imgSource={
+                activePage === "topUp" ? active_settings : inactive_settings
               }
             />
             <SideItem
