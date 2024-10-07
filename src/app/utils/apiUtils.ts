@@ -55,7 +55,7 @@ export const getData = async<T>(url: string): Promise<T> => {
     return new Promise(async (resolve, reject) => {
 
         const session = await getSession()
-        console.log("session", session)
+
         try {
 
             const config = {

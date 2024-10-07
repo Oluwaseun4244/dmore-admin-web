@@ -12,7 +12,7 @@ import inactive_settings from "../../../../public/icons/inactive-settings.svg";
 import active_settings from "../../../../public/icons/active-settings.svg";
 import { getSession, signOut } from "next-auth/react";
 import { useGetQuery } from "../../utils/apiUtils";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAlert } from "@/lib/features/alert/useAlert";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -33,7 +33,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   activePage,
   navTitle,
 }) => {
+
   const { alert } = useAlert();
+  const pathname = usePathname();
+  const folder = pathname?.split('/')[1];
   const queryClient = useQueryClient();
   const [token, setToken] = useState("");
   const [session, setSession] = useState<Session>();
@@ -42,8 +45,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const handleSignout = async () => {
     await signOut();
   };
-
-
 
   const profileQuery = useGetQuery<ProfileResponse>(
     {
@@ -102,7 +103,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           <div className="my-[30px]">
             <SideItem
-              route="dashboard/finance"
+              route={`${folder}/dashboard`}
               imgSource={
                 activePage === "dashboard"
                   ? active_dashboard
@@ -110,25 +111,26 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               }
             />
             <SideItem
-              route="transactions/finance"
+              route={`${folder}/transactions`}
+
               imgSource={
                 activePage === "topUp" ? active_settings : inactive_settings
               }
             />
             <SideItem
-              route="wallets"
+              route={`${folder}/wallets`}
               imgSource={
                 activePage === "wallets" ? active_wallet : inactive_wallet
               }
             />
             <SideItem
-              route="wallets"
+              route={`${folder}/wallets`}
               imgSource={
                 activePage === "users" ? inactive_users : inactive_users
               }
             />
             <SideItem
-              route="settings/profile"
+              route={`${folder}/settings/profile`}
               imgSource={
                 activePage === "settings" ? active_settings : inactive_settings
               }

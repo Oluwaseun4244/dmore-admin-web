@@ -2,9 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "@/app/components/dashboard/DashboardLayout";
-import RecentTransaction from "@/app/components/dashboard/RecentTransaction";
 import TransferPointModal from "@/app/components/dashboard/TransferPointModal";
-import WalletCard from "@/app/components/dashboard/WalletCard";
 import Button from "@/app/components/generic/Button";
 import { useAlert } from "@/lib/features/alert/useAlert";
 import { UserWallets } from "@/app/types/wallet.types";
@@ -17,18 +15,13 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { MdVerified } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { IoSearchOutline } from "react-icons/io5";
-import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoIosFunnel } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 
-interface Stat {
-  month: string;
-  incoming: string;
-  outgoing: string;
-}
 
-function Dashboard() {
+
+function FinanceTransactions() {
   const queryClient = useQueryClient();
   const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
   const { alert } = useAlert();
@@ -190,4 +183,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default FinanceTransactions;

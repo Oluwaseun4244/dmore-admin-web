@@ -9,7 +9,6 @@ import "./globals.css";
 import ReactQueryProvider from "./utils/providers/ReactQueryProvider";
 
 import StoreProvider from "@/lib/StoreProvider";
-import { useSession } from "next-auth/react";
 import Alert from "./components/Alert";
 
 const inter = Inter({ subsets: ["latin"] });

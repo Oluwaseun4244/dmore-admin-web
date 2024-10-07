@@ -6,42 +6,49 @@ import { useAlert } from "@/lib/features/alert/useAlert";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import right_img from "../../../public/images/dmore_auth_right.png";
 import "../../app/globals.css";
 import ".././globals.css";
 import { LoginApiData } from "../types/auth.types";
+import useUtils from "../hooks/useUtils";
 
 const LoginForm = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-
+  const { getFolder } = useUtils()
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const { status, data: session } = useSession();
   const [isPending, setIsPending] = useState(false);
   const { alert } = useAlert();
-  // const returnUrl = searchParams?.get("returnUrl") || "/dashboard";
+
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
     password: "",
   });
 
   useEffect(() => {
-    if (status === "authenticated" && session?.expiredAt) {
-      const currentTime = Math.floor(Date.now() / 1000);
-      const expirationTime = Number(session.expiredAt);
+    const checkSession = async () => {
 
-      if (expirationTime > currentTime) {
-        router.prefetch("/dashboard");
-        router.push("/dashboard");
-      } else {
-        console.log("Session expired, not navigating to dashboard.");
+      if (status === "authenticated" && session?.expiredAt) {
+        const currentTime = Math.floor(Date.now() / 1000);
+        const expirationTime = Number(session.expiredAt);
+        const folder = await getFolder()
+        if (expirationTime > currentTime) {
+          router.prefetch(`/${folder}/dashboard`);
+          router.push(`/${folder}/dashboard`);
+
+        } else {
+          console.log("Session expired, not navigating to dashboard.");
+        }
       }
-    }
-  }, [status, session?.expiredAt, router]);
+    };
+
+    checkSession()
+
+  }, [status, session?.expiredAt, router, getFolder]);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -70,8 +77,8 @@ const LoginForm = () => {
       } else if (result?.ok) {
         console.log("result", result)
         alert("Login successful, Redirecting...", "success");
-        //GET SESSION HERE TO GET ROLE NAME SO YOU KNOW WHERE TO DIRECT ADMIN TO
-        router.push('/dashboard/finance');
+        const folder = await getFolder()
+        router.push(`/${folder}/dashboard`);
       } else {
         alert("Login failed. Please try again.", "error");
       }
