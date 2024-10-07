@@ -3,32 +3,28 @@
 import React, { useEffect, useState } from "react";
 import BuyPointsModal from "../../components/dashboard/BuyPointModal";
 import DashboardLayout from "../../components/dashboard/DashboardLayout";
-import MonthlyStat from "../../components/dashboard/MonthlyStat";
 import RecentTransaction from "../../components/dashboard/RecentTransaction";
 import TransferPointModal from "../../components/dashboard/TransferPointModal";
 import WalletCard from "../../components/dashboard/WalletCard";
 import Button from "../../components/generic/Button";
-import { useAlert } from "@/lib/features/alert/useAlert";
 import { UserWallets } from "../../types/wallet.types";
 import { useGetQuery } from "../../utils/apiUtils";
 import { ProfileResponse } from "../../types/auth.types";
 import { useQueryClient } from "@tanstack/react-query";
 import Spinner from "../../components/generic/Spinner";
+import { useRouter } from "next/navigation";
+import useUtils from "@/app/hooks/useUtils";
+import ViewTopUp from "@/app/components/dashboard/ViewTopUp";
 
-interface Stat {
-  month: string;
-  incoming: string;
-  outgoing: string;
-}
 
 function FinanceDashboard() {
   const queryClient = useQueryClient();
+  const { getFolder } = useUtils()
   const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
-  const { alert } = useAlert();
+  const router = useRouter();
 
   const [transferIsopen, setTransferIsOpen] = useState(false);
   const [buyIsOpen, setBuyIsOpen] = useState(false);
-  const userReferral = "https://www.dmore.io/auth/register?refer_code=7J7B";
 
   const userWallets = useGetQuery<UserWallets>(
     {
@@ -40,22 +36,10 @@ function FinanceDashboard() {
     }
   );
 
-  const dummyData = [
-    { month: "Jan", incoming: "20", outgoing: "10" },
-    { month: "Feb", incoming: "40", outgoing: "40" },
-    { month: "Mar", incoming: "33", outgoing: "70" },
-    { month: "Apr", incoming: "90", outgoing: "10" },
-    { month: "May", incoming: "4", outgoing: "70" },
-    { month: "Jun", incoming: "20", outgoing: "44" },
-    { month: "Jul", incoming: "20", outgoing: "44" },
-    { month: "Aug", incoming: "90", outgoing: "10" },
-    { month: "Sep", incoming: "44", outgoing: "70" },
-    { month: "Oct", incoming: "4", outgoing: "70" },
-    { month: "Nov", incoming: "40", outgoing: "40" },
-    { month: "Dec", incoming: "40", outgoing: "40" },
-  ];
-
-
+  const goToTopUp = async () => {
+    const folder = await getFolder()
+    router.push(`/${folder}/transactions`);
+  }
 
 
 
@@ -78,7 +62,7 @@ function FinanceDashboard() {
               toolTip={"Central Wallet"}
             />
           </div>
-      
+
         )}
       </div>
 
@@ -89,17 +73,18 @@ function FinanceDashboard() {
             bg="bg-app-purple"
             classNames="p-3 text-white w-[50%] lg:w-[157px] h-[51px]"
             onClick={() => setTransferIsOpen(true)}
+          // onClick={goToTopUp}
           />
           <Button
             text="Send Points"
             bg="bg-white"
             classNames="p-3 text-app-purple border w-[50%] lg:w-[157px] h-[51px]"
-          // onClick={() => setBuyIsOpen(true)}
+            onClick={() => setBuyIsOpen(true)}
           />
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 mt-10 overflow-auto">
-        
+
         <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
           <div className="flex items-center justify-between">
             <p className={`font-satoshi text-[24px] font-bold text-app-purple`}>
@@ -125,11 +110,7 @@ function FinanceDashboard() {
         onClose={() => setTransferIsOpen(false)}
         setOpen={setTransferIsOpen}
       />
-      <BuyPointsModal
-        open={buyIsOpen}
-        setOpen={setBuyIsOpen}
-        onClose={() => setBuyIsOpen(false)}
-      />
+
     </DashboardLayout>
   );
 }

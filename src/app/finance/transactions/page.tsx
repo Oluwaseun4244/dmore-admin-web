@@ -18,6 +18,8 @@ import { IoSearchOutline } from "react-icons/io5";
 import { IoIosFunnel } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
+import ViewTopUp from "@/app/components/dashboard/ViewTopUp";
+import TopUpApproval from "@/app/components/dashboard/TopUpApproval";
 
 
 
@@ -26,11 +28,14 @@ function FinanceTransactions() {
   const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
   const { alert } = useAlert();
 
-  const [transferIsopen, setTransferIsOpen] = useState(false);
-  const [buyIsOpen, setBuyIsOpen] = useState(false);
+  const [topUpApprovalIsOpen, setTopUpApprovalOpen] = useState(true);
+  const [txnIsOpen, setViewTxn] = useState(false);
   const [amount, setAmount] = useState<number | string>(0);
 
 
+  const viewTransaction = () => {
+    setViewTxn(true)
+  }
   const handleAmount = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -69,7 +74,7 @@ function FinanceTransactions() {
             text="Continue"
             bg={Number(amount) > 999 ? "bg-app-purple" : "bg-disabled-btn"}
             classNames="p-3 text-white w-[50%] lg:w-[157px] h-[45px]"
-          // onClick={() => setTransferIsOpen(true)}
+          // onClick={() => setTopUpApprovalOpen(true)}
           />
         </div>
       </div>
@@ -136,7 +141,7 @@ function FinanceTransactions() {
                         <td className="text-pending-orange font-[500] text-[14px] font-satoshi">Pending</td>
                         <td className="text-primary-color font-[500] text-[14px] font-satoshi">15 Mar 2021, 12:47 PM</td>
                         <td className="text-app-purple font-[500] text-[14px] font-satoshi"><div className="flex gap-3">
-                          <MdOutlineRemoveRedEye className="text-pending-orange cursor-pointer" /> <MdVerified className="text-verify-green cursor-pointer" /> <RiDeleteBinLine className="text-delete-red cursor-pointer" /> </div></td>
+                          <MdOutlineRemoveRedEye className="text-pending-orange cursor-pointer" onClick={viewTransaction} /> <MdVerified className="text-verify-green cursor-pointer" /> <RiDeleteBinLine className="text-delete-red cursor-pointer" /> </div></td>
                       </tr>
                     ))
                   }
@@ -169,15 +174,15 @@ function FinanceTransactions() {
         </div>
       </div>
 
-      <TransferPointModal
-        open={transferIsopen}
-        onClose={() => setTransferIsOpen(false)}
-        setOpen={setTransferIsOpen}
+      <TopUpApproval
+        open={topUpApprovalIsOpen}
+        onClose={() => setTopUpApprovalOpen(false)}
+        setOpen={setTopUpApprovalOpen}
       />
-      <BuyPointsModal
-        open={buyIsOpen}
-        setOpen={setBuyIsOpen}
-        onClose={() => setBuyIsOpen(false)}
+      <ViewTopUp
+        open={txnIsOpen}
+        setOpen={setViewTxn}
+        onClose={() => setViewTxn(false)}
       />
     </DashboardLayout>
   );
