@@ -301,7 +301,7 @@ function Index() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[1, 2, 3, 4, 5].map((item, index) => (
+                  {[].length ? [5].map((item, index) => (
                     <tr
                       className={`h-[50px] ${index % 2 == 0 ? "" : "bg-[#DAB9FA17]"
                         }`}
@@ -340,33 +340,41 @@ function Index() {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  )) : <tr>
+                    <td colSpan={8} className="text-center py-4">
+                      No data available
+                    </td>
+                  </tr>}
+
                 </tbody>
               </table>
             </div>
           </div>
 
           {/* PAGINATION ROW */}
-          <div className="flex justify-end">
-            <div className="flex items-center gap-2">
-              <p
-                className={`font-satoshi text-[12px] font-[500] text-[#687182]`}
-              >
-                Rows per page:
-              </p>
-              <div className="w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center cursor-pointer">
-                <IoIosArrowBack className="text-[16px] text-[#687182]" />
+          {
+            [].length ? <div className="flex justify-end">
+              <div className="flex items-center gap-2">
+                <p
+                  className={`font-satoshi text-[12px] font-[500] text-[#687182]`}
+                >
+                  Rows per page:
+                </p>
+                <div className="w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center cursor-pointer">
+                  <IoIosArrowBack className="text-[16px] text-[#687182]" />
+                </div>
+                <p
+                  className={`font-satoshi text-[12px] font-[500] text-primary-color`}
+                >
+                  1
+                </p>
+                <div className="w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center cursor-pointer">
+                  <IoIosArrowForward className="text-[16px] text-[#687182]" />
+                </div>
               </div>
-              <p
-                className={`font-satoshi text-[12px] font-[500] text-primary-color`}
-              >
-                1
-              </p>
-              <div className="w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center cursor-pointer">
-                <IoIosArrowForward className="text-[16px] text-[#687182]" />
-              </div>
-            </div>
-          </div>
+            </div> : <></>
+          }
+
         </div>
       </div>
 

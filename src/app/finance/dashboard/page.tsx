@@ -80,7 +80,7 @@ function FinanceDashboard() {
           />
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 mt-10 overflow-auto">
+      {/* <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 mt-10 overflow-auto">
 
         <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
           <div className="flex items-center justify-between">
@@ -100,7 +100,7 @@ function FinanceDashboard() {
           <RecentTransaction name="Mary Ogedengbe" />
           <RecentTransaction name="Dayo James" />
         </div>
-      </div>
+      </div> */}
 
       <TransferPointModal
         open={transferIsopen}
