@@ -27,7 +27,7 @@ export default function RootLayout({
     <StoreProvider>
       <SessionWrapper>
         <html lang='en'>
-          <body className={`${inter.className} overflow-x-hidden`}>
+          <body className={`${inter.className} overflow-x-hidden overflow-y-hidden h-full`}>
             <ReactQueryProvider>
               <Toaster />
               {isPublicRoute ? (

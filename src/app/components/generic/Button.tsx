@@ -12,7 +12,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ text, classNames, disabled = false, bg = 'bg-app-purple', my, onClick }) => {
   return (
-    <button onClick={onClick} disabled={disabled} className={`rounded-lg font-satoshi cursor-pointer ${classNames} ${bg} my-${my}`}>
+    <button onClick={onClick} disabled={disabled} className={`rounded-lg font-satoshi ${disabled ? 'cursor-default' : 'cursor-pointer'} ${classNames} ${bg} my-${my}`}>
       {text}
     </button>
   )

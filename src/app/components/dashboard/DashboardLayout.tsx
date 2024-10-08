@@ -95,7 +95,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <div className="h-[100vh] bg-white overflow-hidden">
-      <div className="h-full flex flex-row">
+      <div className="h-full flex flex-row ">
         <div className="w-[75px] lg:w-[100px] overflow-hidden h-full bg-app-purple flex flex-col items-center py-4">
           <div>
             <Image src={logo} alt="logo" />
@@ -138,7 +138,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
         </div>
 
-        <main className="flex-1 flex flex-col min-h-0 w-full">
+        <main className="flex-1 flex flex-col h-full w-full">
           <Navbar navTitle={navTitle} user={profileQuery.data} />
           <section className="p-[20px] md:p-[40px] flex-1 overflow-y-auto">
             {children}

@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import BuyPointsModal from "../../components/dashboard/BuyPointModal";
+import React, { useState } from "react";
 import DashboardLayout from "../../components/dashboard/DashboardLayout";
 import RecentTransaction from "../../components/dashboard/RecentTransaction";
 import TransferPointModal from "../../components/dashboard/TransferPointModal";
@@ -14,7 +13,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import Spinner from "../../components/generic/Spinner";
 import { useRouter } from "next/navigation";
 import useUtils from "@/app/hooks/useUtils";
-import ViewTopUp from "@/app/components/dashboard/ViewTopUp";
 
 
 function FinanceDashboard() {
@@ -24,7 +22,6 @@ function FinanceDashboard() {
   const router = useRouter();
 
   const [transferIsopen, setTransferIsOpen] = useState(false);
-  const [buyIsOpen, setBuyIsOpen] = useState(false);
 
   const userWallets = useGetQuery<UserWallets>(
     {
@@ -36,10 +33,11 @@ function FinanceDashboard() {
     }
   );
 
-  const goToTopUp = async () => {
+  const goToTransactions = async (variant: string) => {
     const folder = await getFolder()
-    router.push(`/${folder}/transactions`);
+    router.push(`/${folder}/transactions?variant=${variant}`);
   }
+
 
 
 
@@ -72,14 +70,13 @@ function FinanceDashboard() {
             text="Load Wallet"
             bg="bg-app-purple"
             classNames="p-3 text-white w-[50%] lg:w-[157px] h-[51px]"
-            onClick={() => setTransferIsOpen(true)}
-          // onClick={goToTopUp}
+            onClick={() => goToTransactions('top-up')}
           />
           <Button
             text="Send Points"
             bg="bg-white"
             classNames="p-3 text-app-purple border w-[50%] lg:w-[157px] h-[51px]"
-            onClick={() => setBuyIsOpen(true)}
+            onClick={() => goToTransactions('send-points')}
           />
         </div>
       </div>
