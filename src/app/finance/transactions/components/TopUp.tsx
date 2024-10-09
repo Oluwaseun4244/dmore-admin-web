@@ -1,23 +1,28 @@
 import Button from '@/app/components/generic/Button';
 import React, { useState } from 'react'
 import { useTopUp } from '../hooks/useTopUp';
-import LoaderButton from '@/app/components/generic/LoaderButton';
 import { getSession } from 'next-auth/react';
 import { useGetQuery } from '@/app/utils/apiUtils';
 import { ProfileResponse } from '@/app/types/auth.types';
 import { CreateInflowPayload } from '../types/inflow.types';
 import { useAlert } from '@/lib/features/alert/useAlert';
+import { PROVIDER_REF } from '@/app/utils/constants';
 
+type TopUpProps = {
+  setWatchTopUp: (value: boolean) => void;
+  watchTopUp: boolean
+}
 
-export default function TopUp() {
+export default function TopUp({ setWatchTopUp, watchTopUp }: TopUpProps) {
 
-  const { topUpMutation } = useTopUp()
+  const { topUpMutation } = useTopUp(setWatchTopUp, watchTopUp)
   const { alert } = useAlert()
 
   const [topUpPayload, setTopUpPaylod] = useState<CreateInflowPayload>({
     points: "",
     narration: '',
-    initiatorUserId: ""
+    initiatorUserId: "",
+    providerReference: PROVIDER_REF || ""
   });
   const [token, setToken] = useState("");
 
@@ -117,15 +122,14 @@ export default function TopUp() {
       <small className="text-red-400">{validateTopUpPayload().name == 'narration' ? validateTopUpPayload().message : ''}</small>
 
       <div className="flex justify-end mt-3">
-        {
-          topUpMutation.isPending ? <LoaderButton classNames="p-3 text-white w-[50%] lg:w-[157px] h-[45px]" /> : <Button
-            text="Continue"
-            bg={validateTopUpPayload().error ? "bg-disabled-btn" : "bg-app-purple"}
-            classNames="p-3 text-white w-[50%] lg:w-[157px] h-[45px]"
-            onClick={handleTopUp}
-          />
-        }
 
+        <Button
+          text="Continue"
+          bg={validateTopUpPayload().error ? "bg-disabled-btn" : "bg-app-purple"}
+          classNames="p-3 text-white w-[50%] lg:w-[157px] h-[45px]"
+          onClick={handleTopUp}
+          isLoading={topUpMutation.isPending}
+        />
       </div>
     </div>
   )

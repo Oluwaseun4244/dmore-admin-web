@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import Modal from "../generic/Modal";
+import Modal from "../../../components/generic/Modal";
 import { IoCopyOutline } from "react-icons/io5";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { FinanceInflowType } from "@/app/finance/transactions/types/inflow.types";
 
 interface ViewTopUpTxnProps {
   open: boolean;
   onClose: (value: boolean) => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  txn: FinanceInflowType | undefined
 }
 
 
@@ -14,6 +16,7 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
   open,
   onClose,
   setOpen,
+  txn
 }) => {
 
 
@@ -33,66 +36,66 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
             <div className="mt-6 border rounded-lg p-4">
               <div className="flex flex-row items-center justify-between">
                 <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                  Reference ID
+                  Reference ID:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                    GSGHSRTRH464
+                    {txn?.providerReference}
                   </p>
                 </div>
               </div>
 
               <div className="flex flex-row items-center mt-3 justify-between">
                 <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                  Top Up Initiated by
+                  Top Up Initiated by:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <div className="flex items-center gap-[8px]">
 
                     <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                      John Okafor
+                      {txn?.initiatorUserId}
                     </p>
                   </div>
                 </div>
               </div>
               <div className="flex flex-row items-center mt-3 justify-between">
                 <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                  Approved/Declined by
+                  Approved/Declined by:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                    Okeke
+                    {txn?.approverUserId || "N/A"}
                   </p>
                 </div>
               </div>
               <div className="flex flex-row items-center mt-3 justify-between">
                 <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                  Amount
+                  Amount:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                    N150,000
+                    {txn?.points.toLocaleString()}
                   </p>
                 </div>
               </div>
               <div className="flex flex-row items-center mt-3 justify-between">
                 <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                  Narration
+                  Narration:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                    use am chop
+                    {txn?.narration}
                   </p>
                 </div>
               </div>
               <div className="flex flex-row items-center mt-3 justify-between">
                 <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                  Status
+                  Status:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
-                  <p className="font-satoshi text-[12px] font-[500] text-pending-orange">
-                    Pending
-                  </p>
+                <p className={`font-satoshi text-[12px] font-[500] text-pending-orange ${txn?.status == 1 ? 'text-pending-orange' : 'text-verified-green'}`}>
+                  {txn?.status == 1 ? "Pending" : "Approved"}
+                </p>
                 </div>
               </div>
             </div>

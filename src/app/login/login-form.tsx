@@ -42,12 +42,12 @@ const LoginForm = () => {
           return
         }
       }
-      return
+
     };
 
     checkSession()
 
-  }, [status, session?.expiredAt, router, getFolder]);
+  });
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);

@@ -4,7 +4,9 @@ import { usePostQuery } from "@/app/utils/apiUtils";
 import { useAlert } from "@/lib/features/alert/useAlert";
 import { CreateInflowPayload, CreateInflowResponse } from "../types/inflow.types";
 
-export const useTopUp = () => {
+type setWatch = (value: boolean) => void
+type watch = boolean
+export const useTopUp = (setWatchTopUp: setWatch, watch: watch) => {
 
   const { alert } = useAlert()
 
@@ -12,12 +14,12 @@ export const useTopUp = () => {
     "financewallet/inflows/create",
     {
       onSuccess: async (data) => {
-        console.log("data from create inflow", data)
-        alert("Account top up successfully", "success")
+        alert("Account top up successfully initiated", "success")
+        setWatchTopUp(!watch)
       },
       onError: (error) => {
 
-        alert(error?.response?.data?.message || error?.message || 'Error creating inflow', "error")
+        alert(error?.response?.data?.message || error?.response?.data?.supportMessage || error?.message || 'Error creating inflow', "error")
         console.log("error from create inflow", error);
       },
     }

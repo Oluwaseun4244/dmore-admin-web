@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { MdVerified } from "react-icons/md";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoIosFunnel } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import Spinner from '@/app/components/generic/Spinner';
 import { useTransactions } from '../hooks/useTransactions';
+import { CreateInflowResponse } from '../types/inflow.types';
 
-type TransactionType = {
-  viewTransaction: () => void
+type TransactionProps = {
+  viewTransaction: (txn: CreateInflowResponse, caller: string) => void;
+  watchTopUp: boolean
 }
-function Transactions({ viewTransaction }: TransactionType) {
+function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
 
   const { transactionsMutation } = useTransactions()
 
-  const tableHeaders = ["", "#", "REFERENCE NUMBER", "INITIATED", "POINTS", "APPROVED BY", "STATUS", "DATE", "ACTION"];
+  const tableHeaders = ["", "#", "NARRATION", "INITIATED BY", "POINTS", "APPROVED BY", "STATUS", "DATE", "ACTION"];
 
   const [page, setPage] = useState(1)
   const [pageLimit, setPageLimit] = useState(10)
@@ -40,10 +41,9 @@ function Transactions({ viewTransaction }: TransactionType) {
     setPage((prev) => Math.max(1, prev - 1));
   };
 
-
   useEffect(() => {
     queryBuilder(page)
-  }, [page])
+  }, [page, watchTopUp])
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 mt-10 overflow-auto">
@@ -97,7 +97,7 @@ function Transactions({ viewTransaction }: TransactionType) {
                   <div className='flex items-center justify-center'>
                     <Spinner />
                   </div>
-                </td> : transactionsMutation.data?.data?.length ? transactionsMutation?.data?.data?.map((item, index) => (
+                </td> : transactionsMutation.data?.data?.length ? transactionsMutation?.data?.data?.map((txn, index) => (
                   <tr
                     className={`h-[50px] ${index % 2 == 0 ? "" : "bg-[#DAB9FA17]"
                       }`}
@@ -108,31 +108,30 @@ function Transactions({ viewTransaction }: TransactionType) {
                       {index + 1}
                     </td>
                     <td className="text-app-purple font-[500] text-[14px] font-satoshi">
-                      DmorehdjGuFVGcD8t
+                      {txn.narration}
                     </td>
                     <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                      Victor Omerenma
+                      {txn.initiatorUserId}
                     </td>
                     <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                      150,000
+                      {txn.points.toLocaleString()}
                     </td>
                     <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                      Andy E.
+                      {txn.approverUserId || "--"}
                     </td>
-                    <td className="text-pending-orange font-[500] text-[14px] font-satoshi">
-                      Pending
+                    <td className={`font-[500] text-[14px] font-satoshi ${txn.status == 1 ? 'text-pending-orange' : 'text-verified-green'}`}>
+                      {txn.status == 1 ? "Pending" : "Approved"}
                     </td>
                     <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                      15 Mar 2021, 12:47 PM
+                      {txn.createdAt || 'Date Here'}
                     </td>
                     <td className="text-app-purple font-[500] text-[14px] font-satoshi">
                       <div className="flex gap-3">
                         <MdOutlineRemoveRedEye
                           className="text-pending-orange cursor-pointer"
-                          onClick={viewTransaction}
+                          onClick={() => viewTransaction(txn, 'view')}
                         />{" "}
-                        <MdVerified className="text-verify-green cursor-pointer" />{" "}
-                        <RiDeleteBinLine className="text-delete-red cursor-pointer" />{" "}
+                        <MdVerified className="text-verified-green cursor-pointer" onClick={() => viewTransaction(txn, 'approval')} />{" "}
                       </div>
                     </td>
                   </tr>
@@ -152,11 +151,11 @@ function Transactions({ viewTransaction }: TransactionType) {
           transactionsMutation.data?.data?.length ? <div className="flex justify-end">
             <div className="flex items-center gap-2">
               <p
-                className={`font-satoshi text-[12px] font-[500] text-[#687182]`}
+                className={`font-satoshi text-[12px] font-[500] text-[#687182] m-0`}
               >
-                Rows per page: {pageLimit}
+                Rows per page: <span>{pageLimit}</span>
               </p>
-              <div className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${transactionsMutation.data?.hasNextPage ? 'cursor-pointer' : 'cursor-default'}`} onClick={previousPage}>
+              <div className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${transactionsMutation.data?.hasPreviousPage ? 'cursor-pointer' : 'cursor-default'}`} onClick={previousPage}>
                 <IoIosArrowBack className="text-[16px] text-[#687182]" />
               </div>
               <p
@@ -164,7 +163,7 @@ function Transactions({ viewTransaction }: TransactionType) {
               >
                 {transactionsMutation.data?.currentPage}
               </p>
-              <div className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${transactionsMutation.data?.hasPreviousPage ? 'cursor-pointer' : 'cursor-default'}`} onClick={nextPage}>
+              <div className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${transactionsMutation.data?.hasNextPage ? 'cursor-pointer' : 'cursor-default'}`} onClick={nextPage}>
                 <IoIosArrowForward className="text-[16px] text-[#687182]" />
               </div>
             </div>

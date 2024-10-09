@@ -20,7 +20,7 @@ export const colors = {
   "primary-color": "#121212",
   "pending-orange": "#FF7B00",
   "delete-red": "#FF1E00",
-  "verify-green": "#4ECB71",
+  "verified-green": "#4ECB71",
 };
 
 export const borderWidth = {

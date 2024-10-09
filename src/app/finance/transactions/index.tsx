@@ -5,7 +5,7 @@ import DashboardLayout from "@/app/components/dashboard/DashboardLayout";
 import { useQueryClient } from "@tanstack/react-query";
 // import Spinner from "@/app/components/generic/Spinner";
 
-import ViewTopUp from "@/app/components/dashboard/ViewTopUp";
+import ViewTopUp from "@/app/finance/transactions/components/ViewTopUp";
 import { useSearchParams } from "next/navigation";
 import TopUp from "./components/TopUp";
 import SendPointIndividual from "./components/SendPointIndividual";
@@ -23,19 +23,21 @@ function Index() {
   // const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
 
   const [topUpApprovalIsOpen, setTopUpApprovalOpen] = useState(false);
+  const [watchTopUp, setWatchTopUp] = useState(false);
   const [txnIsOpen, setViewTxn] = useState(false);
   const [transferType, setTransferType] = useState("multi");
   const [viewedTransaction, setViewedTransaction] = useState<FinanceInflowType>()
 
-  const viewTransaction = () => {
-    setViewedTransaction({
-      id: '23',
-      status: 'pending',
-      narration: 'pending',
-      points: 55555,
-      initiatorUserId: "575577"
-    })
-    setViewTxn(true);
+  const viewTransaction = (txn: FinanceInflowType, caller: string) => {
+    setViewedTransaction(txn)
+    if (caller == 'view') {
+      setViewTxn(true);
+      return
+    }
+    if (caller == 'approval') {
+      setTopUpApprovalOpen(true);
+      return
+    }
   };
 
   const decidePageTitle = () => {
@@ -64,7 +66,7 @@ function Index() {
   return (
     <DashboardLayout activePage="topUp" navTitle={decidePageTitle()}>
       {variant == "top-up" ? (
-        <TopUp />
+        <TopUp setWatchTopUp={setWatchTopUp} watchTopUp={watchTopUp} />
       ) : variant == "send-points" ? (
         <div className="w-full p-[10px] border-[2px] rounded-[8px]">
           <p className="text-[20px] text-primary-color font-satoshi">
@@ -84,18 +86,19 @@ function Index() {
         <></>
       )}
 
-      <Transactions viewTransaction={viewTransaction} />
+      <Transactions viewTransaction={viewTransaction} watchTopUp={watchTopUp} />
 
       <TopUpApproval
         open={topUpApprovalIsOpen}
         onClose={() => setTopUpApprovalOpen(false)}
         setOpen={setTopUpApprovalOpen}
-        id={viewedTransaction?.id}
+        txn={viewedTransaction}
       />
       <ViewTopUp
         open={txnIsOpen}
         setOpen={setViewTxn}
         onClose={() => setViewTxn(false)}
+        txn={viewedTransaction}
       />
     </DashboardLayout>
   );

@@ -1,15 +1,20 @@
 export type CreateInflowPayload = {
   points: number | string,
   narration: string,
-  initiatorUserId: string | undefined
+  initiatorUserId: string | undefined,
+  providerReference: string
 }
 
 export type CreateInflowResponse = {
-  message: string;
-  data: {
-    token: string,
-    user: {}
-  }
+  id: string,
+  points: number,
+  narration: string,
+  providerReference: string,
+  status: string | number,
+  initiatorUserId: string,
+  approverUserId: string,
+  retryCount: number;
+  createdAt: string
 }
 
 export type InflowApprovalPayload = {
@@ -24,8 +29,11 @@ export type InflowApprovalResponse = {
 }
 
 export type FinanceInflowType = {
+  providerReference: string,
+  retryCount: number;
+  createdAt: string
   id: string;
-  status: string;
+  status: string | number;
   narration: string;
   initiatorUserId: string;
   points: string | number;
@@ -33,13 +41,14 @@ export type FinanceInflowType = {
 }
 
 export type FinanceGetInflowResponseType = {
-  data: [];
+  data: CreateInflowResponse[];
   currentPage: number;
   hasNextPage: boolean;
   hasPreviousPage: boolean;
   pageSize: number;
   totalPages: number;
-  totalCount: number
+  totalCount: number;
+
 }
 
 export type FinanceInflowQueryType = {
