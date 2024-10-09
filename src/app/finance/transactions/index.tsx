@@ -2,14 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "@/app/components/dashboard/DashboardLayout";
-import TransferPointModal from "@/app/components/dashboard/TransferPointModal";
-import Button from "@/app/components/generic/Button";
-import { useAlert } from "@/lib/features/alert/useAlert";
-import { UserWallets } from "@/app/types/wallet.types";
-import { useGetQuery } from "@/app/utils/apiUtils";
-import { ProfileResponse } from "@/app/types/auth.types";
 import { useQueryClient } from "@tanstack/react-query";
-import Spinner from "@/app/components/generic/Spinner";
+// import Spinner from "@/app/components/generic/Spinner";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { MdVerified } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -20,69 +14,24 @@ import { IoIosArrowForward } from "react-icons/io";
 import ViewTopUp from "@/app/components/dashboard/ViewTopUp";
 import TopUpApproval from "@/app/components/dashboard/TopUpApproval";
 import { useSearchParams } from "next/navigation";
-import useUtils from "@/app/hooks/useUtils";
+import TopUp from "./components/TopUp";
+import SendPointIndividual from "./components/SendPointIndividual";
+import SendPointToGroup from "./components/SendPointToGroup";
+import TransferType from "./components/TransferType";
+import SendPointMultipleUsers from "./components/SendPointMultipleUsers";
 
 function Index() {
-  const { isValidEmail } = useUtils();
   const searchParams = useSearchParams();
   const variant = searchParams?.get("variant") ?? "";
   const queryClient = useQueryClient();
   // const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
-  // const { alert } = useAlert();
 
   const [topUpApprovalIsOpen, setTopUpApprovalOpen] = useState(false);
   const [txnIsOpen, setViewTxn] = useState(false);
-  const [topUpPayload, setTopUpPaylod] = useState({
-    email: "",
-    points: 0,
-  });
-  const [individualPayload, setIndividualPayload] = useState({
-    email: "",
-    points: "",
-    narration: "",
-  });
-  const [transferType, setTransferType] = useState("");
+  const [transferType, setTransferType] = useState("multi");
 
   const viewTransaction = () => {
     setViewTxn(true);
-  };
-
-  const validateIndividualPayload = () => {
-
-    const { email, points, narration } = individualPayload
-    if (!isValidEmail(email)) {
-      return { message: "Pleae enter a valid email", name: 'email', error: true }
-    }
-    if (Number(points) < 20) {
-      return { message: "You cannot send less than 20 points", name: 'points', error: true }
-    }
-    if (narration.length < 10) {
-      return { message: "Pleae ensure narration has minimum of 10 characters", name: 'narration', error: true }
-    }
-    return { message: "Pleae ensure narration has minimum of 10 characters", name: "", error: false }
-
-  }
-
-  const handleTopUpPayload = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { value, id } = e.target;
-
-    setTopUpPaylod((prev) => ({
-      ...prev,
-      [id]: id === 'points' ? Number(value) : value,
-    }));
-  };
-
-  const handleIndividualChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { value, id } = e.target;
-
-    setIndividualPayload((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
   };
 
   const decidePageTitle = () => {
@@ -109,132 +58,25 @@ function Index() {
   return (
     <DashboardLayout activePage="topUp" navTitle={decidePageTitle()}>
       {variant == "top-up" ? (
-        <div className="w-full lg:w-[400px] p-[10px] border-[2px] rounded-[8px]">
-          <p className="text-[20px] text-primary-color font-satoshi">
-            Top up Account
-          </p>
-          <div className="h-[54px] rounded-[8px] border-[1px] px-[10px] mt-3">
-            <input
-              type="number"
-              placeholder="Enter Amount"
-              className="text-[14px] h-full w-full outline-none"
-              value={topUpPayload.email}
-              onChange={handleTopUpPayload}
-            />
-          </div>
-          <div className="h-[120px] rounded-[8px] border-[1px] p-[10px] mt-3">
-            <textarea
-              placeholder="Enter Narration"
-              className="text-[14px] h-full w-full outline-none resize-none"
-            ></textarea>
-          </div>
-
-          <div className="flex justify-end mt-3">
-            <Button
-              text="Continue"
-              bg={individualPayload.email?.length ? "bg-app-purple" : "bg-disabled-btn"}
-              classNames="p-3 text-white w-[50%] lg:w-[157px] h-[45px]"
-            />
-          </div>
-        </div>
+        <TopUp />
       ) : variant == "send-points" ? (
         <div className="w-full p-[10px] border-[2px] rounded-[8px]">
           <p className="text-[20px] text-primary-color font-satoshi">
             Select user to send points to
           </p>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6 ">
-            <div className="w-full">
-              <div className="flex items-center mb-4">
-                <input
-                  id="individual"
-                  type="radio"
-                  value="individual"
-                  name="individualOrGroup"
-                  className="w-4 h-4 text-app-purple bg-red-500 border-gray-300  focus:ring-2"
-                  onChange={handleTransferType}
-                />
-                <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Individuals
-                </label>
-              </div>
-
-
-            </div>
-            <div className="w-full">
-              <div className="flex items-center mb-4">
-                <input
-                  id="group"
-                  type="radio"
-                  value="group"
-                  name="individualOrGroup"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500  focus:ring-2"
-                  onChange={handleTransferType}
-                />
-                <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Group
-                </label>
-              </div>
-            </div>
-          </div>
+          <TransferType handleTransferType={handleTransferType} chosen={transferType} />
 
           {transferType == "individual" ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 ">
-              {" "}
-              <div>
-
-                <div className="h-[54px] rounded-[8px] border-[1px] px-[10px] mt-3">
-                  <input
-                    type="email"
-                    placeholder="Enter email address"
-                    className="text-[14px] h-full w-full outline-none"
-                    id="email"
-                    value={individualPayload.email}
-                    onChange={handleIndividualChange}
-                  />
-                </div>
-                <small className="text-red-400">{validateIndividualPayload().name == 'email' ? validateIndividualPayload().message : ''}</small>
-                <div className="h-[54px] rounded-[8px] border-[1px] px-[10px] mt-3">
-                  <input
-                    type="number"
-                    placeholder="Points"
-                    id="points"
-                    className="text-[14px] h-full w-full outline-none"
-                    value={individualPayload.points}
-                    onChange={handleIndividualChange}
-                  />
-                </div>
-                <small className="text-red-400">{validateIndividualPayload().name == 'points' ? validateIndividualPayload().message : ''}</small>
-                <div className="h-[120px] rounded-[8px] border-[1px] p-[10px] mt-3">
-                  <textarea
-                    id="narration"
-                    placeholder="Enter Narration"
-                    className="text-[14px] h-full w-full outline-none resize-none"
-                    onChange={handleIndividualChange}
-                    value={individualPayload.narration}
-                  ></textarea>
-                </div>
-                <small className="text-red-400">{validateIndividualPayload().name == 'narration' ? validateIndividualPayload().message : ''}</small>
-                <div className="flex justify-end mt-3">
-                  <Button
-                    text="Continue"
-                    bg={validateIndividualPayload().error ? "bg-disabled-btn" : "bg-app-purple"}
-                    classNames="p-3 text-white w-[50%] lg:w-[157px] h-[45px]"
-                    disabled={validateIndividualPayload().error}
-                  />
-                </div>
-              </div>
-            </div>
+            <SendPointIndividual />
           ) : transferType == "group" ? (
-            <div></div>
-          ) : (
-            <></>
-          )}
+            <SendPointToGroup />
+          ) : transferType == 'multi' ? (
+            <SendPointMultipleUsers />
+          ) : <></>}
         </div>
       ) : (
         <></>
       )}
-
-
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 mt-10 overflow-auto">
         <div className="border h-[484px] rounded-[6px] p-4">
