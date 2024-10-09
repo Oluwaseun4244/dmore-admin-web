@@ -1,4 +1,5 @@
 interface ApiErrorResponse {
+    message: string;
     response: {
         data: {
             data?: unknown;

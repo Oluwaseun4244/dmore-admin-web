@@ -1,10 +1,13 @@
+import Button from "@/app/components/generic/Button";
+import Modal from "@/app/components/generic/Modal";
 import React, { useState } from "react";
-import Modal from "../generic/Modal";
-import Button from "../generic/Button";
+import { useTopUpApproval } from "../hooks/useTopUpApproval";
+
 
 
 interface TopUpApprovalProps {
   open: boolean;
+  id: string | undefined;
   onClose: (value: boolean) => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -13,12 +16,19 @@ const TopUpApproval: React.FC<TopUpApprovalProps> = ({
   open,
   onClose,
   setOpen,
+  id
 }) => {
 
-  const handleClose = () => {
+  const handleDecline = () => {
     onClose(false)
   }
 
+
+  const { topUpApprovalMutation } = useTopUpApproval(id)
+
+  const handleApprove = () => {
+    topUpApprovalMutation.mutate({})
+  }
 
   return (
     <Modal open={open} setOpen={setOpen}>
@@ -113,13 +123,13 @@ const TopUpApproval: React.FC<TopUpApprovalProps> = ({
             text="Decline"
             bg="bg-white"
             classNames="w-[120px] h-[45px] border border-app-purple text-app-purple"
-            onClick={handleClose}
+            onClick={handleDecline}
           />
           <Button
             text="Approve"
             bg="bg-app-purple"
             classNames="w-[120px] h-[45px] border border-app-purple text-white"
-            onClick={handleClose}
+            onClick={handleApprove}
           />
         </div>
       </div>

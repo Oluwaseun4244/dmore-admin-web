@@ -28,7 +28,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
       if (session) {
         if (folder != routePath) {
           handleSignout()
-          alert("You are not authorized!!!", "error");
+          alert("You are not authorized!", "error");
           router.push(`/login`);
         } else {
           setHasSession(true);

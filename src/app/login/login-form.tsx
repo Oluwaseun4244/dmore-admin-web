@@ -39,11 +39,10 @@ const LoginForm = () => {
         if (expirationTime > currentTime) {
           router.prefetch(`/${folder}/dashboard`);
           router.push(`/${folder}/dashboard`);
-
-        } else {
-          console.log("Session expired, not navigating to dashboard.");
+          return
         }
       }
+      return
     };
 
     checkSession()

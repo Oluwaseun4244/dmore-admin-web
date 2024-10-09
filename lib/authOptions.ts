@@ -117,15 +117,16 @@ export const authOptions: NextAuthOptions = {
             );
 
             const profileData = await profileResponse.json();
+            const allowedRoles = ['Finance', 'Admin']
 
 
             if (!profileResponse.ok) {
               throw new Error(profileData.message || "Failed to fetch profile");
             }
 
-            // if (profileData.role != 'admin') {
-            //   throw new Error("You tried to access a page you do not have authorization to");
-            // }
+            if (!allowedRoles.includes(profileData.role)) {
+              throw new Error("You tried to access a page you do not have authorization to");
+            }
 
 
             // Now we have both the token and profile information, including the role
@@ -174,7 +175,8 @@ export const authOptions: NextAuthOptions = {
       const currentTime = Math.floor(Date.now() / 1000);
       if (token.expiredAt) {
         const expirationTime = Number(token.expiredAt);
-        if (expirationTime - currentTime > 300) {
+        if (expirationTime - currentTime > 600) {
+          //600 being 10 minutes
           return token;
         }
       }

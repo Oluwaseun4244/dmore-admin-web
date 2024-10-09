@@ -9,8 +9,8 @@ export default function useUtils() {
     { role: 'finance', folder: 'finance' },
     { role: 'support', folder: 'support' },
     { role: 'guest', folder: 'Guest' },
-    { role: 'manager', folder: 'Manager' },
-    { role: null, folder: 'finance' }
+    { role: 'Finance', folder: 'finance' },
+    // { role: null, folder: 'finance' }
   ];
 
   // Function to get alias by role
