@@ -3,7 +3,7 @@ import { useAlert } from "@/lib/features/alert/useAlert";
 import { InflowApprovalPayload, InflowApprovalResponse } from "../types/inflow.types";
 
 
-export const useTopUpApproval = (id: string | undefined) => {
+export const useTopUpApproval = (id: string | undefined, onClose: (value: boolean) => void) => {
 
   const { alert } = useAlert()
 
@@ -14,9 +14,10 @@ export const useTopUpApproval = (id: string | undefined) => {
         console.log("data from inflow approval", data)
 
         alert("Inflow approved successfully", "success")
+        onClose(false)
       },
       onError: (error) => {
-
+        onClose(false)
         alert(error?.response?.data?.message || error?.response?.data?.supportMessage || error?.message || 'Error approving inflow', "error")
         console.log("error from create inflow", error);
       },

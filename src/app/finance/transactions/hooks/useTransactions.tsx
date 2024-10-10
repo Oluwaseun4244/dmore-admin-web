@@ -8,7 +8,7 @@ export const useTransactions = () => {
 
   const { alert } = useAlert()
 
-  const transactionsMutation = usePostQuery<FinanceGetInflowResponseType, FinanceInflowQueryType>(
+  const inflowTransactionMutation = usePostQuery<FinanceGetInflowResponseType, FinanceInflowQueryType>(
     "financewallet/inflows/search",
     {
       onSuccess: async (data) => {
@@ -21,8 +21,23 @@ export const useTransactions = () => {
       },
     }
   );
+
+  const allTransactionMutation = usePostQuery<FinanceGetInflowResponseType, FinanceInflowQueryType>(
+    "transactions/getall",
+    {
+      onSuccess: async (data) => {
+
+        // console.log("data from inflow fetchintg", data)
+      },
+      onError: (error) => {
+        alert(error?.response?.data?.message || error?.message || 'Error fetching inflow', "error")
+        console.log("error from create inflow", error);
+      },
+    }
+  );
   return {
-    transactionsMutation,
+    inflowTransactionMutation,
+    allTransactionMutation
   };
 };
 

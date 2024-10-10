@@ -21,7 +21,7 @@ const TopUpApproval: React.FC<TopUpApprovalProps> = ({
     onClose(false);
   };
 
-  const { topUpApprovalMutation } = useTopUpApproval(txn?.id);
+  const { topUpApprovalMutation } = useTopUpApproval(txn?.id, onClose);
 
   const handleApprove = () => {
     topUpApprovalMutation.mutate({});

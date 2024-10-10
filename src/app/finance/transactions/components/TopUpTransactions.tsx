@@ -9,11 +9,11 @@ import Spinner from '@/app/components/generic/Spinner';
 import { useTransactions } from '../hooks/useTransactions';
 import { CreateInflowResponse } from '../types/inflow.types';
 
-type TransactionProps = {
+type TopUpTransactionProps = {
   viewTransaction: (txn: CreateInflowResponse, caller: string) => void;
   watchTopUp: boolean
 }
-function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
+function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProps) {
 
   const { inflowTransactionMutation, allTransactionMutation } = useTransactions()
 
@@ -186,4 +186,4 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
   )
 }
 
-export default Transactions
+export default TopUpTransactions
