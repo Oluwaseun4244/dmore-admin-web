@@ -64,7 +64,7 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
       <div className="border rounded-[6px] p-4">
         <div className="flex items-center justify-between">
           <p className={`font-satoshi text-[24px] font-bold `}>
-            Transactions
+            Inflow Transactions
           </p>
         </div>
         <hr className="my-2" />
