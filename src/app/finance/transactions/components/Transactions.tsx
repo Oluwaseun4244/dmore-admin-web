@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { MdVerified } from "react-icons/md";
-import { IoSearchOutline } from "react-icons/io5";
-import { IoIosFunnel } from "react-icons/io";
+// import { IoSearchOutline } from "react-icons/io5";
+// import { IoIosFunnel } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import Spinner from '@/app/components/generic/Spinner';
@@ -15,7 +15,7 @@ type TransactionProps = {
 }
 function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
 
-  const { inflowTransactionMutation, allTransactionMutation } = useTransactions()
+  const { allTransactionMutation } = useTransactions()
 
   const tableHeaders = ["", "#", "NARRATION", "INITIATED BY", "POINTS", "APPROVED BY", "STATUS", "DATE", "ACTION"];
 
@@ -28,11 +28,11 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
       pageNumber: page,
       pageSize: pageLimit
     }
-    inflowTransactionMutation.mutate(payload)
+    allTransactionMutation.mutate(payload)
   }
 
   const nextPage = () => {
-    if (inflowTransactionMutation.data?.hasNextPage) {
+    if (allTransactionMutation.data?.hasNextPage) {
       setPage((prev) => prev + 1);
     }
   };
@@ -41,13 +41,22 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
     setPage((prev) => Math.max(1, prev - 1));
   };
 
+  const handlePageLimit = async (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { value, id } = e.target;
+    setPageLimit(Number(value))
+  };
+
+
   useEffect(() => {
     queryBuilder(page)
-    allTransactionMutation.mutate({
-      pageNumber: page,
-      pageSize: pageLimit
-    })
   }, [page, watchTopUp])
+
+  useEffect(() => {
+    queryBuilder(1)
+    setPage(1)
+  }, [pageLimit])
 
   return (
     <div className="grid grid-cols-1  md:grid-cols-1 lg:grid-cols-1 gap-4 mt-10 overflow-auto">
@@ -97,7 +106,7 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
               </thead>
               <div className='flex items-center justify-center'></div>
               <tbody>
-                {inflowTransactionMutation.isPending ?
+                {allTransactionMutation.isPending ?
                   <tr>
                     <td colSpan={9} className="text-center py-4">
 
@@ -108,7 +117,7 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
                     </td>
                   </tr>
 
-                  : inflowTransactionMutation.data?.data?.length ? inflowTransactionMutation?.data?.data?.map((txn, index) => (
+                  : allTransactionMutation.data?.data?.length ? allTransactionMutation?.data?.data?.map((txn, index) => (
                     <tr
                       className={`h-[50px] ${index % 2 == 0 ? "" : "bg-[#DAB9FA17]"
                         }`}
@@ -159,22 +168,31 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
 
         {/* PAGINATION ROW */}
         {
-          inflowTransactionMutation.data?.data?.length ? <div className="flex justify-end">
+          allTransactionMutation.data?.data?.length ? <div className="flex justify-end">
             <div className="flex items-center gap-2">
-              <p
-                className={`font-satoshi text-[12px] font-[500] text-[#687182] m-0`}
-              >
-                Rows per page: <span>{pageLimit}</span>
-              </p>
-              <div className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${inflowTransactionMutation.data?.hasPreviousPage ? 'cursor-pointer' : 'cursor-default'}`} onClick={previousPage}>
+              <div className='flex items-center gap-2'>
+                <p
+                  className={`font-satoshi text-[12px] font-[500] text-[#687182] m-0`}
+                >
+                  Rows per page:
+                </p>
+                <select className='outline-none border-none' onChange={handlePageLimit}>
+                  <option selected={pageLimit == 5}>5</option>
+                  <option selected={pageLimit == 10}>10</option>
+                  <option selected={pageLimit == 15}>15</option>
+                  <option selected={pageLimit == 20}>20</option>
+                </select>
+              </div>
+
+              <div className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${allTransactionMutation.data?.hasPreviousPage ? 'cursor-pointer' : 'cursor-default'}`} onClick={previousPage}>
                 <IoIosArrowBack className="text-[16px] text-[#687182]" />
               </div>
               <p
                 className={`font-satoshi text-[12px] font-[500] text-primary-color`}
               >
-                {inflowTransactionMutation.data?.currentPage}
+                {allTransactionMutation.data?.currentPage}
               </p>
-              <div className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${inflowTransactionMutation.data?.hasNextPage ? 'cursor-pointer' : 'cursor-default'}`} onClick={nextPage}>
+              <div className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${allTransactionMutation.data?.hasNextPage ? 'cursor-pointer' : 'cursor-default'}`} onClick={nextPage}>
                 <IoIosArrowForward className="text-[16px] text-[#687182]" />
               </div>
             </div>

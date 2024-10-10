@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { MdVerified } from "react-icons/md";
-import { IoSearchOutline } from "react-icons/io5";
-import { IoIosFunnel } from "react-icons/io";
+// import { IoSearchOutline } from "react-icons/io5";
+// import { IoIosFunnel } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import Spinner from '@/app/components/generic/Spinner';
@@ -15,7 +15,7 @@ type TopUpTransactionProps = {
 }
 function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProps) {
 
-  const { inflowTransactionMutation, allTransactionMutation } = useTransactions()
+  const { inflowTransactionMutation } = useTransactions()
 
   const tableHeaders = ["", "#", "NARRATION", "INITIATED BY", "POINTS", "APPROVED BY", "STATUS", "DATE", "ACTION"];
 
@@ -31,6 +31,13 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
     inflowTransactionMutation.mutate(payload)
   }
 
+  const handlePageLimit = async (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { value, id } = e.target;
+    setPageLimit(Number(value))
+  };
+
   const nextPage = () => {
     if (inflowTransactionMutation.data?.hasNextPage) {
       setPage((prev) => prev + 1);
@@ -43,11 +50,14 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
 
   useEffect(() => {
     queryBuilder(page)
-    allTransactionMutation.mutate({
-      pageNumber: page,
-      pageSize: pageLimit
-    })
   }, [page, watchTopUp])
+
+  useEffect(() => {
+    queryBuilder(1)
+    setPage(1)
+  }, [pageLimit])
+
+
 
   return (
     <div className="grid grid-cols-1  md:grid-cols-1 lg:grid-cols-1 gap-4 mt-10 overflow-auto">
@@ -160,12 +170,21 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
         {/* PAGINATION ROW */}
         {
           inflowTransactionMutation.data?.data?.length ? <div className="flex justify-end">
-            <div className="flex items-center gap-2">
-              <p
-                className={`font-satoshi text-[12px] font-[500] text-[#687182] m-0`}
-              >
-                Rows per page: <span>{pageLimit}</span>
-              </p>
+            <div className="flex items-center gap-2 mt-4">
+              <div className='flex items-center gap-2'>
+                <p
+                  className={`font-satoshi text-[12px] font-[500] text-[#687182] m-0`}
+                >
+                  Rows per page:
+                </p>
+                <select className='outline-none border-none' onChange={handlePageLimit}>
+                  <option selected={pageLimit == 5}>5</option>
+                  <option selected={pageLimit == 10}>10</option>
+                  <option selected={pageLimit == 15}>15</option>
+                  <option selected={pageLimit == 20}>20</option>
+                </select>
+              </div>
+
               <div className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${inflowTransactionMutation.data?.hasPreviousPage ? 'cursor-pointer' : 'cursor-default'}`} onClick={previousPage}>
                 <IoIosArrowBack className="text-[16px] text-[#687182]" />
               </div>

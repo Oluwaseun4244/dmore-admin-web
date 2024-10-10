@@ -48,7 +48,6 @@ export type FinanceGetInflowResponseType = {
   pageSize: number;
   totalPages: number;
   totalCount: number;
-
 }
 
 export type FinanceInflowQueryType = {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DashboardLayout from "../../components/dashboard/DashboardLayout";
 import RecentTransaction from "../../components/dashboard/RecentTransaction";
 import TransferPointModal from "../../components/dashboard/TransferPointModal";
@@ -13,52 +13,58 @@ import { useQueryClient } from "@tanstack/react-query";
 import Spinner from "../../components/generic/Spinner";
 import { useRouter } from "next/navigation";
 import useUtils from "@/app/hooks/useUtils";
+import { useDashboard } from "./hooks/useDashboard";
 
 
 function FinanceDashboard() {
   const queryClient = useQueryClient();
   const { getFolder } = useUtils()
+  const { financeWalletMutation } = useDashboard()
   const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
   const router = useRouter();
 
   const [transferIsopen, setTransferIsOpen] = useState(false);
 
-  const userWallets = useGetQuery<UserWallets>(
-    {
-      url: `userwallets`,
-      queryKeys: [`user-wallet-${profileData?.id}`],
-    },
-    {
-      queryKey: [`user-wallet-${profileData?.id}`],
-    }
-  );
 
   const goToTransactions = async (variant: string) => {
     const folder = await getFolder()
     router.push(`/${folder}/transactions?variant=${variant}`);
   }
 
+  console.log("wallets", financeWalletMutation)
+  useEffect(() => {
+    financeWalletMutation.mutate({
+      pageNumber: 1,
+      pageSize: 4
+    })
+  }, [])
 
 
 
   return (
-    <DashboardLayout activePage="dashboard" navTitle="Credits and Points">
+    <DashboardLayout activePage="dashboard" navTitle="Finance Wallet">
       <div>
-        {userWallets.isPending ? (
+        {financeWalletMutation.isPending ? (
           <div className="w-full flex items-center justify-center h-[200px]">
             <Spinner />
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-            <WalletCard
-              bg={"bg-app-purple"}
-              color={"text-white"}
-              title={`Central Wallet`}
-              showEyes={false}
-              showInfo
-              balance={0}
-              toolTip={"Central Wallet"}
-            />
+            {
+              financeWalletMutation.data?.data?.slice(0, 3).map(wallet => (
+                <WalletCard
+                  key={wallet.id}
+                  bg={"bg-app-purple"}
+                  color={"text-white"}
+                  title={wallet.code}
+                  showEyes={true}
+                  showInfo
+                  balance={wallet.availablePoints}
+                  toolTip={wallet.code}
+                />
+              ))
+            }
+
           </div>
 
         )}
