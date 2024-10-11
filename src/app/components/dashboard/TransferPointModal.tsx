@@ -200,7 +200,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
               <div className="mt-6 border rounded-lg p-4">
                 <div className="flex flex-row items-center justify-between">
                   <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                    Amount
+                    Points
                   </p>
                   <div className="flex flex-row items-center justify-between gap-2">
                     <p className="font-satoshi text-[12px] font-[400] text-text-dark2">
@@ -218,7 +218,7 @@ const TransferPointModal: React.FC<TransferPointModalProps> = ({
                 </div>
                 <div className="flex flex-row items-center mt-3 justify-between">
                   <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                    Amount to receive
+                    Points to receive
                   </p>
                   <div className="flex flex-row items-center justify-between gap-2">
                     <p className="font-satoshi text-[12px] font-[400] text-text-dark2">

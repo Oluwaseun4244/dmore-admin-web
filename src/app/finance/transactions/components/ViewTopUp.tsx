@@ -70,7 +70,7 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
               </div>
               <div className="flex flex-row items-center mt-3 justify-between">
                 <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                  Amount:
+                  Points:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
