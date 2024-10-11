@@ -93,7 +93,7 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
           </div>
         </div> */}
         <div className="overflow-auto ">
-          <div className="lg:w-full min-w-[1400px]">
+          <div className="lg:w-full min-w-[1000px]">
             <table className="table-auto w-full">
               <thead>
                 <tr className="bg-[#DAB9FA17] h-[50px]">
