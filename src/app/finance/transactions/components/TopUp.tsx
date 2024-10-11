@@ -71,7 +71,7 @@ export default function TopUp({ setWatchTopUp, watchTopUp }: TopUpProps) {
 
 
     if (Number(points) < 999) {
-      return { message: "Top up amount must be 1000 and above", name: 'points', error: true }
+      return { message: "Top up point must be 1000 and above", name: 'points', error: true }
     }
     if (!Number(points)) {
       return { message: "Points must be numbers", name: 'points', error: true }

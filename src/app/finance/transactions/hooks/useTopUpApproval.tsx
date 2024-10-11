@@ -11,15 +11,28 @@ export const useTopUpApproval = (id: string | undefined, onClose: (value: boolea
     `financewallet/inflows/approve-inflow/${id}`,
     {
       onSuccess: async (data) => {
-        console.log("data from inflow approval", data)
 
         alert("Inflow approved successfully", "success")
         onClose(false)
       },
       onError: (error) => {
         onClose(false)
-        alert(error?.response?.data?.message || error?.response?.data?.supportMessage || error?.message || 'Error approving inflow', "error")
-        console.log("error from create inflow", error);
+        const messages = error?.response?.data?.messages || []
+        const exception = error?.response?.data?.exception || ""
+
+        if (messages.length) {
+          messages.map(message => {
+            alert(message || 'Error approving inflow', "error")
+          })
+          return
+        }
+        if (exception) {
+          alert(exception || 'Error approving inflow', "error")
+          return
+        }
+
+        alert(error?.response?.data?.supportMessage || 'Error approving inflow', "error")
+
       },
     }
   );

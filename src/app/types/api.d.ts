@@ -4,6 +4,8 @@ interface ApiErrorResponse {
         data: {
             data?: unknown;
             message: string;
+            messages: string[];
+            exception: string;
             supportMessage: string
         };
         status?; number;
