@@ -17,7 +17,7 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
 
   const { inflowTransactionMutation } = useTransactions()
 
-  const tableHeaders = ["", "#", "NARRATION", "INITIATED BY", "POINTS", "APPROVED BY", "STATUS", "DATE", "ACTION"];
+  const tableHeaders = ["", "#", "DATE", "POINTS", "INITIATED BY", "APPROVED BY", "STATUS", "ACTION"];
 
   const [page, setPage] = useState(1)
   const [pageLimit, setPageLimit] = useState(10)
@@ -128,24 +128,23 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
                       <td className="text-app-purple font-[500] text-[14px] font-satoshi">
                         {index + 1}
                       </td>
-                      <td className="text-app-purple font-[500] text-[14px] font-satoshi">
-                        {txn.narration}
-                      </td>
                       <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                        {txn.initiatorUserId}
+                        {txn.createdAt || 'Date Here'}
                       </td>
                       <td className="text-primary-color font-[500] text-[14px] font-satoshi">
                         {txn.points.toLocaleString()}
                       </td>
+                      <td className="text-primary-color font-[500] text-[14px] font-satoshi">
+                        {txn.initiatorUserId}
+                      </td>
+
                       <td className="text-primary-color font-[500] text-[14px] font-satoshi">
                         {txn.approverUserId || "--"}
                       </td>
                       <td className={`font-[500] text-[14px] font-satoshi ${txn.status == 1 ? 'text-pending-orange' : 'text-verified-green'}`}>
                         {txn.status == 1 ? "Pending" : "Approved"}
                       </td>
-                      <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                        {txn.createdAt || 'Date Here'}
-                      </td>
+
                       <td className="text-app-purple font-[500] text-[14px] font-satoshi">
                         <div className="flex gap-3">
                           <MdOutlineRemoveRedEye
