@@ -12,7 +12,7 @@ import inactive_settings from "../../../../public/icons/inactive-settings.svg";
 import active_settings from "../../../../public/icons/active-settings.svg";
 import { getSession, signOut } from "next-auth/react";
 import { useGetQuery } from "../../utils/apiUtils";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useAlert } from "@/lib/features/alert/useAlert";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -40,10 +40,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const queryClient = useQueryClient();
   const [token, setToken] = useState("");
   const [session, setSession] = useState<Session>();
-  const router = useRouter();
 
-  const handleSignout = async () => {
-    await signOut();
+
+  const handleSignout = () => {
+    signOut();
   };
 
   const profileQuery = useGetQuery<ProfileResponse>(
@@ -81,14 +81,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   if (session?.error || session?.error == 'RefreshAccessTokenError') {
     alert("Could not refresh token, logging you out", "error");
     handleSignout();
-    router.push("/login");
     return;
   }
 
   if (!profileQuery.data || profileQuery?.error?.response?.status === 401) {
     alert("Profile not found, invalid token suspected", "error");
     handleSignout();
-    router.push("/login");
+    return
   }
 
   queryClient.setQueryData(["profile"], profileQuery.data);

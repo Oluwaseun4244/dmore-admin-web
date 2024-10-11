@@ -10,16 +10,9 @@ export default function useUtils() {
     { role: 'support', folder: 'support' },
     { role: 'guest', folder: 'Guest' },
     { role: 'Finance', folder: 'finance' },
-    // { role: null, folder: 'finance' }
   ];
 
-  // Function to get alias by role
-  // async function getFolder() {
-  //   const session = await getSession();
-  //   const roleAlias = rolesWithAliases.find(r => r.role === session?.role);
 
-  //   return roleAlias ? roleAlias.folder : null;
-  // }
 
   const getFolder = useCallback(async () => {
     const session = await getSession();
@@ -29,6 +22,7 @@ export default function useUtils() {
 
   const handleSignout = useCallback(async () => {
     await signOut();
+    return;
   }, []);
 
   function isValidEmail(email: string) {
