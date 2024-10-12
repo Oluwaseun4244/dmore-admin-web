@@ -46,6 +46,17 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     signOut();
   };
 
+  const profileQuery = useGetQuery<ProfileResponse>(
+    {
+      url: "profile",
+      queryKeys: [`profile-${token}`, token],
+    },
+    {
+      enabled: !!token,
+      queryKey: [`profile-${token}`, token],
+      refetchOnWindowFocus: false,
+    }
+  );
 
   useEffect(() => {
     const checkSession = async () => {
@@ -59,31 +70,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     checkSession();
   }, [token]);
 
-
-  if (session?.error || session?.error == 'RefreshAccessTokenError') {
-    alert("Could not refresh token, logging you out", "error");
-    handleSignout();
-    return;
-  }
-
-  const profileQuery = useGetQuery<ProfileResponse>(
-    {
-      url: "profile",
-      queryKeys: [`profile-${token}`, token],
-    },
-    {
-      enabled: !!token,
-      queryKey: [`profile-${token}`, token],
-      refetchOnWindowFocus: false,
-    }
-  );
-
   if (profileQuery.isPending) {
     return (
       <div className="w-screen h-screen flex justify-center items-center">
         <p className="font-sans text-white text-5xl">Loading...</p>
       </div>
     );
+  }
+
+  if (session?.error || session?.error == 'RefreshAccessTokenError') {
+    alert("Could not refresh token, logging you out", "error");
+    handleSignout();
+    return;
   }
 
   if (!profileQuery.data || profileQuery?.error?.response?.status === 401) {
