@@ -1,5 +1,5 @@
 import { getSession, useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import useUtils from "../hooks/useUtils";
 import { useAlert } from "@/lib/features/alert/useAlert";
@@ -10,7 +10,6 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   const { getFolder, handleSignout } = useUtils()
   const { alert } = useAlert();
   const { status } = useSession();
-  const router = useRouter();
   const pathname = usePathname();
 
   const [loading, setLoading] = useState(true);
@@ -34,7 +33,8 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
           setHasSession(true);
         }
       } else {
-        router.push(`/login`);
+        handleSignout()
+        return
       }
       setLoading(false);
     };

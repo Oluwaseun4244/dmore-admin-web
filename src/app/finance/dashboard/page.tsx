@@ -14,6 +14,9 @@ import Spinner from "../../components/generic/Spinner";
 import { useRouter } from "next/navigation";
 import useUtils from "@/app/hooks/useUtils";
 import { useDashboard } from "./hooks/useDashboard";
+import BalanceCard from "./components/BalanceCard";
+import SendPointCard from "./components/SendPointCard";
+import TotalPointsCard from "./components/TotalPointsCard";
 
 
 function FinanceDashboard() {
@@ -31,7 +34,7 @@ function FinanceDashboard() {
     router.push(`/${folder}/transactions?variant=${variant}`);
   }
 
-  console.log("wallets", financeWalletMutation)
+
   useEffect(() => {
     financeWalletMutation.mutate({
       pageNumber: 1,
@@ -49,64 +52,27 @@ function FinanceDashboard() {
             <Spinner />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
             {
-              financeWalletMutation.data?.data?.slice(0, 3).map(wallet => (
-                <WalletCard
+              financeWalletMutation.data?.data?.slice(0, 1).map(wallet => (
+                <BalanceCard
                   key={wallet.id}
                   bg={"bg-app-purple"}
                   color={"text-white"}
                   title={wallet.code}
                   showEyes={true}
-                  showInfo
+                  goTo={goToTransactions}
                   balance={wallet.availablePoints}
-                  toolTip={wallet.code}
                 />
               ))
             }
 
+            <SendPointCard goTo={goToTransactions} />
+            <TotalPointsCard />
           </div>
 
         )}
       </div>
-
-      <div className="mt-10 flex flex-col lg:flex-row  items-center lg:items-start justify-between gap-4">
-        <div className="flex flex-row w-[100%] lg:w-[350px] gap-[10px]">
-          <Button
-            text="Load Wallet"
-            bg="bg-app-purple"
-            classNames="p-3 text-white w-[50%] lg:w-[157px] h-[51px]"
-            onClick={() => goToTransactions('top-up')}
-          />
-          <Button
-            text="Send Points"
-            bg="bg-white"
-            classNames="p-3 text-app-purple border w-[50%] lg:w-[157px] h-[51px]"
-            onClick={() => goToTransactions('send-points')}
-          />
-        </div>
-      </div>
-      {/* <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4 mt-10 overflow-auto">
-
-        <div className="border h-[484px] rounded-[6px] p-4 min-w-[500px]">
-          <div className="flex items-center justify-between">
-            <p className={`font-satoshi text-[24px] font-bold text-app-purple`}>
-              Recent transactions
-            </p>
-            <p
-              className={`font-satoshi text-[16px] font-medium text-app-purple`}
-            >
-              View All
-            </p>
-          </div>
-          <hr className="my-4" />
-
-          <RecentTransaction name="Tola Banjo" />
-          <RecentTransaction name="Micheal Ajayi" />
-          <RecentTransaction name="Mary Ogedengbe" />
-          <RecentTransaction name="Dayo James" />
-        </div>
-      </div> */}
 
       <TransferPointModal
         open={transferIsopen}

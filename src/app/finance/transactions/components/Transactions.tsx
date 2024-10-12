@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { MdVerified } from "react-icons/md";
 // import { IoSearchOutline } from "react-icons/io5";
 // import { IoIosFunnel } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import Spinner from '@/app/components/generic/Spinner';
 import { useTransactions } from '../hooks/useTransactions';
-import { CreateInflowResponse } from '../types/inflow.types';
+import { AllTransactionType } from '../types/transactions.types';
 
 type TransactionProps = {
-  viewTransaction: (txn: CreateInflowResponse, caller: string) => void;
+  viewTransaction: (txn: AllTransactionType) => void;
   watchTopUp: boolean
 }
 function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
 
   const { allTransactionMutation } = useTransactions()
 
-  const tableHeaders = ["", "#", "NARRATION", "INITIATED BY", "POINTS", "APPROVED BY", "STATUS", "DATE", "ACTION"];
+  const tableHeaders = ["", "#", "DATE", "POINTS", "CHARGES", "SENDER", "RECEIVER", "STATUS", "ACTION"];
 
   const [page, setPage] = useState(1)
   const [pageLimit, setPageLimit] = useState(10)
@@ -128,30 +127,30 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
                         {index + 1}
                       </td>
                       <td className="text-app-purple font-[500] text-[14px] font-satoshi">
-                        {txn.narration}
-                      </td>
-                      <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                        {txn.initiatorUserId}
+                        {txn.transactionDate}
                       </td>
                       <td className="text-primary-color font-[500] text-[14px] font-satoshi">
                         {txn.points.toLocaleString()}
                       </td>
                       <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                        {txn.approverUserId || "--"}
+                        {txn.charges}
+                      </td>
+                      <td className="text-primary-color font-[500] text-[14px] font-satoshi">
+                        {txn.sourceUserName || "--"}
+                      </td>
+                      <td className="text-primary-color font-[500] text-[14px] font-satoshi">
+                        {txn.receiverName || "--"}
                       </td>
                       <td className={`font-[500] text-[14px] font-satoshi ${txn.status == 1 ? 'text-pending-orange' : 'text-verified-green'}`}>
                         {txn.status == 1 ? "Pending" : "Approved"}
                       </td>
-                      <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                        {txn.createdAt || 'Date Here'}
-                      </td>
+
                       <td className="text-app-purple font-[500] text-[14px] font-satoshi">
                         <div className="flex gap-3">
                           <MdOutlineRemoveRedEye
                             className="text-pending-orange cursor-pointer"
-                            onClick={() => viewTransaction(txn, 'view')}
+                            onClick={() => viewTransaction(txn)}
                           />{" "}
-                          <MdVerified className="text-verified-green cursor-pointer" onClick={() => viewTransaction(txn, 'approval')} />{" "}
                         </div>
                       </td>
                     </tr>

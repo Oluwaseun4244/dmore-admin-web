@@ -11,11 +11,12 @@ import TopUp from "./components/TopUp";
 import SendPointIndividual from "./components/SendPointIndividual";
 import SendPointToGroup from "./components/SendPointToGroup";
 import TransferType from "./components/TransferType";
-import SendPointMultipleUsers from "./components/SendPointMultipleUsers";
 import TopUpApproval from "./components/TopUpApproval";
 import Transactions from "./components/Transactions";
 import { FinanceInflowType } from "./types/inflow.types";
 import TopUpTransactions from "./components/TopUpTransactions";
+import { AllTransactionType } from "./types/transactions.types";
+import ViewTransaction from "./components/ViewTransaction";
 
 function Index() {
   const searchParams = useSearchParams();
@@ -25,21 +26,33 @@ function Index() {
 
   const [topUpApprovalIsOpen, setTopUpApprovalOpen] = useState(false);
   const [watchTopUp, setWatchTopUp] = useState(false);
+  const [topUpTxnOpen, setTopUpTxnOpen] = useState(false);
   const [txnIsOpen, setViewTxn] = useState(false);
-  const [transferType, setTransferType] = useState("multi");
-  const [viewedTransaction, setViewedTransaction] =
+  const [transferType, setTransferType] = useState("individual");
+  const [viewedInflow, setViewedInflow] =
     useState<FinanceInflowType>();
+  const [viewedTransaction, setViewedTransactions] =
+    useState<AllTransactionType>();
 
-  const viewTransaction = (txn: FinanceInflowType, caller: string) => {
-    setViewedTransaction(txn);
+  const handleViewInflow = (txn: FinanceInflowType, caller: string) => {
+    setViewedInflow(txn);
     if (caller == "view") {
-      setViewTxn(true);
+      setTopUpTxnOpen(true);
       return;
     }
     if (caller == "approval") {
       setTopUpApprovalOpen(true);
       return;
     }
+  };
+
+  const handleViewTransaction = (txn: AllTransactionType) => {
+    setViewedTransactions(txn);
+
+    setViewTxn(true);
+    return;
+
+
   };
 
   const decidePageTitle = () => {
@@ -79,8 +92,6 @@ function Index() {
               <SendPointIndividual />
             ) : transferType == "group" ? (
               <SendPointToGroup />
-            ) : transferType == "multi" ? (
-              <SendPointMultipleUsers />
             ) : (
               <></>
             )}
@@ -91,12 +102,12 @@ function Index() {
 
         {variant === "top-up" ? (
           <TopUpTransactions
-            viewTransaction={viewTransaction}
+            viewTransaction={handleViewInflow}
             watchTopUp={watchTopUp}
           />
-        ) : (
+        ) : variant === 'send-points' ? <></> : (
           <Transactions
-            viewTransaction={viewTransaction}
+            viewTransaction={handleViewTransaction}
             watchTopUp={watchTopUp}
           />
         )}
@@ -105,9 +116,16 @@ function Index() {
           open={topUpApprovalIsOpen}
           onClose={() => setTopUpApprovalOpen(false)}
           setOpen={setTopUpApprovalOpen}
-          txn={viewedTransaction}
+          txn={viewedInflow}
         />
         <ViewTopUp
+          open={topUpTxnOpen}
+          setOpen={setTopUpTxnOpen}
+          onClose={() => setTopUpTxnOpen(false)}
+          txn={viewedInflow}
+        />
+
+        <ViewTransaction
           open={txnIsOpen}
           setOpen={setViewTxn}
           onClose={() => setViewTxn(false)}

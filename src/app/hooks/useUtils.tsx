@@ -12,8 +12,6 @@ export default function useUtils() {
     { role: 'Finance', folder: 'finance' },
   ];
 
-
-
   const getFolder = useCallback(async () => {
     const session = await getSession();
     const roleAlias = rolesWithAliases.find(r => r.role === session?.role);
@@ -21,7 +19,7 @@ export default function useUtils() {
   }, []);
 
   const handleSignout = useCallback(async () => {
-    await signOut();
+    await signOut({ callbackUrl: '/login' });
     return;
   }, []);
 

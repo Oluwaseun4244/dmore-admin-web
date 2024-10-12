@@ -1,17 +1,17 @@
 import React from "react";
 import Modal from "../../../components/generic/Modal";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import { FinanceInflowType } from "@/app/finance/transactions/types/inflow.types";
+import { AllTransactionType } from "../types/transactions.types";
 
 interface ViewTopUpTxnProps {
   open: boolean;
   onClose: (value: boolean) => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  txn: FinanceInflowType | undefined
+  txn: AllTransactionType | undefined
 }
 
 
-const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
+const ViewTransaction: React.FC<ViewTopUpTxnProps> = ({
   open,
   onClose,
   setOpen,
@@ -39,31 +39,41 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                    {txn?.providerReference}
+                    {txn?.transactionRef}
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-row items-center justify-between">
+                <p className="font-satoshi text-[14px] font-[400] text-light-gray">
+                  Date:
+                </p>
+                <div className="flex flex-row items-center justify-between gap-2">
+                  <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
+                    {txn?.transactionDate}
                   </p>
                 </div>
               </div>
 
               <div className="flex flex-row items-center mt-3 justify-between">
                 <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                  Top Up Initiated by:
+                  Sender:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <div className="flex items-center gap-[8px]">
 
                     <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                      {txn?.initiatorUserId}
+                      {txn?.sourceUserName || "N/A"}
                     </p>
                   </div>
                 </div>
               </div>
               <div className="flex flex-row items-center mt-3 justify-between">
                 <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                  Approved/Declined by:
+                  Receiver:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                    {txn?.approverUserId || "N/A"}
+                    {txn?.receiverName || "N/A"}
                   </p>
                 </div>
               </div>
@@ -79,11 +89,11 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
               </div>
               <div className="flex flex-row items-center mt-3 justify-between">
                 <p className="font-satoshi text-[14px] font-[400] text-light-gray">
-                  Narration:
+                  Charges:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                    {txn?.narration}
+                    {txn?.charges}
                   </p>
                 </div>
               </div>
@@ -92,9 +102,9 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
                   Status:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
-                <p className={`font-satoshi text-[12px] font-[500] text-pending-orange ${txn?.status == 1 ? 'text-pending-orange' : 'text-verified-green'}`}>
-                  {txn?.status == 1 ? "Pending" : "Approved"}
-                </p>
+                  <p className={`font-satoshi text-[12px] font-[500] text-pending-orange ${txn?.status == 'Pending' ? 'text-pending-orange' : 'text-verified-green'}`}>
+                    {txn?.status}
+                  </p>
                 </div>
               </div>
             </div>
@@ -105,4 +115,5 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
   );
 };
 
-export default ViewTopUp;
+export default ViewTransaction;
+

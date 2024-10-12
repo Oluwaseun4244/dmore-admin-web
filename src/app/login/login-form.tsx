@@ -3,7 +3,7 @@
 import Button from "@/app/components/generic/Button";
 
 import { useAlert } from "@/lib/features/alert/useAlert";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, useSession, getSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ const LoginForm = () => {
   const { getFolder } = useUtils()
   const router = useRouter();
 
-  const { status, data: session } = useSession();
+  const { status } = useSession();
   const [isPending, setIsPending] = useState(false);
   const { alert } = useAlert();
 
@@ -31,7 +31,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     const checkSession = async () => {
-
+      const session = await getSession();
       if (status === "authenticated" && session?.expiredAt) {
         const currentTime = Math.floor(Date.now() / 1000);
         const expirationTime = Number(session.expiredAt);

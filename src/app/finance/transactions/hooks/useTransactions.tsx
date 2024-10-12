@@ -3,6 +3,7 @@ import { usePostQuery } from "@/app/utils/apiUtils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAlert } from "@/lib/features/alert/useAlert";
 import { FinanceGetInflowResponseType, FinanceInflowQueryType } from "../types/inflow.types";
+import { AllTransactionQueryType, AllTransactionsResponse } from "../types/transactions.types";
 
 export const useTransactions = () => {
 
@@ -22,7 +23,7 @@ export const useTransactions = () => {
     }
   );
 
-  const allTransactionMutation = usePostQuery<FinanceGetInflowResponseType, FinanceInflowQueryType>(
+  const allTransactionMutation = usePostQuery<AllTransactionsResponse, AllTransactionQueryType>(
     "transactions/getall",
     {
       onSuccess: async (data) => {

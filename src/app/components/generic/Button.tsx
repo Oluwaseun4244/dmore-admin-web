@@ -8,6 +8,8 @@ interface ButtonProps {
   my?: string;
   onClick?: () => void;
   isLoading?: boolean;
+  icon?: React.ReactNode;
+  iconPosition?: string
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,16 +20,19 @@ const Button: React.FC<ButtonProps> = ({
   my,
   onClick,
   isLoading = false,
+  icon,
+  iconPosition
 }) => {
   return !isLoading ? (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`rounded-lg font-satoshi p-0 ${
-        disabled ? "cursor-default" : "cursor-pointer"
-      } ${classNames} ${bg} my-${my}`}
+      className={`rounded-lg font-satoshi p-0 flex items-center justify-center ${disabled ? "cursor-default" : "cursor-pointer"
+        } ${classNames} ${bg} my-${my}`}
     >
+      {icon && iconPosition == 'left' ? <span className="mr-2">{icon}</span> : <></>}
       {text}
+      {icon && iconPosition == 'right' ? <span className="mr-2">{icon}</span> : <></>}
     </button>
   ) : (
     <button
