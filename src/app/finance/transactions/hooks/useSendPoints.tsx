@@ -1,15 +1,14 @@
 import { usePostQuery } from "@/app/utils/apiUtils";
 import { useAlert } from "@/lib/features/alert/useAlert";
-import { CreateInflowPayload, CreateInflowResponse } from "../types/inflow.types";
+import { FinanceInflowType } from "../types/inflow.types";
 import { SendPointsPayload } from "../types/transactions.types";
 
-type setWatch = (value: boolean) => void
-type watch = boolean
+
 export const useSendPoints = () => {
 
   const { alert } = useAlert()
 
-  const sendPointsMutation = usePostQuery<CreateInflowResponse, SendPointsPayload>(
+  const sendPointsMutation = usePostQuery<FinanceInflowType, SendPointsPayload>(
     "financewallet/send-points",
     {
       onSuccess: async (data) => {

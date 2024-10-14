@@ -7,10 +7,11 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import Spinner from '@/app/components/generic/Spinner';
 import { useTransactions } from '../hooks/useTransactions';
-import { CreateInflowResponse } from '../types/inflow.types';
+import { FinanceInflowType } from '../types/inflow.types';
+import moment from "moment"
 
 type TopUpTransactionProps = {
-  viewTransaction: (txn: CreateInflowResponse, caller: string) => void;
+  viewTransaction: (txn: FinanceInflowType, caller: string) => void;
   watchTopUp: boolean
 }
 function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProps) {
@@ -129,7 +130,7 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
                         {index + 1}
                       </td>
                       <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                        {txn.createdAt || 'Date Here'}
+                        {moment(txn.createdOn).format("LL") || 'Date Here'}
                       </td>
                       <td className="text-primary-color font-[500] text-[14px] font-satoshi">
                         {txn.points.toLocaleString()}

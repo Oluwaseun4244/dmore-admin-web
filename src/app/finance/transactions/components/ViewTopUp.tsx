@@ -52,7 +52,7 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
                   <div className="flex items-center gap-[8px]">
 
                     <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                      {txn?.initiatorUserId}
+                      {txn?.initiatorName}
                     </p>
                   </div>
                 </div>
@@ -63,7 +63,7 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
                   <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
-                    {txn?.approverUserId || "N/A"}
+                    {txn?.approverName != "Unknown" ? txn?.approverName : "N/A"}
                   </p>
                 </div>
               </div>
@@ -82,7 +82,7 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
                   Narration:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
-                  <p className="font-satoshi text-[12px] font-[500] text-text-dark2">
+                  <p className="font-satoshi text-[12px] font-[500] text-text-dark2 capitalize">
                     {txn?.narration}
                   </p>
                 </div>
@@ -92,9 +92,9 @@ const ViewTopUp: React.FC<ViewTopUpTxnProps> = ({
                   Status:
                 </p>
                 <div className="flex flex-row items-center justify-between gap-2">
-                <p className={`font-satoshi text-[12px] font-[500] text-pending-orange ${txn?.status == 1 ? 'text-pending-orange' : 'text-verified-green'}`}>
-                  {txn?.status == 1 ? "Pending" : "Approved"}
-                </p>
+                  <p className={`font-satoshi text-[12px] font-[500] text-pending-orange ${txn?.status == 1 ? 'text-pending-orange' : 'text-verified-green'}`}>
+                    {txn?.status == 1 ? "Pending" : "Approved"}
+                  </p>
                 </div>
               </div>
             </div>

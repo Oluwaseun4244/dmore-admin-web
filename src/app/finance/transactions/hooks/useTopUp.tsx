@@ -2,7 +2,7 @@ import { usePostQuery } from "@/app/utils/apiUtils";
 
 
 import { useAlert } from "@/lib/features/alert/useAlert";
-import { CreateInflowPayload, CreateInflowResponse } from "../types/inflow.types";
+import { CreateInflowPayload, FinanceInflowType } from "../types/inflow.types";
 
 type setWatch = (value: boolean) => void
 type watch = boolean
@@ -10,7 +10,7 @@ export const useTopUp = (setWatchTopUp: setWatch, watch: watch) => {
 
   const { alert } = useAlert()
 
-  const topUpMutation = usePostQuery<CreateInflowResponse, CreateInflowPayload>(
+  const topUpMutation = usePostQuery<FinanceInflowType, CreateInflowPayload>(
     "financewallet/inflows/create",
     {
       onSuccess: async (data) => {

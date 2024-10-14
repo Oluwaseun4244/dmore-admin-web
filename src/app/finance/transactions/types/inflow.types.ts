@@ -6,19 +6,6 @@ export type CreateInflowPayload = {
   financeWalletCode: string | undefined
 }
 
-export type CreateInflowResponse = {
-  id: string,
-  points: number,
-  narration: string,
-  providerReference: string,
-  status: string | number,
-  initiatorUserId: string,
-  approverUserId: string,
-  retryCount: number;
-  createdAt: string;
-  initiatorName: string;
-  approverName: string;
-}
 
 export type InflowApprovalPayload = {
   financeWalletCode: string | undefined
@@ -32,19 +19,21 @@ export type InflowApprovalResponse = {
 }
 
 export type FinanceInflowType = {
-  providerReference: string,
-  retryCount: number;
-  createdAt: string
   id: string;
-  status: string | number;
-  narration: string;
-  initiatorUserId: string;
+  providerReference: string,
   points: string | number;
+  narration: string;
+  status: string | number;
+  initiatorUserId: string;
   approverUserId?: string | undefined;
+  retryCount: number;
+  initiatorName: string;
+  approverName: string;
+  createdOn: string
 }
 
 export type FinanceGetInflowResponseType = {
-  data: CreateInflowResponse[];
+  data: FinanceInflowType[];
   currentPage: number;
   hasNextPage: boolean;
   hasPreviousPage: boolean;

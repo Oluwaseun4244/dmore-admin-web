@@ -1,6 +1,5 @@
 import React from "react";
 import { usePostQuery } from "@/app/utils/apiUtils";
-import { useQueryClient } from "@tanstack/react-query";
 import { useAlert } from "@/lib/features/alert/useAlert";
 import { FinanceGetInflowResponseType, FinanceInflowQueryType } from "../types/inflow.types";
 import { AllTransactionQueryType, AllTransactionsResponse } from "../types/transactions.types";
