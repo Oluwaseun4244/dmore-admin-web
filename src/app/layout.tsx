@@ -13,7 +13,7 @@ import Alert from "./components/Alert";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const publicRoutes = ["/", "/login", "/signup", "/signup/buyer", "/signup/staff"];
+const publicRoutes = ["/", "/login", "/signup/buyer", "/signup/staff"];
 
 export default function RootLayout({
   children,
@@ -24,10 +24,11 @@ export default function RootLayout({
   const isPublicRoute = publicRoutes.includes(pathname);
 
   return (
-    <StoreProvider>
-      <SessionWrapper>
-        <html lang='en'>
-          <body className={`${inter.className} overflow-x-hidden overflow-y-hidden h-full`}>
+    <html lang='en'>
+      <body className={`${inter.className} overflow-x-hidden overflow-y-hidden h-full`}>
+        <StoreProvider>
+          <SessionWrapper>
+
             <ReactQueryProvider>
               <Toaster />
               {isPublicRoute ? (
@@ -37,9 +38,10 @@ export default function RootLayout({
               )}
             </ReactQueryProvider>
             <Alert />
-          </body>
-        </html>
-      </SessionWrapper>
-    </StoreProvider>
+
+          </SessionWrapper>
+        </StoreProvider>
+      </body>
+    </html>
   );
 }

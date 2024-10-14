@@ -1,5 +1,5 @@
 
-export type WalletType = {
+export type FinanceWalletType = {
   id: string,
   code: string,
   availablePoints: number,
@@ -24,7 +24,7 @@ export type FinanceInflowType = {
 
 
 export type FinanceWalletResponseType = {
-  data: WalletType[];
+  data: FinanceWalletType[];
   currentPage: number;
   hasNextPage: boolean;
   hasPreviousPage: boolean;

@@ -1,18 +1,21 @@
 import React, { useState } from 'react'
 import useUtils from '@/app/hooks/useUtils';
 import Button from '@/app/components/generic/Button';
+import { useSendPoints } from '../hooks/useSendPoints';
 
 export default function SendPointIndividual() {
   const { isValidEmail } = useUtils()
   const [individualPayload, setIndividualPayload] = useState({
     email: "",
     points: "",
-    narration: "",
   });
+
+  const [narration, setNarration] = useState("")
+  const { sendPointsMutation } = useSendPoints()
 
   const validateIndividualPayload = () => {
 
-    const { email, points, narration } = individualPayload
+    const { email, points } = individualPayload
     if (!isValidEmail(email)) {
       return { message: "Pleae enter a valid email", name: 'email', error: true }
     }
@@ -36,6 +39,20 @@ export default function SendPointIndividual() {
       [id]: value,
     }));
   };
+
+  const handleNarration = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { value } = e.target;
+    setNarration(value)
+  };
+
+  const handleSendPoints = () => {
+    sendPointsMutation.mutate({
+      recipients: [individualPayload],
+      narration
+    })
+  }
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 ">
       {" "}
@@ -68,8 +85,8 @@ export default function SendPointIndividual() {
             id="narration"
             placeholder="Enter Narration"
             className="text-[14px] h-full w-full outline-none resize-none"
-            onChange={handleIndividualChange}
-            value={individualPayload.narration}
+            onChange={handleNarration}
+            value={narration}
           ></textarea>
         </div>
         <small className="text-red-400">{validateIndividualPayload().name == 'narration' ? validateIndividualPayload().message : ''}</small>
@@ -79,6 +96,8 @@ export default function SendPointIndividual() {
             bg={validateIndividualPayload().error ? "bg-disabled-btn" : "bg-app-purple"}
             classNames="p-3 text-white w-[50%] lg:w-[157px] h-[45px]"
             disabled={validateIndividualPayload().error}
+            onClick={handleSendPoints}
+            isLoading={sendPointsMutation.isPending}
           />
         </div>
       </div>

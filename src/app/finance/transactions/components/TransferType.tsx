@@ -26,7 +26,7 @@ const TransferType: React.FC<TransferTypeProps> = ({ handleTransferType, chosen 
 
 
       </div>
-      <div className="w-full">
+      {/* <div className="w-full">
         <div className="flex items-center mb-4">
           <input
             id="group"
@@ -41,7 +41,7 @@ const TransferType: React.FC<TransferTypeProps> = ({ handleTransferType, chosen 
             Group
           </label>
         </div>
-      </div>
+      </div> */}
 
     </div>
   )

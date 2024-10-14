@@ -17,10 +17,13 @@ import { FinanceInflowType } from "./types/inflow.types";
 import TopUpTransactions from "./components/TopUpTransactions";
 import { AllTransactionType } from "./types/transactions.types";
 import ViewTransaction from "./components/ViewTransaction";
+import { FinanceWalletType } from "../dashboard/types/wallets.types";
+import { useGetQuery } from "@/app/utils/apiUtils";
 
 function Index() {
   const searchParams = useSearchParams();
   const variant = searchParams?.get("variant") ?? "";
+  const walletID = searchParams?.get("walletID") ?? "";
   // const queryClient = useQueryClient();
   // const profileData = queryClient.getQueryData<ProfileResponse>([`profile`]);
 
@@ -33,6 +36,19 @@ function Index() {
     useState<FinanceInflowType>();
   const [viewedTransaction, setViewedTransactions] =
     useState<AllTransactionType>();
+
+    const walletQuery = useGetQuery<FinanceWalletType>(
+      {
+        url: `financewallet/${walletID}`,
+        queryKeys: [`single-finance-wallet-${walletID}`, walletID],
+      },
+      {
+        enabled: !!walletID,
+        queryKey: [`single-finance-wallet-${walletID}`, walletID],
+        refetchOnWindowFocus: false,
+      }
+    );
+
 
   const handleViewInflow = (txn: FinanceInflowType, caller: string) => {
     setViewedInflow(txn);
@@ -77,7 +93,7 @@ function Index() {
     <DashboardLayout activePage="topUp" navTitle={decidePageTitle()}>
       <div className="h-full">
         {variant == "top-up" ? (
-          <TopUp setWatchTopUp={setWatchTopUp} watchTopUp={watchTopUp} />
+          <TopUp setWatchTopUp={setWatchTopUp} watchTopUp={watchTopUp} walletCode={walletQuery.data?.code} />
         ) : variant == "send-points" ? (
           <div className="w-full p-[10px] border-[2px] rounded-[8px]">
             <p className="text-[20px] text-primary-color font-satoshi">
@@ -117,6 +133,7 @@ function Index() {
           onClose={() => setTopUpApprovalOpen(false)}
           setOpen={setTopUpApprovalOpen}
           txn={viewedInflow}
+          walletCode={walletQuery.data?.code}
         />
         <ViewTopUp
           open={topUpTxnOpen}

@@ -103,15 +103,15 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
 
                 </tr>
               </thead>
-              <div className='flex items-center justify-center'></div>
+
               <tbody>
                 {allTransactionMutation.isPending ?
                   <tr>
                     <td colSpan={9} className="text-center py-4">
 
-                      <div className='flex items-center justify-center h-[100px]'>
+                      <span className='flex items-center justify-center h-[100px]'>
                         <Spinner />
-                      </div>
+                      </span>
 
                     </td>
                   </tr>
@@ -146,12 +146,12 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
                       </td>
 
                       <td className="text-app-purple font-[500] text-[14px] font-satoshi">
-                        <div className="flex gap-3">
+                        <span className="flex gap-3">
                           <MdOutlineRemoveRedEye
                             className="text-pending-orange cursor-pointer"
                             onClick={() => viewTransaction(txn)}
                           />{" "}
-                        </div>
+                        </span>
                       </td>
                     </tr>
                   )) : <tr>

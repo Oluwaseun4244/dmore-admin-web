@@ -37,7 +37,6 @@ function GroupUsers({ payload, isLoading, handleViewTxn, handleRemove }: UsersPe
 
                 </tr>
               </thead>
-              <div className='flex items-center justify-center'></div>
               <tbody>
                 {isLoading ?
                   <tr>

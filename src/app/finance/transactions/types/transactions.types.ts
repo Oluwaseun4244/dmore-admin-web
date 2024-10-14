@@ -27,7 +27,6 @@ export type AllTransactionsResponse = {
 }
 
 export type AllTransactionQueryType = {
-
   pageNumber: number,
   pageSize: number,
   orderBy?: string[],
@@ -35,5 +34,18 @@ export type AllTransactionQueryType = {
   approverUserId?: string,
   providerReference?: string,
   status?: string
+}
 
+
+type PointRecipients = {
+  phoneNumber?: string,
+  email: string,
+  points: string
+}
+
+export type SendPointsPayload = {
+  recipients: PointRecipients[],
+  userCategory?: string[],
+  groupId?: string
+  narration: string
 }

@@ -105,15 +105,15 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
 
                 </tr>
               </thead>
-              <div className='flex items-center justify-center'></div>
+
               <tbody>
                 {inflowTransactionMutation.isPending ?
                   <tr>
                     <td colSpan={9} className="text-center py-4">
 
-                      <div className='flex items-center justify-center h-[100px]'>
+                      <span className='flex items-center justify-center h-[100px]'>
                         <Spinner />
-                      </div>
+                      </span>
 
                     </td>
                   </tr>
@@ -135,24 +135,24 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
                         {txn.points.toLocaleString()}
                       </td>
                       <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                        {txn.initiatorUserId}
+                        {txn.initiatorName}
                       </td>
 
                       <td className="text-primary-color font-[500] text-[14px] font-satoshi">
-                        {txn.approverUserId || "--"}
+                        {txn.approverName == 'Unknown' ? "--" : txn.approverName}
                       </td>
                       <td className={`font-[500] text-[14px] font-satoshi ${txn.status == 1 ? 'text-pending-orange' : 'text-verified-green'}`}>
                         {txn.status == 1 ? "Pending" : "Approved"}
                       </td>
 
                       <td className="text-app-purple font-[500] text-[14px] font-satoshi">
-                        <div className="flex gap-3">
+                        <span className="flex gap-3">
                           <MdOutlineRemoveRedEye
                             className="text-pending-orange cursor-pointer"
                             onClick={() => viewTransaction(txn, 'view')}
                           />{" "}
                           <MdVerified className="text-verified-green cursor-pointer" onClick={() => viewTransaction(txn, 'approval')} />{" "}
-                        </div>
+                        </span>
                       </td>
                     </tr>
                   )) : <tr>
@@ -176,11 +176,11 @@ function TopUpTransactions({ viewTransaction, watchTopUp }: TopUpTransactionProp
                 >
                   Rows per page:
                 </p>
-                <select className='outline-none border-none' onChange={handlePageLimit}>
-                  <option selected={pageLimit == 5}>5</option>
-                  <option selected={pageLimit == 10}>10</option>
-                  <option selected={pageLimit == 15}>15</option>
-                  <option selected={pageLimit == 20}>20</option>
+                <select className='outline-none border-none' defaultValue={pageLimit} onChange={handlePageLimit}>
+                  <option >5</option>
+                  <option >10</option>
+                  <option >15</option>
+                  <option >20</option>
                 </select>
               </div>
 

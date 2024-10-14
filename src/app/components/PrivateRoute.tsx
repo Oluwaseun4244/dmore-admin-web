@@ -47,7 +47,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   if (loading) {
     return (
       <div className='w-screen h-screen flex justify-center items-center'>
-        <p className='font-sans text-white text-5xl'>Loading...</p>
+        <p className='font-sans text-white text-5xl'>Loading Private Route...</p>
       </div>
     );
   }

@@ -19,8 +19,10 @@ export const useTopUp = (setWatchTopUp: setWatch, watch: watch) => {
       },
       onError: (error) => {
 
+        console.log("INFLOW CREATE ERROR", error)
         const messages = error?.response?.data?.messages || []
         const exception = error?.response?.data?.exception || ""
+        const message = error?.message || ""
 
         if (messages.length) {
           messages.map(message => {
@@ -29,7 +31,11 @@ export const useTopUp = (setWatchTopUp: setWatch, watch: watch) => {
           return
         }
         if (exception) {
-          alert(exception || 'Error creating inflow', "error")
+          alert(exception, "error")
+          return
+        }
+        if (message) {
+          alert(message, "error")
           return
         }
 
@@ -38,7 +44,7 @@ export const useTopUp = (setWatchTopUp: setWatch, watch: watch) => {
       },
     }
   );
-  
+
   return {
     topUpMutation,
   };

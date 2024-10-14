@@ -9,6 +9,7 @@ interface TopUpApprovalProps {
   onClose: (value: boolean) => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   txn: FinanceInflowType | undefined;
+  walletCode: string | undefined
 }
 
 const TopUpApproval: React.FC<TopUpApprovalProps> = ({
@@ -16,6 +17,7 @@ const TopUpApproval: React.FC<TopUpApprovalProps> = ({
   onClose,
   setOpen,
   txn,
+  walletCode
 }) => {
   const handleDecline = () => {
     onClose(false);
@@ -24,7 +26,7 @@ const TopUpApproval: React.FC<TopUpApprovalProps> = ({
   const { topUpApprovalMutation } = useTopUpApproval(txn?.id, onClose);
 
   const handleApprove = () => {
-    topUpApprovalMutation.mutate({});
+    topUpApprovalMutation.mutate({ financeWalletCode: walletCode });
   };
 
   return (

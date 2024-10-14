@@ -8,7 +8,7 @@ import GroupUsers from "./GroupUsers";
 import EditUserSendPointPayload from "./EditUserSendPointPayload";
 
 export default function SendPointToGroup() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [openDropDown, setOpenDropDown] = useState(false);
   const [groupPayload, setGroupPayload] = useState({
     ids: "",
@@ -167,7 +167,7 @@ export default function SendPointToGroup() {
 
   return (
     <React.Fragment>
-      {step == 2 ? (
+      {step == 1 ? (
         <div className="grid grid-cols-1 lg:grid-cols-1 ">
           <div>
             <div className="min-h-[54px]  rounded-[8px] border-[1px] p-[10px] mt-3 relative">

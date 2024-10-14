@@ -1,29 +1,30 @@
 import { usePostQuery } from "@/app/utils/apiUtils";
 import { useAlert } from "@/lib/features/alert/useAlert";
-import { InflowApprovalPayload, InflowApprovalResponse } from "../types/inflow.types";
+import { CreateInflowPayload, CreateInflowResponse } from "../types/inflow.types";
+import { SendPointsPayload } from "../types/transactions.types";
 
-
-export const useTopUpApproval = (id: string | undefined, onClose: (value: boolean) => void) => {
+type setWatch = (value: boolean) => void
+type watch = boolean
+export const useSendPoints = () => {
 
   const { alert } = useAlert()
 
-  const topUpApprovalMutation = usePostQuery<InflowApprovalResponse, InflowApprovalPayload>(
-    `financewallet/inflows/approve-inflow/${id}`,
+  const sendPointsMutation = usePostQuery<CreateInflowResponse, SendPointsPayload>(
+    "financewallet/send-points",
     {
       onSuccess: async (data) => {
-
-        alert("Inflow approved successfully", "success")
-        onClose(false)
+        console.log("send point success", data)
       },
       onError: (error) => {
-        onClose(false)
+
+        console.log("SEND POINTS ERROR", error)
         const messages = error?.response?.data?.messages || []
         const exception = error?.response?.data?.exception || ""
         const message = error?.message || ""
 
         if (messages.length) {
           messages.map(message => {
-            alert(message, "error")
+            alert(message || 'Error creating inflow', "error")
           })
           return
         }
@@ -36,12 +37,13 @@ export const useTopUpApproval = (id: string | undefined, onClose: (value: boolea
           return
         }
 
-        alert(error?.response?.data?.supportMessage || 'Error approving inflow', "error")
+        alert(error?.response?.data?.supportMessage || 'Error creating inflow', "error")
 
       },
     }
   );
+
   return {
-    topUpApprovalMutation,
+    sendPointsMutation,
   };
 };

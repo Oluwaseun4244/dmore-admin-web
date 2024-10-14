@@ -7,13 +7,15 @@ import { ProfileResponse } from '@/app/types/auth.types';
 import { CreateInflowPayload } from '../types/inflow.types';
 import { useAlert } from '@/lib/features/alert/useAlert';
 import { PROVIDER_REF } from '@/app/utils/constants';
+import { FinanceWalletType } from '../../dashboard/types/wallets.types';
 
 type TopUpProps = {
   setWatchTopUp: (value: boolean) => void;
-  watchTopUp: boolean
+  watchTopUp: boolean;
+  walletCode: string | undefined
 }
 
-export default function TopUp({ setWatchTopUp, watchTopUp }: TopUpProps) {
+export default function TopUp({ setWatchTopUp, watchTopUp, walletCode }: TopUpProps) {
 
   const { topUpMutation } = useTopUp(setWatchTopUp, watchTopUp)
   const { alert } = useAlert()
@@ -22,7 +24,8 @@ export default function TopUp({ setWatchTopUp, watchTopUp }: TopUpProps) {
     points: "",
     narration: '',
     initiatorUserId: "",
-    providerReference: PROVIDER_REF || ""
+    providerReference: PROVIDER_REF || "",
+    financeWalletCode: ""
   });
   const [token, setToken] = useState("");
 
@@ -38,6 +41,19 @@ export default function TopUp({ setWatchTopUp, watchTopUp }: TopUpProps) {
       refetchOnWindowFocus: false,
     }
   );
+  // const walletQuery = useGetQuery<FinanceWalletType>(
+  //   {
+  //     url: `financewallet/${walletID}`,
+  //     queryKeys: [`single-finance-wallet-${walletID}`, walletID],
+  //   },
+  //   {
+  //     enabled: !!token,
+  //     queryKey: [`single-finance-wallet-${walletID}`, walletID],
+  //     refetchOnWindowFocus: false,
+  //   }
+  // );
+
+
 
   React.useEffect(() => {
     const checkSession = async () => {
@@ -59,7 +75,8 @@ export default function TopUp({ setWatchTopUp, watchTopUp }: TopUpProps) {
     setTopUpPaylod((prev) => ({
       ...prev,
       [id]: value,
-      initiatorUserId: profileQuery.data?.id
+      initiatorUserId: profileQuery.data?.id,
+      financeWalletCode:walletCode
     }));
   };
 

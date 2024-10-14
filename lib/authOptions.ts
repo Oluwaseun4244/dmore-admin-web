@@ -33,6 +33,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
       });
 
       const refreshedTokens = await response.json();
+
       if (!response.ok) {
         throw refreshedTokens;
       }
@@ -41,8 +42,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
         ...token,
         accessToken: refreshedTokens.token,
         refreshToken: refreshedTokens.refreshToken,
-        expiredAt: decodeJwt(refreshedTokens.token).exp.toStrin
-          (),
+        expiredAt: decodeJwt(refreshedTokens.token).exp.toString(),
       };
 
     } catch (error) {
@@ -180,7 +180,7 @@ export const authOptions: NextAuthOptions = {
           return token;
         }
       }
-      return refreshAccessToken(token);
+      return await refreshAccessToken(token);
     },
     async session({ session, token }) {
 

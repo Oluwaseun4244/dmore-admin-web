@@ -29,9 +29,13 @@ function FinanceDashboard() {
   const [transferIsopen, setTransferIsOpen] = useState(false);
 
 
-  const goToTransactions = async (variant: string) => {
+  const goToTransactions = async (variant: string, walletID?: string) => {
     const folder = await getFolder()
-    router.push(`/${folder}/transactions?variant=${variant}`);
+    if (walletID) {
+      router.push(`/${folder}/transactions?variant=${variant}&walletID=${walletID}`);
+    } else {
+      router.push(`/${folder}/transactions?variant=${variant}`);
+    }
   }
 
 
@@ -57,6 +61,7 @@ function FinanceDashboard() {
               financeWalletMutation.data?.data?.slice(0, 1).map(wallet => (
                 <BalanceCard
                   key={wallet.id}
+                  id={wallet.id}
                   bg={"bg-app-purple"}
                   color={"text-white"}
                   title={wallet.code}
