@@ -254,7 +254,7 @@ function Profile() {
           <hr />
         </div>
 
-        <div className="mt-[40px]">
+        {/* <div className="mt-[40px]">
           <h4 className="font-satoshi text-[16px] font-normal text-app-purple">
             Other settings
           </h4>
@@ -263,7 +263,7 @@ function Profile() {
           </h5>
           <div className="flex items-center gap-[20px] mt-[10px]">
             <div className="flex flex-col my-3 bg-[#FBFBFC] w-full lg:w-[265px] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
-              <select defaultValue={"english"} className="outline-none text-[12px]">
+              <select defaultValue={"English"} className="outline-none text-[12px]">
                 <option disabled>Choose language</option>
                 <option value={"english"}>English</option>
                 <option value={"yoruba"}>Yoruba</option>
@@ -271,7 +271,7 @@ function Profile() {
               </select>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </DashboardLayout>
   );

@@ -116,18 +116,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 activePage === "topUp" ? active_settings : inactive_settings
               }
             />
-            <SideItem
-              route={`${folder}/wallets`}
-              imgSource={
-                activePage === "wallets" ? active_wallet : inactive_wallet
-              }
-            />
-            <SideItem
-              route={`${folder}/wallets`}
-              imgSource={
-                activePage === "users" ? inactive_users : inactive_users
-              }
-            />
+ 
             <SideItem
               route={`${folder}/settings/profile`}
               imgSource={
