@@ -151,7 +151,7 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
                         {txn.receiverName || "--"}
                       </td>
                       <td
-                        className={`font-[500] text-[14px] font-satoshi ${txn.status == 'successful'
+                        className={`font-[500] text-[14px] font-satoshi ${txn.status == 'Successful'
                           ? "text-verified-green"
                           : "text-pending-orange"
                           }`}
