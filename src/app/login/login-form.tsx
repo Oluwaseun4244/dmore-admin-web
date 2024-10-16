@@ -32,7 +32,6 @@ const LoginForm = () => {
   useEffect(() => {
     const checkSession = async () => {
       const session = await getSession()
-      console.log("session", session)
       if (status === "authenticated" && session?.expiredAt) {
         const currentTime = Math.floor(Date.now() / 1000);
         const expirationTime = Number(session.expiredAt);

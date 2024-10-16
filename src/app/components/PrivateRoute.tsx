@@ -23,7 +23,6 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
 
       const folder = await getFolder();
 
-      console.log("SESSION HERE", session)
       if (session) {
         if (folder != routePath) {
           alert("You are not authorized!", "error");

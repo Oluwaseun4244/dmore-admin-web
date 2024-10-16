@@ -1,5 +1,4 @@
 import { decodeJwt } from "@/app/utils/apiUtils";
-import { jwtDecode } from "jwt-decode";
 import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -38,7 +37,6 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
         throw refreshedTokens;
       }
 
-      console.log("REFRESHED TOKEN", refreshedTokens)
       return {
         ...token,
         accessToken: refreshedTokens.token,
@@ -105,7 +103,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           if (data.token) {
-            const decodedToken = jwtDecode(data.token);
+          
 
             const profileResponse = await fetch(
               "https://dmore-backend-dotnet.onrender.com/profile",
@@ -129,8 +127,6 @@ export const authOptions: NextAuthOptions = {
               throw new Error("You tried to access a page you do not have authorization to");
             }
 
-
-            // Now we have both the token and profile information, including the role
             return {
               id: profileData.id,
               email: profileData.email,
@@ -199,7 +195,7 @@ export const authOptions: NextAuthOptions = {
         session.accessToken = token.accessToken;
         session.refreshToken = token.refreshToken;
         session.expiredAt = token.expiredAt;
-        session.role = token.role;  // Add role to the session
+        session.role = token.role;  
         session.error = token.error;
       }
       return session;
