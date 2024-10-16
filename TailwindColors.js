@@ -17,6 +17,10 @@ export const colors = {
   "text-dark2": "#090B0C",
   "disabled-btn-purple": "#D9C2EF",
   "primary-white": "#FFF",
+  "primary-color": "#121212",
+  "pending-orange": "#FF7B00",
+  "delete-red": "#FF1E00",
+  "verified-green": "#4ECB71",
 };
 
 export const borderWidth = {

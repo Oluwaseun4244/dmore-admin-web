@@ -1,25 +1,39 @@
-import { getSession, useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import useUtils from "../hooks/useUtils";
+import { useAlert } from "@/lib/features/alert/useAlert";
+import Spinner from "./generic/Spinner";
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { status } = useSession();
-  const router = useRouter();
+  const { getFolder, handleSignout } = useUtils()
+  const { alert } = useAlert();
+  const { status, data: session } = useSession();
   const pathname = usePathname();
 
   const [loading, setLoading] = useState(true);
   const [hasSession, setHasSession] = useState(false);
 
+  const routePath = pathname?.split('/')[1];
+
   useEffect(() => {
     const checkSession = async () => {
-      const session = await getSession();
-      if (!session) {
-        const returnUrl = encodeURIComponent(pathname as string);
-        router.push(`/login?returnUrl=${returnUrl}`);
+
+      const folder = await getFolder();
+
+      if (session) {
+        if (folder != routePath) {
+          alert("You are not authorized!", "error");
+          handleSignout()
+          return
+        } else {
+          setHasSession(true);
+        }
       } else {
-        setHasSession(true);
+        handleSignout()
+        return
       }
       setLoading(false);
     };
@@ -27,12 +41,12 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
     if (status !== "loading") {
       checkSession();
     }
-  }, [status, router, pathname]);
+  }, [status, routePath]);
 
   if (loading) {
     return (
       <div className='w-screen h-screen flex justify-center items-center'>
-        <p className='font-sans text-white text-5xl'>Loading...</p>
+        <Spinner />
       </div>
     );
   }

@@ -1,13 +1,12 @@
 import { Suspense } from "react";
-import LoginForm from './login/login-form';
-import Spinner from "./components/generic/Spinner";
+import FinanceTransactions from ".";
+import Spinner from "@/app/components/generic/Spinner";
 
 
-export default function Home() {
+export default function FinanceTransactionee() {
   return (
     <Suspense fallback={<div className="h-screen w-full flex items-center justify-center"><Spinner /></div>}>
-      <LoginForm />
+      <FinanceTransactions />
     </Suspense>
   );
 }
-

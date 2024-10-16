@@ -3,7 +3,7 @@ import BuyerSignUpForm from "./buyer-signup-form";
 
 const page = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div >Loading...</div>}>
       <BuyerSignUpForm />
     </Suspense>
   );

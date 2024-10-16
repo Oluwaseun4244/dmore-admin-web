@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { BsEyeSlash } from "react-icons/bs";
+import { BsEyeSlash, BsEye } from "react-icons/bs";
 import { FaCircleInfo } from "react-icons/fa6";
 import Tooltip from "../generic/Tooltip";
+
 
 interface WalletCardProps {
   bg?: string;
@@ -23,6 +24,11 @@ const WalletCard: React.FC<WalletCardProps> = ({
   toolTip,
 }) => {
   const maxAmountShown = 100000000;
+
+  const [show, setShow] = useState(true)
+  const toggleVisibility = () => {
+    setShow(!show)
+  }
   return (
     <div
       className={`${bg} flex flex-col justify-between p-4 rounded-[6px] relative h-[146px] border border-[#E2E8F0]`}
@@ -40,12 +46,12 @@ const WalletCard: React.FC<WalletCardProps> = ({
         <BsThreeDotsVertical className={`${color}`} />
       </div>
       <div className="flex items-center flex-row justify-between">
-        <p className={`font-satoshi font-bold text-[32px] ${color}`}>
-          {balance <= maxAmountShown
+        <p className={`font-satoshi font-bold text-[28px] ${color}`}>
+          {show ? balance <= maxAmountShown
             ? balance.toLocaleString()
-            : maxAmountShown.toLocaleString() + "+"}
+            : maxAmountShown.toLocaleString() + "+" : "**********"}
         </p>
-        {showEyes && <BsEyeSlash className={`${color}`} />}
+        {showEyes ? (show ? <BsEyeSlash className={`${color}`} onClick={toggleVisibility} /> : <BsEye className={`${color}`} onClick={toggleVisibility} />) : <></>}
       </div>
     </div>
   );

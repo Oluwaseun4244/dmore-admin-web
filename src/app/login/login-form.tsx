@@ -3,45 +3,51 @@
 import Button from "@/app/components/generic/Button";
 
 import { useAlert } from "@/lib/features/alert/useAlert";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, getSession, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import right_img from "../../../public/images/dmore_auth_right.png";
 import "../../app/globals.css";
 import ".././globals.css";
 import { LoginApiData } from "../types/auth.types";
+import useUtils from "../hooks/useUtils";
 
 const LoginForm = () => {
+  const { getFolder } = useUtils()
   const [passwordVisible, setPasswordVisible] = useState(false);
-
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const { status, data: session } = useSession();
+  const { status, } = useSession();
   const [isPending, setIsPending] = useState(false);
   const { alert } = useAlert();
-  const returnUrl = searchParams?.get("returnUrl") || "/dashboard";
+
   const [loginData, setLoginData] = useState<LoginApiData>({
     email: "",
     password: "",
   });
 
   useEffect(() => {
-    if (status === "authenticated" && session?.expiredAt) {
-      const currentTime = Math.floor(Date.now() / 1000);
-      const expirationTime = Number(session.expiredAt);
-
-      if (expirationTime > currentTime) {
-        router.prefetch("/dashboard");
-        router.push("/dashboard");
-      } else {
-        console.log("Session expired, not navigating to dashboard.");
+    const checkSession = async () => {
+      const session = await getSession()
+      if (status === "authenticated" && session?.expiredAt) {
+        const currentTime = Math.floor(Date.now() / 1000);
+        const expirationTime = Number(session.expiredAt);
+        if (expirationTime > currentTime) {
+          const folder = await getFolder()
+          router.prefetch(`/${folder}/dashboard`);
+          router.push(`/${folder}/dashboard`);
+          return
+        }
       }
-    }
-  }, [status, session?.expiredAt, router]);
+
+    };
+
+    checkSession()
+
+  });
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -69,8 +75,10 @@ const LoginForm = () => {
         alert(result.error, "error");
       } else if (result?.ok) {
         alert("Login successful, Redirecting...", "success");
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000);
 
-        router.push(returnUrl);
       } else {
         alert("Login failed. Please try again.", "error");
       }
@@ -105,7 +113,6 @@ const LoginForm = () => {
           <p className="font-satoshi text-black text-[28px] md:text-[36px] font-medium">
             Login to your account
           </p>
-
           <div className="my-5 w-[90%] lg:w-[400px]">
             <div className="flex flex-col my-3 bg-[#FBFBFC] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">
               <input
@@ -140,11 +147,13 @@ const LoginForm = () => {
               )}
             </div>
 
-            <Link href="/forgotpassword">
-              <p className="text-end text-dark-purple text-[16px] font-medium">
-                Forgot Password?
-              </p>
-            </Link>
+            <div className="flex justify-end">
+              <Link href="/forgotpassword">
+                <p className="text-end text-dark-purple text-[16px] font-medium">
+                  Forgot Password?
+                </p>
+              </Link>
+            </div>
           </div>
           <Button
             text={isPending ? "Loading..." : "Login"}
@@ -158,15 +167,9 @@ const LoginForm = () => {
             disabled={
               !loginData.email.length || !loginData.password.length || isPending
             }
-            // onClick={isPending ? () => console.log("is loading") : handleSubmit}
+
           />
-          {/* <Button
-            text='Sign in via GitHub'
-            my='5'
-            classNames='text-white w-[247px] h-[48px]'
-            bg='bg-dark-purple'
-            onClick={() => {}}
-          /> */}
+
 
           <p className="font-satoshi text-[16px] text-center font-medium my-4 text-light-gray">
             I don&apos;t have an account?{" "}

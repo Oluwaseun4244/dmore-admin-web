@@ -8,13 +8,10 @@ import right_img from "../../../public/images/dmore_auth_right.png";
 import "../../app/globals.css";
 import ".././globals.css";
 import { ForgotPasswordData } from "../types/auth.types";
-import { FaRegEye } from "react-icons/fa";
-import { FaRegEyeSlash } from "react-icons/fa";
 import { useForgotPassword } from "./hooks/useForgotPassword";
 
 
 const ForgotPassword: React.FC = () => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [forgotPasswordData, setForgotPasswordData] = useState<ForgotPasswordData>({
     email: "",
@@ -24,9 +21,6 @@ const ForgotPassword: React.FC = () => {
 
   const { isPending, mutate } = forgotPasswordMutation;
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
 
   const handleSubmit = () => {
     mutate(forgotPasswordData);

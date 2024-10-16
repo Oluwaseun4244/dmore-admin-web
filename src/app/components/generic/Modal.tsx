@@ -1,11 +1,10 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
-  DialogTitle,
 } from "@headlessui/react";
 
 interface ModalProps {
@@ -15,7 +14,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ children, open, setOpen }) => {
-  const [open1, setOpen1] = useState(true);
+  
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop

@@ -1,18 +1,7 @@
 import { decodeJwt } from "@/app/utils/apiUtils";
-import { jwtDecode } from "jwt-decode";
 import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-interface DecodedToken {
-  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string;
-  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": string;
-  fullName: string;
-  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": string;
-  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname": string;
-  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/mobilephone": string;
-  exp: number;
-}
 
 
 let isRefreshing = false;
@@ -43,6 +32,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
       });
 
       const refreshedTokens = await response.json();
+
       if (!response.ok) {
         throw refreshedTokens;
       }
@@ -51,8 +41,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
         ...token,
         accessToken: refreshedTokens.token,
         refreshToken: refreshedTokens.refreshToken,
-        expiredAt: decodeJwt(refreshedTokens.token).exp.toStrin
-          (),
+        expiredAt: decodeJwt(refreshedTokens.token).exp.toString(),
       };
 
     } catch (error) {
@@ -114,7 +103,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           if (data.token) {
-            const decodedToken = jwtDecode(data.token);
+          
 
             const profileResponse = await fetch(
               "https://dmore-backend-dotnet.onrender.com/profile",
@@ -127,18 +116,17 @@ export const authOptions: NextAuthOptions = {
             );
 
             const profileData = await profileResponse.json();
+            const allowedRoles = ['Finance', 'Admin']
 
 
             if (!profileResponse.ok) {
               throw new Error(profileData.message || "Failed to fetch profile");
             }
 
-            // if (profileData.role != 'admin') {
-            //   throw new Error("You tried to access a page you do not have authorization to");
-            // }
+            if (!allowedRoles.includes(profileData.role)) {
+              throw new Error("You tried to access a page you do not have authorization to");
+            }
 
-
-            // Now we have both the token and profile information, including the role
             return {
               id: profileData.id,
               email: profileData.email,
@@ -184,11 +172,13 @@ export const authOptions: NextAuthOptions = {
       const currentTime = Math.floor(Date.now() / 1000);
       if (token.expiredAt) {
         const expirationTime = Number(token.expiredAt);
-        if (expirationTime - currentTime > 300) {
+        if (expirationTime - currentTime > 600) {
+          //600 being 10 minutes
+          // console.log("TIME", expirationTime - currentTime)
           return token;
         }
       }
-      return refreshAccessToken(token);
+      return await refreshAccessToken(token);
     },
     async session({ session, token }) {
 
@@ -205,7 +195,7 @@ export const authOptions: NextAuthOptions = {
         session.accessToken = token.accessToken;
         session.refreshToken = token.refreshToken;
         session.expiredAt = token.expiredAt;
-        session.role = token.role;  // Add role to the session
+        session.role = token.role;  
         session.error = token.error;
       }
       return session;

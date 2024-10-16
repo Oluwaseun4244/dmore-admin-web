@@ -73,7 +73,7 @@ export const confirmEmailAsync = createAsyncThunk(
       }
 
       const responseData = await response.json();
-      console.log(responseData);
+      // console.log(responseData);
       //   toast.success(responseData.message);
 
       return await response.json();

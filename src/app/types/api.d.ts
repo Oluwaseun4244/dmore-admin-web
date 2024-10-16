@@ -1,8 +1,12 @@
 interface ApiErrorResponse {
+    message: string;
     response: {
         data: {
             data?: unknown;
-            message: string
+            message: string;
+            messages: string[];
+            exception: string;
+            supportMessage: string
         };
         status?; number;
         statusText?: string
