@@ -183,7 +183,7 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
 
         {/* PAGINATION ROW */}
         {allTransactionMutation.data?.data?.length ? (
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-3">
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-2">
                 <p
