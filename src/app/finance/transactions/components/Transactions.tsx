@@ -126,9 +126,8 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
                 ) : allTransactionMutation.data?.data?.length ? (
                   allTransactionMutation?.data?.data?.map((txn, index) => (
                     <tr
-                      className={`h-[50px] ${
-                        index % 2 == 0 ? "" : "bg-[#DAB9FA17]"
-                      }`}
+                      className={`h-[50px] ${index % 2 == 0 ? "" : "bg-[#DAB9FA17]"
+                        }`}
                       key={index}
                     >
                       <td></td>
@@ -152,11 +151,10 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
                         {txn.receiverName || "--"}
                       </td>
                       <td
-                        className={`font-[500] text-[14px] font-satoshi ${
-                          txn.status == 1
+                        className={`font-[500] text-[14px] font-satoshi ${txn.status == 1
                             ? "text-pending-orange"
                             : "text-verified-green"
-                        }`}
+                          }`}
                       >
                         {txn.status == 1 ? "Pending" : "Approved"}
                       </td>
@@ -195,21 +193,21 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
                 </p>
                 <select
                   className="outline-none border-none"
+                  defaultValue={pageLimit}
                   onChange={handlePageLimit}
                 >
-                  <option selected={pageLimit == 5}>5</option>
-                  <option selected={pageLimit == 10}>10</option>
-                  <option selected={pageLimit == 15}>15</option>
-                  <option selected={pageLimit == 20}>20</option>
+                  <option >5</option>
+                  <option >10</option>
+                  <option >15</option>
+                  <option >20</option>
                 </select>
               </div>
 
               <div
-                className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${
-                  allTransactionMutation.data?.hasPreviousPage
+                className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${allTransactionMutation.data?.hasPreviousPage
                     ? "cursor-pointer"
                     : "cursor-default"
-                }`}
+                  }`}
                 onClick={previousPage}
               >
                 <IoIosArrowBack className="text-[16px] text-[#687182]" />
@@ -220,11 +218,10 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
                 {allTransactionMutation.data?.currentPage}
               </p>
               <div
-                className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${
-                  allTransactionMutation.data?.hasNextPage
+                className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${allTransactionMutation.data?.hasNextPage
                     ? "cursor-pointer"
                     : "cursor-default"
-                }`}
+                  }`}
                 onClick={nextPage}
               >
                 <IoIosArrowForward className="text-[16px] text-[#687182]" />

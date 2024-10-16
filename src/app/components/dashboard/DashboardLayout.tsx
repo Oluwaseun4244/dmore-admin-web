@@ -1,16 +1,13 @@
 "use client";
 
-import React, { ReactNode, useState, useEffect } from "react";
+import React, { ReactNode } from "react";
 import Image from "next/image";
 import logo from "../../../../public/icons/white-logo.svg";
 import active_dashboard from "../../../../public/icons/active-dashboard.svg";
 import inactive_dashboard from "../../../../public/icons/inactive-dashboard.svg";
-import inactive_wallet from "../../../../public/icons/inactive-wallet.svg";
-import active_wallet from "../../../../public/icons/active-wallet.svg";
-import inactive_users from "../../../../public/icons/inactive-users.svg";
 import inactive_settings from "../../../../public/icons/inactive-settings.svg";
 import active_settings from "../../../../public/icons/active-settings.svg";
-import { getSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useGetQuery } from "../../utils/apiUtils";
 import { usePathname } from "next/navigation";
 import { useAlert } from "@/lib/features/alert/useAlert";
@@ -20,7 +17,8 @@ import SideItem from "./SideItem";
 
 import Navbar from "./Navbar";
 import { ProfileResponse } from "@/app/types/auth.types";
-import { Session } from "next-auth";
+import Spinner from "../generic/Spinner";
+import useUtils from "@/app/hooks/useUtils";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -34,48 +32,47 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   navTitle,
 }) => {
 
+  const { handleSignout } = useUtils()
   const { alert } = useAlert();
   const pathname = usePathname();
   const folder = pathname?.split('/')[1];
   const queryClient = useQueryClient();
-  const [token, setToken] = useState("");
-  const [session, setSession] = useState<Session>();
 
+  const { data: session } = useSession()
 
-  const handleSignout = () => {
-    signOut();
-  };
-
+  console.log("DATA HERE", session)
   const profileQuery = useGetQuery<ProfileResponse>(
     {
       url: "profile",
-      queryKeys: [`profile-${token}`, token],
+      queryKeys: [`profile-${session?.accessToken}`, session?.accessToken],
     },
     {
-      enabled: !!token,
-      queryKey: [`profile-${token}`, token],
+      enabled: !!session?.accessToken,
+      queryKey: [`profile-${session?.accessToken}`, session?.accessToken],
       refetchOnWindowFocus: false,
     }
   );
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const session = await getSession();
-      if (session?.accessToken && session?.accessToken !== token) {
-        setToken(session?.accessToken);
-        setSession(session)
-      }
-    };
 
-    checkSession();
-  }, [token]);
-
-  if (profileQuery.isPending) {
+  if (!session?.accessToken) {
     return (
       <div className="w-screen h-screen flex justify-center items-center">
-        <p className="font-sans text-white text-5xl">Loading...</p>
+        <Spinner />
       </div>
     );
+  }
+  if (profileQuery.isLoading) {
+    return (
+      <div className="w-screen h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (!profileQuery.data || profileQuery?.error?.response?.status === 401) {
+    alert("Profile not found, invalid token suspected", "error");
+    handleSignout();
+    return
   }
 
   if (session?.error || session?.error == 'RefreshAccessTokenError') {
@@ -84,11 +81,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     return;
   }
 
-  if (!profileQuery.data || profileQuery?.error?.response?.status === 401) {
-    alert("Profile not found, invalid token suspected", "error");
-    handleSignout();
-    return
-  }
 
   queryClient.setQueryData(["profile"], profileQuery.data);
 
@@ -116,7 +108,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 activePage === "topUp" ? active_settings : inactive_settings
               }
             />
- 
+
             <SideItem
               route={`${folder}/settings/profile`}
               imgSource={

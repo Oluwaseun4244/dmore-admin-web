@@ -1,13 +1,11 @@
 import Button from '@/app/components/generic/Button';
 import React, { useState } from 'react'
 import { useTopUp } from '../hooks/useTopUp';
-import { getSession } from 'next-auth/react';
-import { useGetQuery } from '@/app/utils/apiUtils';
-import { ProfileResponse } from '@/app/types/auth.types';
+import { useSession } from 'next-auth/react';
 import { CreateInflowPayload } from '../types/inflow.types';
 import { useAlert } from '@/lib/features/alert/useAlert';
 import { PROVIDER_REF } from '@/app/utils/constants';
-import { FinanceWalletType } from '../../dashboard/types/wallets.types';
+
 
 type TopUpProps = {
   setWatchTopUp: (value: boolean) => void;
@@ -19,6 +17,7 @@ export default function TopUp({ setWatchTopUp, watchTopUp, walletCode }: TopUpPr
 
   const { topUpMutation } = useTopUp(setWatchTopUp, watchTopUp)
   const { alert } = useAlert()
+  const { data: session } = useSession()
 
   const [topUpPayload, setTopUpPaylod] = useState<CreateInflowPayload>({
     points: "",
@@ -27,44 +26,6 @@ export default function TopUp({ setWatchTopUp, watchTopUp, walletCode }: TopUpPr
     providerReference: PROVIDER_REF || "",
     financeWalletCode: ""
   });
-  const [token, setToken] = useState("");
-
-
-  const profileQuery = useGetQuery<ProfileResponse>(
-    {
-      url: "profile",
-      queryKeys: [`profile-${token}`, token],
-    },
-    {
-      enabled: !!token,
-      queryKey: [`profile-${token}`, token],
-      refetchOnWindowFocus: false,
-    }
-  );
-  // const walletQuery = useGetQuery<FinanceWalletType>(
-  //   {
-  //     url: `financewallet/${walletID}`,
-  //     queryKeys: [`single-finance-wallet-${walletID}`, walletID],
-  //   },
-  //   {
-  //     enabled: !!token,
-  //     queryKey: [`single-finance-wallet-${walletID}`, walletID],
-  //     refetchOnWindowFocus: false,
-  //   }
-  // );
-
-
-
-  React.useEffect(() => {
-    const checkSession = async () => {
-      const session = await getSession();
-      if (session?.accessToken && session?.accessToken !== token) {
-        setToken(session?.accessToken);
-      }
-    };
-
-    checkSession();
-  }, [token]);
 
 
   const handleTopUpChange = async (
@@ -75,8 +36,8 @@ export default function TopUp({ setWatchTopUp, watchTopUp, walletCode }: TopUpPr
     setTopUpPaylod((prev) => ({
       ...prev,
       [id]: value,
-      initiatorUserId: profileQuery.data?.id,
-      financeWalletCode:walletCode
+      initiatorUserId: session?.user.id,
+      financeWalletCode: walletCode
     }));
   };
 

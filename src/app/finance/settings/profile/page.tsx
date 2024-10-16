@@ -8,7 +8,7 @@ import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { ProfileResponse } from "@/app/types/auth.types";
 import { useGetQuery } from "@/app/utils/apiUtils";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import DashboardLayout from "@/app/components/dashboard/DashboardLayout";
 
 interface UserDetailsType {
@@ -32,7 +32,8 @@ interface PasswordView {
 
 function Profile() {
 
-  const [token, setToken] = useState("");
+  const { data: session } = useSession()
+
   const [userDetails, setUserDetails] = useState<UserDetailsType>({
     firstName: "",
     lastName: "",
@@ -54,27 +55,14 @@ function Profile() {
   const profileQuery = useGetQuery<ProfileResponse>(
     {
       url: "profile",
-      queryKeys: [`profile-${token}`, token],
+      queryKeys: [`profile-${session?.accessToken}`, session?.accessToken],
     },
     {
-      enabled: !!token,
-      queryKey: [`profile-${token}`, token],
+      enabled: !!session?.accessToken,
+      queryKey: [`profile-${session?.accessToken}`, session?.accessToken],
       refetchOnWindowFocus: false,
     }
   );
-
-  React.useEffect(() => {
-    const checkSession = async () => {
-      const session = await getSession();
-      if (session?.accessToken && session?.accessToken !== token) {
-        setToken(session?.accessToken);
-      }
-    };
-
-    checkSession();
-  }, [token]);
-
-
 
   const handleUserDetails = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -104,10 +92,10 @@ function Profile() {
       <div>
         <div className="font-satoshi flex items-center font-medium text-[20px] gap-[10px]">
           <AvatarInitial
-            fullName="Tola Banjo"
+            fullName={`${session?.user.firstName} ${session?.user.lastName}`}
             classNames="w-8 h-8 bg-faint-purple"
           />
-          <h5>{`${profileQuery?.data?.firstName} ${profileQuery?.data?.lastName}`}</h5>
+          <h5>{`${session?.user.firstName} ${session?.user.lastName}`}</h5>
         </div>
 
         <div className="mt-[50px]">

@@ -38,6 +38,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
         throw refreshedTokens;
       }
 
+      console.log("REFRESHED TOKEN", refreshedTokens)
       return {
         ...token,
         accessToken: refreshedTokens.token,
@@ -177,6 +178,7 @@ export const authOptions: NextAuthOptions = {
         const expirationTime = Number(token.expiredAt);
         if (expirationTime - currentTime > 600) {
           //600 being 10 minutes
+          // console.log("TIME", expirationTime - currentTime)
           return token;
         }
       }

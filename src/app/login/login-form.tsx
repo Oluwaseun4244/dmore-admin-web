@@ -3,7 +3,7 @@
 import Button from "@/app/components/generic/Button";
 
 import { useAlert } from "@/lib/features/alert/useAlert";
-import { signIn, useSession, getSession } from "next-auth/react";
+import { signIn, getSession, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ const LoginForm = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
 
-  const { status } = useSession();
+  const { status, } = useSession();
   const [isPending, setIsPending] = useState(false);
   const { alert } = useAlert();
 
@@ -31,12 +31,13 @@ const LoginForm = () => {
 
   useEffect(() => {
     const checkSession = async () => {
-      const session = await getSession();
+      const session = await getSession()
+      console.log("session", session)
       if (status === "authenticated" && session?.expiredAt) {
         const currentTime = Math.floor(Date.now() / 1000);
         const expirationTime = Number(session.expiredAt);
-        const folder = await getFolder()
         if (expirationTime > currentTime) {
+          const folder = await getFolder()
           router.prefetch(`/${folder}/dashboard`);
           router.push(`/${folder}/dashboard`);
           return
@@ -75,8 +76,10 @@ const LoginForm = () => {
         alert(result.error, "error");
       } else if (result?.ok) {
         alert("Login successful, Redirecting...", "success");
-        const folder = await getFolder()
-        router.push(`/${folder}/dashboard`);
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000);
+
       } else {
         alert("Login failed. Please try again.", "error");
       }
@@ -109,7 +112,7 @@ const LoginForm = () => {
           className="w-full flex items-center justify-center flex-col lg:w-3/5"
         >
           <p className="font-satoshi text-black text-[28px] md:text-[36px] font-medium">
-            Login to your account??
+            Login to your account
           </p>
           <div className="my-5 w-[90%] lg:w-[400px]">
             <div className="flex flex-col my-3 bg-[#FBFBFC] px-4 py-3 border  border-[#EDF0F3] rounded-[12px]">

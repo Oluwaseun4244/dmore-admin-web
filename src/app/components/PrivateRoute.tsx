@@ -1,15 +1,16 @@
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import useUtils from "../hooks/useUtils";
 import { useAlert } from "@/lib/features/alert/useAlert";
+import Spinner from "./generic/Spinner";
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { getFolder, handleSignout } = useUtils()
   const { alert } = useAlert();
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const pathname = usePathname();
 
   const [loading, setLoading] = useState(true);
@@ -17,10 +18,9 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
 
   const routePath = pathname?.split('/')[1];
 
-
   useEffect(() => {
     const checkSession = async () => {
-      const session = await getSession();
+
       const folder = await getFolder();
 
       console.log("SESSION HERE", session)
@@ -47,7 +47,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   if (loading) {
     return (
       <div className='w-screen h-screen flex justify-center items-center'>
-        <p className='font-sans text-white text-5xl'>Loading Private Route...</p>
+        <Spinner />
       </div>
     );
   }

@@ -107,6 +107,7 @@ export const useGetQuery = <T>(config: getConfig, options?: Omit<UseQueryOptions
     return useQuery<T, ApiErrorResponse>({
         queryKey: config.queryKeys,
         queryFn: () => getData<T>(config.url),
+        retry: options?.retry ?? 2,
         ...options
     })
 }
