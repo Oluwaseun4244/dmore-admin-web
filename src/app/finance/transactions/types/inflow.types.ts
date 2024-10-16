@@ -31,6 +31,7 @@ export type FinanceInflowType = {
   approverName: string;
   createdOn: string
 }
+export type SendPointResponse = string
 
 export type FinanceGetInflowResponseType = {
   data: FinanceInflowType[];

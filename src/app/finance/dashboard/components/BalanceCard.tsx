@@ -13,7 +13,7 @@ interface WalletCardProps {
   title: string;
   balance: number;
   goTo: (value: string, id: string) => void;
-  id: string
+  walletId: string
 }
 
 export default function BalanceCard({
@@ -23,7 +23,7 @@ export default function BalanceCard({
   title,
   balance,
   goTo,
-  id
+  walletId
 }: WalletCardProps) {
 
   const maxAmountShown = 100000000;
@@ -66,7 +66,7 @@ export default function BalanceCard({
           text="Load Account"
           bg="bg-white"
           classNames="p-3 text-app-purple border w-[147px] h-[51px]"
-          onClick={() => goTo('top-up', id)}
+          onClick={() => goTo('top-up', walletId)}
         />
       </div>
     </div>

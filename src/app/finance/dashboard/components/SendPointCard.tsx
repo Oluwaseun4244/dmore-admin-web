@@ -8,10 +8,11 @@ import { GoPlus } from "react-icons/go";
 
 type SendPointCardType = {
   toolTip?: string,
-  goTo: (value: string) => void
+  goTo: (value: string, id: string) => void,
+  walletId: string
 }
 
-export default function SendPointCard({ toolTip,goTo }: SendPointCardType) {
+export default function SendPointCard({ toolTip,goTo, walletId }: SendPointCardType) {
 
 
   return (
@@ -39,7 +40,7 @@ export default function SendPointCard({ toolTip,goTo }: SendPointCardType) {
           text="Send Points"
           bg="bg-white"
           classNames="p-3 text-[#464F60] border w-[147px] h-[51px]"
-          onClick={() => goTo('send-points')}
+          onClick={() => goTo('send-points', walletId)}
           icon={<GoPlus />}
           iconPosition='left'
         />

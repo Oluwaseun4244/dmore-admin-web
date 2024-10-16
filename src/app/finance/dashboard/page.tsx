@@ -50,22 +50,24 @@ function FinanceDashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-            {
+            {/* {
               financeWalletMutation.data?.data?.slice(0, 1).map(wallet => (
-                <BalanceCard
-                  key={wallet.id}
-                  id={wallet.id}
-                  bg={"bg-app-purple"}
-                  color={"text-white"}
-                  title={wallet.code}
-                  showEyes={true}
-                  goTo={goToTransactions}
-                  balance={wallet.availablePoints}
-                />
-              ))
-            }
+                <>
 
-            <SendPointCard goTo={goToTransactions} />
+                </>
+              ))
+            } */}
+            <BalanceCard
+              // key={wallet.id}
+              walletId={financeWalletMutation.data?.data[0]?.id || ""}
+              bg={"bg-app-purple"}
+              color={"text-white"}
+              title={financeWalletMutation.data?.data[0]?.code || ""}
+              showEyes={true}
+              goTo={goToTransactions}
+              balance={financeWalletMutation.data?.data[0]?.availablePoints || 0}
+            />
+            <SendPointCard goTo={goToTransactions} walletId={financeWalletMutation.data?.data[0]?.id || ""} />
             <TotalPointsCard />
           </div>
 

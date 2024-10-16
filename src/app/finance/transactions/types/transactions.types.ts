@@ -46,6 +46,7 @@ type PointRecipients = {
 export type SendPointsPayload = {
   recipients: PointRecipients[],
   userCategory?: string[],
-  groupId?: string
-  narration: string
+  groupId?: string,
+  narration: string,
+  WalletCode: string
 }

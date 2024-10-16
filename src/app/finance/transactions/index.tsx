@@ -105,7 +105,7 @@ function Index() {
             />
 
             {transferType == "individual" ? (
-              <SendPointIndividual />
+              <SendPointIndividual code={walletQuery.data?.code} />
             ) : transferType == "group" ? (
               <SendPointToGroup />
             ) : (
@@ -130,7 +130,7 @@ function Index() {
 
         <TopUpApproval
           open={topUpApprovalIsOpen}
-          onClose={() => setTopUpApprovalOpen(false)}
+          onClose={setTopUpApprovalOpen}
           setOpen={setTopUpApprovalOpen}
           txn={viewedInflow}
           walletCode={walletQuery.data?.code}
@@ -138,16 +138,17 @@ function Index() {
         <ViewTopUp
           open={topUpTxnOpen}
           setOpen={setTopUpTxnOpen}
-          onClose={() => setTopUpTxnOpen(false)}
+          onClose={setTopUpTxnOpen}
           txn={viewedInflow}
         />
 
         <ViewTransaction
           open={txnIsOpen}
           setOpen={setViewTxn}
-          onClose={() => setViewTxn(false)}
+          onClose={setViewTxn}
           txn={viewedTransaction}
         />
+
       </div>
     </DashboardLayout>
   );
