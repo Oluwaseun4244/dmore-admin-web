@@ -152,11 +152,11 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
                       </td>
                       <td
                         className={`font-[500] text-[14px] font-satoshi ${txn.status == 1
-                            ? "text-pending-orange"
-                            : "text-verified-green"
+                          ? "text-pending-orange"
+                          : "text-verified-green"
                           }`}
                       >
-                        {txn.status == 1 ? "Pending" : "Approved"}
+                        {txn.status}
                       </td>
 
                       <td className="text-app-purple font-[500] text-[14px] font-satoshi">
@@ -205,8 +205,8 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
 
               <div
                 className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${allTransactionMutation.data?.hasPreviousPage
-                    ? "cursor-pointer"
-                    : "cursor-default"
+                  ? "cursor-pointer"
+                  : "cursor-default"
                   }`}
                 onClick={previousPage}
               >
@@ -219,8 +219,8 @@ function Transactions({ viewTransaction, watchTopUp }: TransactionProps) {
               </p>
               <div
                 className={`w-[30px] h-[25px] rounded-[6px] border-[1px] flex items-center justify-center ${allTransactionMutation.data?.hasNextPage
-                    ? "cursor-pointer"
-                    : "cursor-default"
+                  ? "cursor-pointer"
+                  : "cursor-default"
                   }`}
                 onClick={nextPage}
               >

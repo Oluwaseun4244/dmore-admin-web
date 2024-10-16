@@ -40,7 +40,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   const { data: session } = useSession()
 
-  console.log("DATA HERE", session)
+  // console.log("DATA HERE", session)
   const profileQuery = useGetQuery<ProfileResponse>(
     {
       url: "profile",
@@ -50,6 +50,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       enabled: !!session?.accessToken,
       queryKey: [`profile-${session?.accessToken}`, session?.accessToken],
       refetchOnWindowFocus: false,
+      retry: 1
     }
   );
 
